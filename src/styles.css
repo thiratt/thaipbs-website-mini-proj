@@ -13,11 +13,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family:
-    source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -257,7 +252,8 @@ code {
 }
 
 @keyframes scale-in {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
