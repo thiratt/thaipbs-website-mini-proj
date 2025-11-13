@@ -1,11 +1,12 @@
-import { MenuIcon, Search, SearchIcon, X } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { MenuIcon, SearchIcon, X } from 'lucide-react'
 import { Button } from './ui/button'
+import { AnimatePresence, motion } from 'motion/react'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group'
-import { useState, useRef, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 
 interface NavItem {
@@ -58,13 +59,9 @@ function NavigationBar({
     }
   }, [activeItem])
 
-  const handleSearchClose = () => {
-    setSearch(false)
+  const toggleSearchMode = () => {
+    setSearch(!search)
     setSearchValue('')
-  }
-
-  const handleSearchClick = () => {
-    setSearch(true)
   }
 
   return (
@@ -77,106 +74,112 @@ function NavigationBar({
           <SearchIcon />
         </Button>
       </div>
-      <div
-        className={cn(
-          'hidden md:flex',
-          'relative h-fit w-full max-w-lg p-1 items-center rounded-full transition-all duration-300',
-          'bg-linear-to-r from-white/40 via-white/30 to-white/40',
-          'backdrop-blur-[2px] backdrop-saturate-150',
-          'shadow-[0_8px_32px_0_rgba(0,0,0,0.12)]',
-          'border border-white/20',
-          'border-white/60',
-          search && 'max-w-5xl',
-        )}
-      >
-        <nav
-          ref={navRef}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          animate={{
+            maxWidth: search ? '60rem' : '26rem',
+          }}
+          transition={{
+            duration: 0.6,
+            type: 'spring',
+          }}
           className={cn(
-            'relative flex items-center transition-all duration-300 flex-1 gap-1',
-            search ? 'opacity-0 invisible' : 'opacity-100 visible',
+            'hidden md:flex',
+            'relative h-fit w-full max-w-lg p-1 items-center rounded-full',
+            'bg-linear-to-r from-white/40 via-white/30 to-white/40',
+            'backdrop-blur-[2px] backdrop-saturate-150',
+            'shadow-[0_8px_32px_0_rgba(0,0,0,0.12)]',
+            'border border-white/20',
+            'border-white/60',
           )}
         >
-          <span
-            className="absolute bg-primary h-full rounded-full transition-all duration-300 ease-out animate-in zoom-in-10"
-            style={{
-              left: `${indicatorStyle.left}px`,
-              width: `${indicatorStyle.width}px`,
-            }}
-          />
+          <motion.nav
+            animate={{ opacity: search ? 0 : 1 }}
+            ref={navRef}
+            className="relative flex items-center flex-1 gap-1"
+          >
+            <motion.span
+              className="absolute bg-primary h-full rounded-full"
+              animate={{
+                left: indicatorStyle.left,
+                width: indicatorStyle.width,
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 380,
+                damping: 30,
+              }}
+              initial={false}
+            />
 
-          {navItems.map((item) => (
-            <Button
-              key={item.label}
-              ref={(el) => {
-                buttonRefs.current[item.label] = el
-              }}
-              variant="ghost"
-              onClick={() => {
-                if (onNavigate) {
-                  onNavigate(item.label)
-                } else {
-                  setInternalActiveItem(item.label)
-                }
-              }}
-              className={cn(
-                'rounded-full z-10',
-                activeItem === item.label
-                  ? 'text-primary-foreground hover:bg-primary hover:text-primary-foreground'
-                  : 'text-foreground',
-              )}
-            >
-              {item.label}
-            </Button>
-          ))}
+            {navItems.map((item) => (
+              <Button
+                key={item.label}
+                ref={(el) => {
+                  buttonRefs.current[item.label] = el
+                }}
+                variant="ghost"
+                onClick={() => {
+                  if (onNavigate) {
+                    onNavigate(item.label)
+                  } else {
+                    setInternalActiveItem(item.label)
+                  }
+                }}
+                className={cn(
+                  'rounded-full z-10',
+                  activeItem === item.label
+                    ? 'text-primary-foreground hover:bg-primary hover:text-primary-foreground'
+                    : 'text-foreground',
+                )}
+              >
+                {item.label}
+              </Button>
+            ))}
+          </motion.nav>
+
           <div
             className={cn(
-              'ms-auto',
+              'absolute w-[calc(100%-3rem)] transition-all duration-300 ease-in-out flex items-center gap-1',
               search
-                ? 'opacity-0 invisible scale-0'
-                : 'opacity-100 visible scale-100',
+                ? 'opacity-100 visible pointer-events-auto'
+                : 'opacity-0 invisible pointer-events-none',
             )}
           >
+            <InputGroup className="h-full rounded-full bg-white/50 shadow-inner">
+              <InputGroupAddon>
+                <SearchIcon />
+              </InputGroupAddon>
+              <InputGroupInput
+                placeholder="ค้นหาเนื้อหา..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                autoFocus={search}
+              />
+              <InputGroupAddon align="inline-end"></InputGroupAddon>
+            </InputGroup>
+            {/* <Button
+              onClick={handleSearchClose}
+              className="rounded-full"
+              size="icon"
+              variant="outline"
+            >
+              <X />
+            </Button> */}
+          </div>
+
+          <div className="absolute right-0 pe-1">
             <Button
               variant="outline"
               size="icon"
               className="rounded-full"
-              onClick={handleSearchClick}
+              onClick={toggleSearchMode}
             >
-              <Search />
+              {search ? <X /> : <SearchIcon />}
             </Button>
           </div>
-        </nav>
-
-        <div
-          className={cn(
-            'absolute inset-1 transition-all duration-300 ease-in-out flex items-center gap-1',
-            search
-              ? 'opacity-100 visible pointer-events-auto'
-              : 'opacity-0 invisible pointer-events-none',
-          )}
-        >
-          <InputGroup className="h-full rounded-full bg-white/50 shadow-inner">
-            <InputGroupAddon>
-              <SearchIcon />
-            </InputGroupAddon>
-            <InputGroupInput
-              placeholder="ค้นหาเนื้อหา..."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              autoFocus={search}
-            />
-            <InputGroupAddon align="inline-end"></InputGroupAddon>
-          </InputGroup>
-          <Button
-            onClick={handleSearchClose}
-            className="rounded-full"
-            size="icon"
-            variant="outline"
-          >
-            <X />
-          </Button>
-        </div>
-      </div>
+        </motion.div>
+      </AnimatePresence>
     </header>
   )
 }
