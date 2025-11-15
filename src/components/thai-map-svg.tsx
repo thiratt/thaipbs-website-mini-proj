@@ -1,31 +1,27 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 interface ThailandMapSvgProps extends React.SVGProps<SVGSVGElement> {
   scrollIndex: number
-}
-
-function getFillColor(defaultColor: string, index: number): string {
-  console.log('Getting fill color for index:', index)
-  if (index === 0) {
-    return defaultColor
-  }
-  const colorMap = [
-    '#8c8d8c',
-    '#99c7d9',
-    '#559fda',
-    '#e69d62',
-    '#fa7634',
-    '#fa7634',
-    '#96cc87',
-  ]
-
-  return colorMap[index - 1] || defaultColor
 }
 
 const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
   scrollIndex,
   ...props
 }) => {
+  const fillColor = useMemo(() => {
+    if (scrollIndex === 0) return null
+    const colorMap = [
+      '#8c8d8c',
+      '#99c7d9',
+      '#559fda',
+      '#e69d62',
+      '#fa7634',
+      '#fa7634',
+      '#96cc87',
+    ]
+    return colorMap[scrollIndex - 1]
+  }, [scrollIndex])
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +33,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-10"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -48,7 +44,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-11"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -59,7 +55,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-12"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -70,7 +66,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-13"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -81,7 +77,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-14"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -92,7 +88,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-15"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -103,7 +99,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-16"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -114,7 +110,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-17"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -125,7 +121,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-18"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -136,7 +132,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-19"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -147,7 +143,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-20"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -158,7 +154,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-21"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -169,7 +165,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-22"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -180,7 +176,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-23"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -191,7 +187,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-24"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -202,7 +198,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-25"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -213,7 +209,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-26"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -224,7 +220,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-27"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -235,7 +231,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-30"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -246,7 +242,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-31"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -257,7 +253,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-32"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -268,7 +264,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-33"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -279,7 +275,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-34"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -290,7 +286,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-35"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -301,7 +297,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-36"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -312,7 +308,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-37"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -323,7 +319,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-38"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -334,7 +330,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-39"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -345,7 +341,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-40"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -356,7 +352,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-41"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -367,7 +363,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-42"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -378,7 +374,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-43"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -389,7 +385,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-44"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -400,7 +396,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-45"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -411,7 +407,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-46"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -422,7 +418,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-47"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -433,7 +429,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-48"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -444,7 +440,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-49"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -455,7 +451,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-50"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -466,7 +462,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-51"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -477,7 +473,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-52"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -488,7 +484,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-53"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -499,7 +495,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-54"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -510,7 +506,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-55"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -521,7 +517,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-56"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -532,7 +528,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-57"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -543,7 +539,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-58"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -554,7 +550,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-60"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -565,7 +561,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-61"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -576,7 +572,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-62"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -587,7 +583,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-63"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -598,7 +594,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-64"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -609,7 +605,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-65"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -620,7 +616,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-66"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -631,7 +627,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-67"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -642,7 +638,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-70"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -653,7 +649,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-71"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -664,7 +660,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-72"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -675,7 +671,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-73"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -686,7 +682,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-74"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(0, 35, 255)', scrollIndex),
+          fill: fillColor || 'rgb(0, 35, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -697,7 +693,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-75"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -708,7 +704,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-76"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -719,7 +715,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-77"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 255, 255)', scrollIndex),
+          fill: fillColor || 'rgb(255, 255, 255)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -730,7 +726,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-80"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -741,7 +737,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-81"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -752,7 +748,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-82"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -763,7 +759,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-83"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -774,7 +770,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-84"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -785,7 +781,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-85"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -796,7 +792,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-86"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -807,7 +803,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-90"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -818,7 +814,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-91"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -829,7 +825,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-92"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -840,7 +836,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-93"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -851,7 +847,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-94"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -862,7 +858,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-95"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -873,7 +869,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-96"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
@@ -885,7 +881,7 @@ const ThailandMapSvg: React.FC<ThailandMapSvgProps> = ({
         id="TH-LKSG"
         style={{
           strokeWidth: 1,
-          fill: getFillColor('rgb(255, 0, 0)', scrollIndex),
+          fill: fillColor || 'rgb(255, 0, 0)',
           transition: 'fill 0.3s ease-in-out',
         }}
       >
