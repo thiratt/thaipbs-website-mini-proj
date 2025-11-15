@@ -8,6 +8,8 @@ import {
 } from 'motion/react'
 import { scroll, animate, type AnimationPlaybackControls } from 'motion'
 
+import { ThailandMapSvg } from './thai-map-svg'
+
 const items = [
   {
     detail:
@@ -167,7 +169,7 @@ const LangCircleSection = forwardRef<HTMLElement>((_props, ref) => {
 
             <div className="grid grid-cols-1 lg:grid-cols-[15%_auto] gap-12">
               <div className="flex">
-                <img src="/flag.webp" alt="Map with Thailand flag" />
+                <ThailandMapSvg className="w-full h-auto" scrollIndex={index} />
               </div>
 
               <div className="relative">
