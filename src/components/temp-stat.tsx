@@ -1,5 +1,11 @@
 import { forwardRef } from 'react'
-import { CartesianGrid, LabelList, Line, LineChart, XAxis } from 'recharts'
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+} from 'recharts'
 
 import {
   ChartContainer,
@@ -39,40 +45,45 @@ const TempStatSection = forwardRef<HTMLElement>((_props, ref) => {
         <h2 className="text-4xl text-center font-bold text-primary leading-tight">
           สถิติอุณหภูมิสูงที่สุดในรอบ 10 ปีของประเทศไทย
         </h2>
-        <ChartContainer config={chartConfig}>
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              top: 20,
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis dataKey="month" tickMargin={8} />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
-            <Line
-              dataKey="temperature"
-              type="natural"
-              stroke="var(--color-temperature)"
-              strokeWidth={2}
-              dot={{
-                fill: 'var(--color-temperature)',
+        <div className="flex justify-center items-center w-full">
+          <ChartContainer config={chartConfig} className="w-full lg:max-w-4xl">
+            <AreaChart
+              accessibilityLayer
+              data={chartData}
+              margin={{
+                left: 12,
+                right: 12,
               }}
             >
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="var(--color-primary)"
+                strokeOpacity={0.3}
               />
-            </Line>
-          </LineChart>
-        </ChartContainer>
+              <XAxis
+                dataKey="month"
+                tickMargin={8}
+                tickFormatter={(value) => value.toString().slice(-2)}
+              />
+              <YAxis width={16} />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator="line" />}
+              />
+              <Area
+                dataKey="temperature"
+                type="natural"
+                fill="var(--destructive)"
+                fillOpacity={0.4}
+                stroke="var(--color-temperature)"
+              />
+            </AreaChart>
+          </ChartContainer>
+        </div>
+        <p className="text-center text-xl text-primary/90">
+          อุณหภูมิสูงสุดของประเทศไทยในปี พ.ศ. 2553 - 2563
+          การเปลี่ยนแปลงของสภาพอากาศในแต่ละปี
+        </p>
       </div>
 
       {/* Background decorative elements */}
