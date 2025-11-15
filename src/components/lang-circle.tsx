@@ -120,29 +120,22 @@ const LangCircleSection = forwardRef<HTMLElement>((_props, ref) => {
   })
 
   useEffect(() => {
-    // 1. ดึง refs ออกมา
     const section = sectionRef.current
     const movingGroup = movingGroupRef.current
     const contentContainer = contentContainerRef.current
 
     if (!section || !movingGroup || !contentContainer) return
 
-    // 2. สร้างตัวแปรเพื่อเก็บ "แอนิเมชัน" และ "ตัวหยุด"
-    //    เราต้องเก็บไว้เพื่อ .cancel() มันทิ้งตอน resize
     let animation: AnimationPlaybackControls | null = null
-    let stopScroll: (() => void) | null = null // 'scroll' returns a stop function
+    let stopScroll: (() => void) | null = null
 
-    // 3. สร้างฟังก์ชัน setup
     const setupAnimation = () => {
-      // 4. [สำคัญ] ถ้ามีแอนิเมชันเก่าอยู่ (กรณี resize) ให้ยกเลิกมันก่อน
       if (stopScroll) stopScroll()
       if (animation) animation.cancel()
 
-      // 5. คำนวณความกว้าง "ใหม่" ทุกครั้งที่ฟังก์ชันนี้ถูกเรียก
       const contentWidth = contentContainer.offsetWidth || 1
       const totalMoveX = (items.length - 1) * contentWidth
 
-      // 6. สร้างแอนิเมชันและตัวเชื่อม scroll ใหม่
       animation = animate(movingGroup, {
         transform: ['none', `translateX(-${totalMoveX}px)`],
       })
@@ -152,58 +145,50 @@ const LangCircleSection = forwardRef<HTMLElement>((_props, ref) => {
       })
     }
 
-    // 7. เรียก setup 1 ครั้งตอนโหลด
     setupAnimation()
 
-    // 8. เพิ่ม "ตัวฟัง" ให้เรียก setup ใหม่ทุกครั้งที่จอเปลี่ยนขนาด
     window.addEventListener('resize', setupAnimation)
 
-    // 9. Cleanup: เมื่อคอมโพเนนต์ unmount
     return () => {
       window.removeEventListener('resize', setupAnimation)
       if (stopScroll) stopScroll()
       if (animation) animation.cancel()
     }
-  }, [items.length]) // ✨ Dependency ยังคงเป็น [items.length] ถูกต้องแล้ว
+  }, [items.length])
 
   return (
     <section ref={ref} className="relative bg-primary/5">
       <div ref={sectionRef} className="w-full h-[500vh]">
         <div className="sticky top-0 h-svh overflow-hidden">
-          <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32 h-full flex items-center">
-            <div className="max-w-7xl mx-auto w-full">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#6b4423] mb-16 md:mb-24">
-                วัฏจักรฤดูแล้ง
-              </h2>
+          <div className="px-18 py-16 md:py-24 lg:py-32 h-full w-full">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#6b4423] mb-16 md:mb-24">
+              วัฏจักรฤดูแล้ง
+            </h2>
 
-              <div className="grid grid-cols-1 lg:grid-cols-[15%_auto] gap-12">
-                <div className="flex">
-                  <img src="/flag.webp" alt="Map with Thailand flag" />
+            <div className="grid grid-cols-1 lg:grid-cols-[15%_auto] gap-12">
+              <div className="flex">
+                <img src="/flag.webp" alt="Map with Thailand flag" />
+              </div>
+
+              <div className="relative">
+                <div className="flex overflow-hidden" ref={contentContainerRef}>
+                  <motion.div ref={movingGroupRef} className="flex">
+                    {items.map((item, i) => (
+                      <Slide
+                        key={i}
+                        item={item}
+                        i={i}
+                        scrollYProgress={scrollYProgress}
+                        totalItems={items.length}
+                      />
+                    ))}
+                  </motion.div>
                 </div>
 
-                <div className="relative">
-                  <div
-                    className="flex overflow-hidden"
-                    ref={contentContainerRef}
-                  >
-                    <motion.div ref={movingGroupRef} className="flex">
-                      {items.map((item, i) => (
-                        <Slide
-                          key={i}
-                          item={item}
-                          i={i}
-                          scrollYProgress={scrollYProgress}
-                          totalItems={items.length}
-                        />
-                      ))}
-                    </motion.div>
-                  </div>
-
-                  <div className="flex justify-end items-center gap-2 select-none">
-                    <span className="text-primary font-medium opacity-60">
-                      {index + 1}/{items.length}
-                    </span>
-                  </div>
+                <div className="flex justify-end items-center gap-2 select-none">
+                  <span className="text-primary font-medium opacity-60">
+                    {index + 1}/{items.length}
+                  </span>
                 </div>
               </div>
             </div>
