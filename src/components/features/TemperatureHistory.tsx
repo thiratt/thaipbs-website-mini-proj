@@ -1,18 +1,19 @@
 import { forwardRef } from 'react'
 import {
-  Area,
-  AreaChart,
   CartesianGrid,
+  LabelList,
+  Line,
+  LineChart,
   XAxis,
   YAxis,
 } from 'recharts'
 
+import type { ChartConfig } from '@/components/ui/chart'
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
-} from './ui/chart'
+} from '@/components/ui/chart'
 
 const chartData = [
   { month: '2553', temperature: 40 },
@@ -35,24 +36,25 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-const TempStatSection = forwardRef<HTMLElement>((_props, ref) => {
+const TemperatureHistory = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative min-h-svh overflow-hidden bg-[#e8e4dc] flex px-8 py-18 md:px-18"
+      className="relative min-h-svh bg-[#e8e4dc] flex px-8 py-18 md:px-18"
     >
       <div className="w-full space-y-8 animate-fade-in-up [animation-delay:200ms] fill-mode-[forwards]">
         <h2 className="text-4xl text-center font-bold text-primary leading-tight">
           สถิติอุณหภูมิสูงที่สุดในรอบ 10 ปีของประเทศไทย
         </h2>
         <div className="flex justify-center items-center w-full">
-          <ChartContainer config={chartConfig} className="w-full lg:max-w-4xl">
-            <AreaChart
+          <ChartContainer config={chartConfig} className="w-full lg:max-w-3xl">
+            <LineChart
               accessibilityLayer
               data={chartData}
               margin={{
                 left: 12,
                 right: 12,
+                top: 30,
               }}
             >
               <CartesianGrid
@@ -70,14 +72,42 @@ const TempStatSection = forwardRef<HTMLElement>((_props, ref) => {
                 cursor={false}
                 content={<ChartTooltipContent indicator="line" />}
               />
-              <Area
+              <Line
                 dataKey="temperature"
                 type="natural"
-                fill="var(--destructive)"
-                fillOpacity={0.4}
-                stroke="var(--color-temperature)"
-              />
-            </AreaChart>
+                stroke="var(--chart-1)"
+                strokeWidth={2}
+                dot={(props) => {
+                  const { cx, cy, payload } = props
+                  const isHighest = payload.temperature === 45
+                  return (
+                    <circle
+                      cx={cx}
+                      cy={cy}
+                      r={isHighest ? 8 : 3}
+                      fill={isHighest ? '#ef4444' : 'var(--chart-1)'}
+                      stroke={isHighest ? '#fff' : 'none'}
+                      strokeWidth={isHighest ? 2 : 0}
+                    />
+                  )
+                }}
+                activeDot={{
+                  r: 6,
+                }}
+              >
+                <LabelList
+                  position="top"
+                  offset={12}
+                  className="fill-destructive font-semibold text-sm"
+                  fontSize={12}
+                  dataKey="temperature"
+                  formatter={(value: number) => {
+                    const isHighest = value === 45
+                    return isHighest ? `${value}°C` : ''
+                  }}
+                />
+              </Line>
+            </LineChart>
           </ChartContainer>
         </div>
         <p className="text-center text-xl text-primary/90">
@@ -86,7 +116,6 @@ const TempStatSection = forwardRef<HTMLElement>((_props, ref) => {
         </p>
       </div>
 
-      {/* Background decorative elements */}
       <div className="absolute top-20 left-10 w-2 h-2 bg-[#6b4423] rounded-full opacity-20"></div>
       <div className="absolute top-40 right-20 w-3 h-3 bg-[#a67c52] rounded-full opacity-20"></div>
       <div className="absolute bottom-40 left-1/4 w-2 h-2 bg-[#6b4423] rounded-full opacity-20"></div>
@@ -95,6 +124,6 @@ const TempStatSection = forwardRef<HTMLElement>((_props, ref) => {
   )
 })
 
-TempStatSection.displayName = 'TempStatSection'
+TemperatureHistory.displayName = 'TemperatureHistory'
 
-export { TempStatSection }
+export { TemperatureHistory }

@@ -3,12 +3,14 @@ import {
   motion,
   useMotionValueEvent,
   useScroll,
-  useTransform,
-  MotionValue,
+  useTransform
 } from 'motion/react'
-import { scroll, animate, type AnimationPlaybackControls } from 'motion'
+import {  animate, scroll } from 'motion'
+import { ThailandMapSvg } from '../svgs/ThaiMap'
+import type {AnimationPlaybackControls} from 'motion';
 
-import { ThailandMapSvg } from './thai-map-svg'
+import type {
+  MotionValue} from 'motion/react';
 
 const items = [
   {
@@ -162,7 +164,7 @@ const LangCircleSection = forwardRef<HTMLElement>((_props, ref) => {
     <section ref={ref} className="relative bg-primary/5">
       <div ref={sectionRef} className="w-full h-[500vh]">
         <div className="sticky top-0 h-svh overflow-hidden">
-          <div className="px-18 py-16 md:py-24 lg:py-32 h-full w-full">
+          <div className="px-18 h-full w-full flex flex-col justify-center items-start">
             <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#6b4423] mb-16 md:mb-24">
               วัฏจักรฤดูแล้ง
             </h2>

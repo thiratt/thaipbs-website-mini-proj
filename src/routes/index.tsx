@@ -1,68 +1,48 @@
-import { HeroSection } from '@/components/hero'
-import { LangSection } from '@/components/lang'
-import { LangCircleSection } from '@/components/lang-circle'
-import { NavigationBar } from '@/components/navbar'
-import { TempStatSection } from '@/components/temp-stat'
 import { createFileRoute } from '@tanstack/react-router'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import {
+  BudgetComparisonChart,
+  DroughtFoodMenu,
+  DroughtRecovery,
+  DroughtTraditions,
+  HeatImpactChart,
+  HeroSection,
+  IsanRiverBasins,
+  LangCircleSection,
+  WhatIsLangSection,
+  MyLangIsNotEqual,
+  NavigationBar,
+  NewGenFooter,
+  TemperatureHistory,
+  ThaiRiverBasinsMap,
+} from '@/components'
+import { useActiveSection, useSectionNavigation, useSectionRefs } from '@/hooks'
 
 export const Route = createFileRoute('/')({
   component: App,
 })
 
 function App() {
-  const [activeSection, setActiveSection] = useState<string>('หน้าหลัก')
+  const {
+    sectionRefs,
+    heroSectionRef,
+    whatIsLangSectionRef,
+    langCircleSectionRef,
+    temperatureHistoryRef,
+    myLangIsNotEqualRef,
+    heatImpactChartRef,
+    thaiRiverBasinsMapRef,
+    isanRiverBasinsRef,
+    droughtTraditionsRef,
+    droughtFoodMenuRef,
+    budgetComparisonChartRef,
+    droughtRecoveryRef,
+  } = useSectionRefs()
 
-  const heroSectionRef = useRef<HTMLElement>(null)
-  const langSectionRef = useRef<HTMLElement>(null)
-  const langCircleSectionRef = useRef<HTMLElement>(null)
-  const tempStatSectionRef = useRef<HTMLElement>(null)
+  const activeSection = useActiveSection(sectionRefs)
+  const { scrollToSection } = useSectionNavigation(sectionRefs)
 
-  const sectionRefs = useMemo(() => {
-    return {
-      หน้าหลัก: heroSectionRef,
-      แล้งคืออะไร: langSectionRef,
-      วัฏจักรฤดูแล้ง: langCircleSectionRef,
-      สถิติ: tempStatSectionRef,
-    }
-  }, [])
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 1
-
-      for (const [sectionName, ref] of Object.entries(sectionRefs)) {
-        if (ref.current) {
-          const element = ref.current
-          const { offsetTop, offsetHeight } = element
-
-          if (
-            scrollPosition >= offsetTop &&
-            scrollPosition < offsetTop + offsetHeight
-          ) {
-            setActiveSection(sectionName)
-            break
-          }
-        }
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    handleScroll() // Call once to set initial state
-
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  const scrollToSection = (sectionName: string) => {
-    const ref = sectionRefs[sectionName as keyof typeof sectionRefs]
-    ref?.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    })
-  }
-
-  const scrollToLangSection = () => {
-    langSectionRef.current?.scrollIntoView({
+  const scrollToWhatIsLangSection = () => {
+    whatIsLangSectionRef.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
     })
@@ -74,10 +54,19 @@ function App() {
         activeSection={activeSection}
         onNavigate={scrollToSection}
       />
-      <HeroSection ref={heroSectionRef} nextPage={scrollToLangSection} />
-      <LangSection ref={langSectionRef} />
+      <HeroSection ref={heroSectionRef} nextPage={scrollToWhatIsLangSection} />
+      <WhatIsLangSection ref={whatIsLangSectionRef} />
       <LangCircleSection ref={langCircleSectionRef} />
-      <TempStatSection ref={tempStatSectionRef} />
+      <TemperatureHistory ref={temperatureHistoryRef} />
+      <MyLangIsNotEqual ref={myLangIsNotEqualRef} />
+      <HeatImpactChart ref={heatImpactChartRef} />
+      <ThaiRiverBasinsMap ref={thaiRiverBasinsMapRef} />
+      <IsanRiverBasins ref={isanRiverBasinsRef} />
+      <DroughtTraditions ref={droughtTraditionsRef} />
+      <DroughtFoodMenu ref={droughtFoodMenuRef} />
+      <BudgetComparisonChart ref={budgetComparisonChartRef} />
+      <DroughtRecovery ref={droughtRecoveryRef} />
+      <NewGenFooter ref={null} />
     </>
   )
 }
