@@ -35,7 +35,7 @@ const IsanRiverBasins = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-primary/5 min-h-svh flex items-center justify-center"
+      className="relative bg-primary/5 min-h-svh flex px-6 py-12 md:px-12 md:py-18 lg:px-18"
     >
       <div className="container mx-auto">
         <div className="text-center mb-8">
@@ -62,6 +62,20 @@ const IsanRiverBasins = forwardRef<HTMLElement>((_props, ref) => {
               </CardHeader>
             </Card>
           ))}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 justify-items-center items-center mt-8 border-t pt-8 md:pt-12 border-primary/40">
+          <div className="bg-white rounded-3xl w-full max-w-xl h-48 md:h-64 lg:h-80 text-center flex items-center justify-center">
+            [Placeholder for additional map content]
+          </div>
+          <div className="text-primary text-2xl md:text-3xl lg:text-4xl font-semibold">
+            วิดีโอทุ่งกุลาร้องไห้
+          </div>
+          <div className="bg-white rounded-3xl w-full max-w-xl h-48 md:h-64 lg:h-80 text-center flex items-center justify-center order-last">
+            [Placeholder for additional map content]
+          </div>
+          <div className="text-primary text-2xl md:text-3xl lg:text-4xl font-semibold">
+            วิดีโอแม่น้ำชีและวิถีลุ่มแม่น้ำ
+          </div>
         </div>
       </div>
     </section>
