@@ -1,209 +1,176 @@
-import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import {
-  motion,
-  useMotionValueEvent,
-  useScroll,
-  useTransform
-} from 'motion/react'
-import {  animate, scroll } from 'motion'
-import { ThailandMapSvg } from '../svgs/ThaiMap'
-import type {AnimationPlaybackControls} from 'motion';
+  forwardRef,
+  useRef,
+  useState,
+  useCallback,
+  type JSX,
+  useLayoutEffect,
+} from 'react'
 
-import type {
-  MotionValue} from 'motion/react';
-
-const items = [
-  {
-    detail:
-      'เดือนวัฏจักรฤดูร้อนโดยทั่วไป ฤดูแล้งส่วนใหญ่ในภาคตะวันออกเฉียงเหนือจะเริ่มประมาณกลางเดือนตุลาคม-พฤศจิกายนและสิ้นสุดประมาณกลางเดือนพฤษภาคมปีถัดไป ช่วงเวลาที่แห้งแล้งที่สุดมักอยู่ระหว่างเดือนกุมภาพันธ์ถึงเมษายน ซึ่งมีอากาศร้อนจัดและอัตราการระเหยสูง ทั้งนี้ การเริ่มต้นและสิ้นสุดของฤดูแล้งอาจผันแปรได้ในแต่ละปีขึ้นอยู่กับปัจจัยธรรมชาติ',
-  },
-  {
-    title: 'พฤษจิกายน',
-    detail:
-      ' เป็นช่วงที่ ฝนเริ่มลดลงอย่าง ชัดเจน และ อากาศเริ่มเย็น ลงในตอนกลางคืน พื้นดินเริ่มแห้ง ความชื้นใน อากาศลดลง ชาวนาเริ่มเก็บเกี่ยวผลผลิต เช่น ข้าวนาปี ต้นไม้เริ่มผลัดใบและพักตัว เพื่อรอฤดูฝนใหม่',
-  },
-  {
-    title: 'ธันวาคม',
-    detail:
-      ' เป็นช่วงที่ ฝนแทบไม่ตกแล้ว และ อุณหภูมิช่วงเช้ายังเย็น ส่วนกลางวันเริ่มร้อนขึ้น ความชื้นในดินลดลงอย่าง ต่อเนื่อง พื้นดินเริ่มแข็งและแห้ง แตกระแหงในบางพื้นที่ เป็นช่วงที่เกษตรกรเตรียม แปลงเพื่อปลูกพืชฤดูแล้ง เช่น มันสำปะหลัง หรือ ข้าวโพด',
-  },
-  {
-    title: 'มกราคม',
-    detail:
-      'เข้าสู่ฤดูหนาวช่วงปลายและเริ่มร้อนในตอนกลางวัน ความแห้งแล้งชัดเจนขึ้นบางพื้นที่เริ่มขาดแคลนน้ำใบไม้เริ่มร่วงมากขึ้น ต้นไม้ผลัดใบเข้าสู่ช่วงพักตัวเต็มที่',
-  },
-  {
-    title: 'กุมภาพันธ์',
-    detail:
-      'เป็นช่วงเริ่มต้นของอากาศร้อนและมีการระเหยของน้ำสูง ปริมาณน้ำในแม่น้ำลำคลองและบ่อเก็บน้ำลดลงเกิดไฟป่าและการเผาในที่โล่งบ่อยครั้งถือเป็นจุดเริ่มต้นของ “ช่วงแล้งที่สุดของปี”',
-  },
-  {
-    title: 'มีนาคม',
-    detail:
-      'อุณหภูมิสูงสุดของปี โดยเฉพาะภาคอีสานและภาคเหนือ ดินแห้งแตกระแหง ต้นไม้เหี่ยวเฉาเกิดไฟป่าบ่อยและฝุ่นควันหนาแน่น น้ำในแหล่งน้ำธรรมชาติลดลงอย่างมาก',
-  },
-  {
-    title: 'เมษายน',
-    detail:
-      'อากาศยังร้อนจัด แต่เริ่มมีลมพายุฤดูร้อนและฝนฟ้าคะนองบางวัน ความชื้นเริ่มกลับมาเล็กน้อยในบางพื้นที่เป็นช่วงที่เกษตรกรเริ่มเตรียมพื้นที่เพื่อรับฤดูฝนใหม่',
-  },
-  {
-    title: 'พฤษภาคม',
-    detail:
-      'เริ่มมีฝนตกชุกขึ้นเรื่อย ๆ พืชพรรณเริ่มฟื้นตัว เขียวชอุ่มอีกครั้งถือเป็นการเปลี่ยนผ่านจากฤดูแล้งสู่ฤดูฝน อย่างเป็นทางการ',
-  },
-]
-
-interface SlideProps {
-  item: { title?: string; detail: string }
-  i: number
-  scrollYProgress: MotionValue<number>
-  totalItems: number
-}
-
-function Slide({ item, i, scrollYProgress, totalItems }: SlideProps) {
-  const progressPerItem = 1 / (totalItems - 1)
-
-  const start = (i - 1) * progressPerItem
-
-  const center = i * progressPerItem
-
-  const end = (i + 1) * progressPerItem
-
-  const opacity = useTransform(
-    scrollYProgress,
-    [start, center, end],
-    [0, 1, 0],
-    { clamp: true },
-  )
-
-  return (
-    <div className="shrink-0 w-full">
-      <motion.div style={{ opacity }}>
-        <h3 className="text-3xl font-semibold text-primary">{item.title}</h3>
-        <div className="space-y-6 text-primary md:text-lg lg:text-2xl leading-relaxed">
-          {item.detail}
-        </div>
-      </motion.div>
-    </div>
-  )
-}
+import { cn } from '@/lib/utils'
+import { LANG_CIRCLE_ITEMS } from '@/constants/lang-circle'
 
 const LangCircleSection = forwardRef<HTMLElement>((_props, ref) => {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const movingGroupRef = useRef<HTMLDivElement>(null)
-  const contentContainerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [lines, setLines] = useState<JSX.Element[]>([])
+  const resizeObserverRef = useRef<ResizeObserver | null>(null)
+  const debounceTimeoutRef = useRef<number | undefined>(undefined)
 
-  const triggerPoints = useMemo(() => {
-    const baseTrigger = 0.140625
-    return Array.from(
-      { length: items.length - 1 },
-      (_, i) => baseTrigger * (i + 1),
-    )
-  }, [items.length])
+  const updateLines = useCallback(() => {
+    if (!containerRef.current) return
+    const details = containerRef.current.querySelectorAll('.detail-div')
+    const titles = containerRef.current.querySelectorAll('.title-div')
+    const newLines: JSX.Element[] = []
+    const containerRect = containerRef.current.getBoundingClientRect()
 
-  const [index, setIndex] = useState(0)
+    details.forEach((detail, i) => {
+      const title = titles[i]
+      const detailRect = detail.getBoundingClientRect()
+      const titleRect = title.getBoundingClientRect()
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
-  })
+      const isEven = i % 2 === 0
+      const x1 = isEven
+        ? detailRect.right - containerRect.left
+        : detailRect.left - containerRect.left
+      const y1 = detailRect.top + detailRect.height / 2 - containerRect.top
+      const x2 = isEven
+        ? titleRect.left - containerRect.left
+        : titleRect.right - containerRect.left
+      const y2 = titleRect.top + titleRect.height / 2 - containerRect.top
 
-  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    let newIndex = 0
+      const nextElement = isEven ? titles[i + 1] : details[i + 1]
+      const nextElementRect = nextElement?.getBoundingClientRect()
 
-    for (let i = triggerPoints.length - 1; i >= 0; i--) {
-      if (latest >= triggerPoints[i]) {
-        newIndex = i + 1
+      const tx1 = isEven
+        ? titleRect.left + titleRect.width / 2 - containerRect.left
+        : detailRect.right - detailRect.width / 2 - containerRect.left
+      const ty1 = isEven
+        ? titleRect.bottom - containerRect.top
+        : detailRect.bottom - containerRect.top
+      const tx2 = nextElementRect
+        ? nextElementRect.left + nextElementRect.width / 2 - containerRect.left
+        : x2
+      const ty2 = nextElementRect ? nextElementRect.top - containerRect.top : y2
 
-        break
+      newLines.push(
+        <g key={i}>
+          <line
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke="var(--primary)"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+          {nextElementRect && (
+            <line
+              x1={tx1}
+              y1={ty1}
+              x2={tx2}
+              y2={ty2}
+              stroke="var(--primary)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeDasharray="4 4"
+            />
+          )}
+          <circle cx={x1} cy={y1} r="6" fill="var(--primary)" />
+        </g>,
+      )
+    })
+    setLines(newLines)
+  }, [])
+
+  useLayoutEffect(() => {
+    if (!containerRef.current) return
+
+    updateLines()
+
+    const handleResize = () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current)
       }
+      debounceTimeoutRef.current = window.setTimeout(updateLines, 10)
     }
 
-    setIndex(newIndex)
-  })
-
-  useEffect(() => {
-    const section = sectionRef.current
-    const movingGroup = movingGroupRef.current
-    const contentContainer = contentContainerRef.current
-
-    if (!section || !movingGroup || !contentContainer) return
-
-    let animation: AnimationPlaybackControls | null = null
-    let stopScroll: (() => void) | null = null
-
-    const setupAnimation = () => {
-      if (stopScroll) stopScroll()
-      if (animation) animation.cancel()
-
-      const contentWidth = contentContainer.offsetWidth || 1
-      const totalMoveX = (items.length - 1) * contentWidth
-
-      animation = animate(movingGroup, {
-        transform: ['none', `translateX(-${totalMoveX}px)`],
-      })
-
-      stopScroll = scroll(animation, {
-        target: section,
-      })
-    }
-
-    setupAnimation()
-
-    window.addEventListener('resize', setupAnimation)
+    resizeObserverRef.current = new ResizeObserver(handleResize)
+    resizeObserverRef.current.observe(containerRef.current)
 
     return () => {
-      window.removeEventListener('resize', setupAnimation)
-      if (stopScroll) stopScroll()
-      if (animation) animation.cancel()
+      if (resizeObserverRef.current) {
+        resizeObserverRef.current.disconnect()
+      }
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current)
+      }
     }
-  }, [items.length])
-
+  }, [updateLines])
   return (
-    <section ref={ref} className="relative bg-primary/5">
-      <div ref={sectionRef} className="w-full h-[500vh]">
-        <div className="sticky top-0 h-svh overflow-hidden">
-          <div className="px-18 h-full w-full flex flex-col justify-center items-start">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#6b4423] mb-16 md:mb-24">
-              วัฏจักรฤดูแล้ง
-            </h2>
-
-            <div className="grid grid-cols-1 lg:grid-cols-[15%_auto] gap-12">
-              <div className="flex">
-                <ThailandMapSvg className="w-full h-auto" scrollIndex={index} />
-              </div>
-
-              <div className="relative">
-                <div className="flex overflow-hidden" ref={contentContainerRef}>
-                  <motion.div ref={movingGroupRef} className="flex">
-                    {items.map((item, i) => (
-                      <Slide
-                        key={i}
-                        item={item}
-                        i={i}
-                        scrollYProgress={scrollYProgress}
-                        totalItems={items.length}
-                      />
-                    ))}
-                  </motion.div>
+    <section
+      ref={ref}
+      className="relative bg-primary/5 min-h-svh flex px-6 py-12 md:px-12 md:py-18 lg:px-18"
+    >
+      <div className="w-full max-w-7xl mx-auto space-y-8 md:space-y-12">
+        <header className="space-y-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-primary text-center leading-tight">
+            วัฏจักรฤดูแล้ง
+          </h2>
+          <p className="text-primary text-base md:text-lg lg:text-xl leading-relaxed max-w-5xl mx-auto">
+            เดือนวัฏจักรฤดูร้อนโดยทั่วไป
+            ฤดูแล้งส่วนใหญ่ในภาคตะวันออกเฉียงเหนือจะเริ่มประมาณกลางเดือนตุลาคม-พฤศจิกายนและสิ้นสุดประมาณกลางเดือนพฤษภาคมปีถัดไป
+            ช่วงเวลาที่แห้งแล้งที่สุดมักอยู่ระหว่างเดือนกุมภาพันธ์ถึงเมษายน
+            ซึ่งมีอากาศร้อนจัดและอัตราการระเหยสูง ทั้งนี้
+            การเริ่มต้นและสิ้นสุดของฤดูแล้งอาจผันแปรได้ในแต่ละปีขึ้นอยู่กับปัจจัยธรรมชาติ
+          </p>
+        </header>
+        <div className="relative space-y-12 w-full">
+          <h3 className="text-primary text-center text-2xl md:text-3xl lg:text-4xl font-semibold">
+            วัฏจักรฤดูแล้งประเทศไทย
+          </h3>
+          <div
+            ref={containerRef}
+            className="relative space-y-64 md:space-y-80 lg:space-y-96"
+          >
+            <svg
+              className="absolute top-0 left-0 w-full h-full pointer-events-none"
+              aria-hidden="true"
+            >
+              {lines}
+            </svg>
+            {LANG_CIRCLE_ITEMS.map((item, i) => (
+              <article
+                key={i}
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 justify-items-center items-center"
+                role="listitem"
+                aria-label={`${item.title}`}
+              >
+                <div className="detail-div bg-background border-2 border-primary rounded-3xl md:rounded-4xl w-full max-w-xl text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <p className="p-4 md:p-6 text-sm md:text-base lg:text-lg leading-relaxed text-foreground/90">
+                    {item.detail}
+                  </p>
                 </div>
-
-                <div className="flex justify-end items-center gap-2 select-none">
-                  <span className="text-primary font-medium opacity-60">
-                    {index + 1}/{items.length}
-                  </span>
+                <div
+                  className={cn(
+                    'title-div text-primary text-2xl md:text-3xl lg:text-4xl font-semibold bg-background rounded-full p-6 md:p-8 shadow-md hover:scale-105 transition-transform duration-300 border border-primary/20',
+                    i % 2 === 0 ? 'md:order-last' : 'md:order-first',
+                  )}
+                >
+                  {item.title}
                 </div>
-              </div>
-            </div>
+              </article>
+            ))}
+          </div>
+        </div>
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 justify-items-center items-center border-t pt-8 md:pt-12 border-primary/40">
+          <div className="bg-white rounded-3xl w-full max-w-xl h-48 md:h-64 lg:h-80 text-center flex items-center justify-center">
+            [Placeholder for additional video content]
+          </div>
+          <div className="text-primary text-2xl md:text-3xl lg:text-4xl font-semibold">
+            วิดีโอเพิ่มเติม
           </div>
         </div>
       </div>
-
-      {/* <div className="absolute top-32 left-10 w-2 h-2 bg-[#a8d5ba] rounded-full opacity-40 animate-pulse"></div>
-      <div className="absolute top-48 right-20 w-3 h-3 bg-[#7db89a] rounded-full opacity-30 animate-pulse [animation-delay:1s]"></div>
-      <div className="absolute bottom-40 left-1/4 w-2 h-2 bg-[#a8d5ba] rounded-full opacity-40 animate-pulse [animation-delay:2s]"></div>
-      <div className="absolute bottom-32 right-1/3 w-3 h-3 bg-[#6b4423] rounded-full opacity-20 animate-pulse [animation-delay:1.5s]"></div> */}
     </section>
   )
 })
