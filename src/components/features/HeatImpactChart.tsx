@@ -13,22 +13,22 @@ const HeatImpactChart = forwardRef<HTMLElement>((_props, ref) => {
     {
       region: 'ภาคเหนือ',
       percentage: 49.5,
-      fill: '#7FDFF0',
+      fill: '#dec8a5',
     },
     {
       region: 'ภาคกลาง',
       percentage: 23.7,
-      fill: '#4DB7E3',
+      fill: '#d9a94e',
     },
     {
       region: 'ภาคอีสาน',
       percentage: 2.8,
-      fill: '#3A8CCF',
+      fill: '#c46a36',
     },
     {
       region: 'ภาคใต้',
       percentage: 23.9,
-      fill: '#2358A8',
+      fill: '#8a5a3b',
     },
   ]
 
