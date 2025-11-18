@@ -35,11 +35,11 @@ const IsanRiverBasins = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-primary/5 min-h-svh flex px-6 py-12 md:px-12 md:py-18 lg:px-18"
+      className="relative bg-linear-to-b from-[#003b5c] via-[#003b5c] via-99% to-[#63c5fc] min-h-svh flex px-6 py-12 md:px-12 md:py-18 lg:px-18"
     >
-      <div className="container mx-auto">
+      <div className="container mx-auto z-10">
         <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-5xl font-bold text-primary">
+          <h2 className="text-3xl md:text-5xl font-bold text-white">
             3 ลุ่มน้ำหลักภาคอีสาน
           </h2>
         </div>
@@ -67,16 +67,25 @@ const IsanRiverBasins = forwardRef<HTMLElement>((_props, ref) => {
           <div className="bg-white rounded-3xl w-full max-w-xl h-48 md:h-64 lg:h-80 text-center flex items-center justify-center">
             [Placeholder for additional map content]
           </div>
-          <div className="text-primary text-2xl md:text-3xl lg:text-4xl font-semibold">
+          <div className="text-white text-2xl md:text-3xl lg:text-4xl font-semibold">
             วิดีโอทุ่งกุลาร้องไห้
           </div>
           <div className="bg-white rounded-3xl w-full max-w-xl h-48 md:h-64 lg:h-80 text-center flex items-center justify-center order-last">
             [Placeholder for additional map content]
           </div>
-          <div className="text-primary text-2xl md:text-3xl lg:text-4xl font-semibold">
+          <div className="text-white text-2xl md:text-3xl lg:text-4xl font-semibold">
             วิดีโอแม่น้ำชีและวิถีลุ่มแม่น้ำ
           </div>
         </div>
+      </div>
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path
+            fill="#63c5fc"
+            fill-opacity="1"
+            d="M0,256L80,245.3C160,235,320,213,480,208C640,203,800,213,960,213.3C1120,213,1280,203,1360,197.3L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"
+          ></path>
+        </svg>
       </div>
     </section>
   )

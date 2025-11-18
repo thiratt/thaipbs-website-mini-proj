@@ -109,7 +109,7 @@ const LangCircleSection = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-primary/5 min-h-svh flex px-6 py-12 md:px-12 md:py-18 lg:px-18"
+      className="relative bg-[#ffe3bb] min-h-svh flex px-6 py-12 md:px-12 md:py-18 lg:px-18"
     >
       <div className="w-full max-w-7xl mx-auto space-y-8 md:space-y-12">
         <header className="space-y-6">

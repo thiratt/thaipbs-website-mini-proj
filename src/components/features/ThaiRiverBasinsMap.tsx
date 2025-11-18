@@ -11,14 +11,21 @@ const ThaiRiverBasinsMap = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-primary/5 min-h-svh px-18 flex flex-col justify-center gap-4"
+      className="relative bg-[#003b5c] min-h-svh px-18 flex flex-col justify-center gap-4"
     >
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_auto]">
-        <div className="flex flex-col justify-center  mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold text-primary mb-4">
-            22 ลุ่มน้ำไทย
-          </h2>
-          <p className="text-lg text-primary/90 mx-auto leading-relaxed">
+      <div className="absolute top-0 left-0 w-full overflow-hidden pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          <path
+            fill="#63c5fc"
+            fill-opacity="1"
+            d="M0,128L80,117.3C160,107,320,85,480,101.3C640,117,800,171,960,192C1120,213,1280,203,1360,197.3L1440,192L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
+          ></path>
+        </svg>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] z-10">
+        <div className="flex flex-col justify-center text-white mb-8 md:mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">22 ลุ่มน้ำไทย</h2>
+          <p className="text-lg mx-auto leading-relaxed">
             เมื่อวันที่ 11 กุมภาพันธ์ 2564 พระราชกฤษฎีกากำหนดลุ่มน้ำ พ.ศ.2564
             ลงประกาศในราชกิจจานุเบกษา แบ่งพื้นที่ลุ่มน้ำของประเทศไทยใหม่
             ให้มีความเหมาะสมกับการบริการ จัดการน้ำและวิถีชีวิตของประชาชน
@@ -38,14 +45,14 @@ const ThaiRiverBasinsMap = forwardRef<HTMLElement>((_props, ref) => {
               className="h-full w-auto"
             />
           </div>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-4 text-white">
             {legendData.map((item, index) => (
               <div key={index} className="flex items-center gap-1">
                 <div
                   className="w-4 h-4 rounded-full shadow-md"
                   style={{ backgroundColor: item.color }}
                 />
-                <span className="text-sm md:text-base font-semibold text-gray-800">
+                <span className="text-sm md:text-base font-semibold">
                   {item.label}
                 </span>
               </div>

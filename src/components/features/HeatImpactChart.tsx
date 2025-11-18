@@ -57,7 +57,7 @@ const HeatImpactChart = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-primary/5 min-h-svh px-18 flex flex-col justify-center gap-4"
+      className="relative bg-linear-to-b from-[#ffe3bb] via-[#ffe3bb] via-90% to-[#63c5fc] min-h-svh px-18 flex flex-col justify-center gap-4"
     >
       <div className="grid grid-cols-1 lg:grid-cols-[60%_auto]">
         <div className="space-y-6">

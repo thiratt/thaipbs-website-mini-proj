@@ -26,7 +26,7 @@ const BudgetComparisonChart = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-primary/5 min-h-svh flex px-8 py-18 md:px-18"
+      className="relative bg-linear-to-b from-[#e5e19f] via-[#f1f0ef] via-5% to-[#f1f0ef] min-h-svh flex px-8 py-18 md:px-18"
     >
       <div className="w-full space-y-8">
         <div className="text-center mb-12 md:mb-16">

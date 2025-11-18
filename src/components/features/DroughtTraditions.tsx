@@ -42,13 +42,13 @@ const DroughtTraditions = forwardRef<HTMLElement>((_props, ref) => {
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
             />
           </div>
-          <p className="text-center text-lg font-bold text-[#5D4E37] mt-2">
+          <p className="text-center text-lg font-bold text-yellow-300 mt-2">
             {title}
           </p>
         </div>
 
         <div className="w-full md:w-2/3">
-          <p className="text-base md:text-lg text-gray-700 leading-relaxed text-justify">
+          <p className="text-base md:text-lg text-white leading-relaxed text-justify">
             {description}
           </p>
         </div>
@@ -57,10 +57,13 @@ const DroughtTraditions = forwardRef<HTMLElement>((_props, ref) => {
   }
 
   return (
-    <section ref={ref} className="relative bg-primary/5 min-h-svh px-18">
+    <section
+      ref={ref}
+      className="relative bg-linear-to-b from-[#63c5fc] via-[#b85a3a] via-5% to-[#b85a3a] min-h-svh px-18"
+    >
       <div className="container mx-auto px-4 py-12 md:py-22 max-w-4xl">
         <div className="text-center">
-          <h2 className="text-3xl md:text-5xl font-bold text-[#5D4E37] mb-2">
+          <h2 className="text-3xl md:text-5xl font-bold text-yellow-300 mb-2">
             "แล้ง" นี้ให้อะไร?
           </h2>
         </div>

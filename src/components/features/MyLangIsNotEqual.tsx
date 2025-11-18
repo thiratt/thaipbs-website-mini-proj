@@ -39,7 +39,7 @@ const MyLangIsNotEqual = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-primary/5 min-h-svh px-12 flex items-center justify-center"
+      className="relative bg-[#ffe3bb] min-h-svh px-12 flex items-center justify-center"
     >
       <div className="grid md:grid-cols-2 w-full">
         <div className="relative">

@@ -4,7 +4,7 @@ const WhatIsLangSection = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative min-h-svh overflow-hidden bg-[#e8e4dc] flex items-center px-8 py-18 md:px-18 md:py-0"
+      className="relative min-h-svh overflow-hidden bg-linear-to-b from-[#e8e4dc] to-[#ffe3bb] flex items-center px-8 py-18 md:px-18 md:py-0"
     >
       <div className="grid grid-cols-1 items-center lg:grid-cols-[65%_auto] w-full">
         <div className="space-y-8">
@@ -70,7 +70,7 @@ const WhatIsLangSection = forwardRef<HTMLElement>((_props, ref) => {
               />
             </svg>
 
-            <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-[#a67c52] rounded-full opacity-30 blur-2xl animate-pulse"></div>
+            {/* <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-[#a67c52] rounded-full opacity-30 blur-2xl animate-pulse"></div> */}
             <div className="absolute -top-6 -right-6 w-32 h-32 bg-[#c9a882] rounded-full opacity-20 blur-3xl animate-pulse [animation-delay:1s]"></div>
           </div>
         </div>

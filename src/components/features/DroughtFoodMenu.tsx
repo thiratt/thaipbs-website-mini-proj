@@ -36,7 +36,10 @@ const DroughtFoodMenu = forwardRef<HTMLElement>((_props, ref) => {
   ]
 
   return (
-    <section ref={ref} className="relative bg-primary/5 min-h-svh px-18">
+    <section
+      ref={ref}
+      className="relative bg-linear-to-b from-[#b85a3a] via-[#e5e19f] via-5% to-[#e5e19f] min-h-svh px-18"
+    >
       <div className="container mx-auto px-4 py-12 md:py-22">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-5xl font-bold text-primary">

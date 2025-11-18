@@ -40,7 +40,7 @@ const TemperatureHistory = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative min-h-svh bg-[#e8e4dc] flex px-8 py-18 md:px-18"
+      className="relative min-h-svh bg-[#ffe3bb] flex px-8 py-18 md:px-18"
     >
       <div className="w-full space-y-8 animate-fade-in-up [animation-delay:200ms] fill-mode-[forwards]">
         <h2 className="text-4xl text-center font-bold text-primary leading-tight">
