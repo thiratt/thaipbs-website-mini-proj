@@ -65,7 +65,7 @@ const DroughtTraditions = forwardRef<HTMLElement>((_props, ref) => {
           </h2>
         </div>
 
-        <div className="divide-y-2 divide-primary">
+        <div className="divide-y-2 divide-primary/40">
           {traditions.map((tradition, index) => (
             <TraditionItem key={index} {...tradition} index={index} />
           ))}
