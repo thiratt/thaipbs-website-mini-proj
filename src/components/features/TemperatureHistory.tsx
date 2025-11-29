@@ -1,9 +1,9 @@
 import { forwardRef } from 'react'
 import {
+  Area,
+  AreaChart,
   CartesianGrid,
   LabelList,
-  Line,
-  LineChart,
   XAxis,
   YAxis,
 } from 'recharts'
@@ -48,7 +48,7 @@ const TemperatureHistory = forwardRef<HTMLElement>((_props, ref) => {
         </h2>
         <div className="flex justify-center items-center w-full">
           <ChartContainer config={chartConfig} className="w-full lg:max-w-3xl">
-            <LineChart
+            <AreaChart
               accessibilityLayer
               data={chartData}
               margin={{
@@ -57,6 +57,20 @@ const TemperatureHistory = forwardRef<HTMLElement>((_props, ref) => {
                 top: 30,
               }}
             >
+              <defs>
+                <linearGradient id="fillTemperature" x1="0" y1="0" x2="0" y2="1">
+                  <stop
+                    offset="5%"
+                    stopColor="var(--chart-1)"
+                    stopOpacity={0.8}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor="var(--chart-1)"
+                    stopOpacity={0.1}
+                  />
+                </linearGradient>
+              </defs>
               <CartesianGrid
                 strokeDasharray="3 3"
                 stroke="var(--color-primary)"
@@ -72,9 +86,11 @@ const TemperatureHistory = forwardRef<HTMLElement>((_props, ref) => {
                 cursor={false}
                 content={<ChartTooltipContent indicator="line" />}
               />
-              <Line
+              <Area
                 dataKey="temperature"
                 type="natural"
+                fill="url(#fillTemperature)"
+                fillOpacity={0.4}
                 stroke="var(--chart-1)"
                 strokeWidth={2}
                 dot={(props) => {
@@ -106,8 +122,8 @@ const TemperatureHistory = forwardRef<HTMLElement>((_props, ref) => {
                     return isHighest ? `${value}°C` : ''
                   }}
                 />
-              </Line>
-            </LineChart>
+              </Area>
+            </AreaChart>
           </ChartContainer>
         </div>
         <p className="text-center text-xl text-primary/90">
