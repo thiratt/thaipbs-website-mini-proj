@@ -1,4 +1,7 @@
 import { forwardRef } from 'react'
+
+import { PhotoProvider, PhotoView } from 'react-photo-view'
+
 import {
   Card,
   CardContent,
@@ -48,23 +51,27 @@ const DroughtFoodMenu = forwardRef<HTMLElement>((_props, ref) => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {foodItems.map((item, index) => (
-            <Card className="pt-0" key={index}>
-              <CardContent className="px-0">
-                <div className="bg-primary/5 rounded-t-xl overflow-hidden">
-                  <img
-                    src={item.imagePlaceholder}
-                    alt={item.name}
-                    className="aspect-video h-64 w-full object-cover hover:scale-[1.02] transition-transform duration-300"
-                  />
-                </div>
-              </CardContent>
-              <CardHeader>
-                <CardTitle>{item.name}</CardTitle>
-                <CardDescription>{item.description}</CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
+          <PhotoProvider>
+            {foodItems.map((item, index) => (
+              <Card className="pt-0" key={index}>
+                <CardContent className="px-0">
+                  <div className="bg-primary/5 rounded-t-xl overflow-hidden">
+                    <PhotoView key={index} src={item.imagePlaceholder}>
+                      <img
+                        src={item.imagePlaceholder}
+                        alt={item.name}
+                        className="aspect-video h-64 w-full object-cover cursor-pointer hover:scale-105 transition-transform"
+                      />
+                    </PhotoView>
+                  </div>
+                </CardContent>
+                <CardHeader>
+                  <CardTitle>{item.name}</CardTitle>
+                  <CardDescription>{item.description}</CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
+          </PhotoProvider>
         </div>
       </div>
     </section>

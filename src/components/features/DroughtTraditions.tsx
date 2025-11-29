@@ -1,4 +1,5 @@
 import { forwardRef } from 'react'
+import { PhotoProvider, PhotoView } from 'react-photo-view'
 
 const DroughtTraditions = forwardRef<HTMLElement>((_props, ref) => {
   const traditions = [
@@ -35,12 +36,14 @@ const DroughtTraditions = forwardRef<HTMLElement>((_props, ref) => {
         className={`flex flex-col md:flex-row items-center gap-8 md:gap-12 py-8 ${!isEven ? 'md:flex-row-reverse' : ''}`}
       >
         <div className="w-full md:w-1/3 shrink-0">
-          <div className="w-full aspect-square bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-300/50 shadow-lg overflow-hidden">
-            <img
-              src={imagePlaceholder}
-              alt={title}
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-            />
+          <div className="w-full bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-300/50 shadow-lg overflow-hidden">
+            <PhotoView src={imagePlaceholder}>
+              <img
+                src={imagePlaceholder}
+                alt={title}
+                className="w-full h-full hover:scale-105 transition-transform object-cover cursor-pointer"
+              />
+            </PhotoView>
           </div>
           <p className="text-center text-lg font-bold text-yellow-300 mt-2">
             {title}
@@ -69,9 +72,11 @@ const DroughtTraditions = forwardRef<HTMLElement>((_props, ref) => {
         </div>
 
         <div className="divide-y-2 divide-primary/40">
-          {traditions.map((tradition, index) => (
-            <TraditionItem key={index} {...tradition} index={index} />
-          ))}
+          <PhotoProvider>
+            {traditions.map((tradition, index) => (
+              <TraditionItem key={index} {...tradition} index={index} />
+            ))}
+          </PhotoProvider>
         </div>
       </div>
     </section>

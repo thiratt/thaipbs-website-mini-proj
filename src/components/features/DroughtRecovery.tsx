@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { PhotoProvider, PhotoView } from 'react-photo-view'
 
 const DroughtRecovery = forwardRef<HTMLElement>((_props, ref) => {
   const recoveryItems = [
@@ -48,11 +49,13 @@ const DroughtRecovery = forwardRef<HTMLElement>((_props, ref) => {
   }: (typeof recoveryItems)[0]) => (
     <Card className="max-w-md pt-0">
       <CardContent className="px-0 overflow-hidden rounded-t-xl">
-        <img
-          src={imagePlaceholder}
-          alt={title}
-          className="aspect-video h-64 object-cover hover:scale-105 transition-transform duration-300"
-        />
+        <PhotoView src={imagePlaceholder}>
+          <img
+            src={imagePlaceholder}
+            alt={title}
+            className="aspect-video h-64 object-cover hover:scale-105 transition-transform"
+          />
+        </PhotoView>
       </CardContent>
 
       <CardHeader>
@@ -78,9 +81,11 @@ const DroughtRecovery = forwardRef<HTMLElement>((_props, ref) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {recoveryItems.map((item, index) => (
-            <RecoveryCard key={index} {...item} />
-          ))}
+          <PhotoProvider>
+            {recoveryItems.map((item, index) => (
+              <RecoveryCard key={index} {...item} />
+            ))}
+          </PhotoProvider>
         </div>
       </div>
     </section>

@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { PhotoProvider, PhotoView } from 'react-photo-view'
 
 const IsanRiverBasins = forwardRef<HTMLElement>((_props, ref) => {
   const basinData = [
@@ -45,23 +46,25 @@ const IsanRiverBasins = forwardRef<HTMLElement>((_props, ref) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {basinData.map((basin, index) => (
-            <Card className="max-w-md pt-0" key={index}>
-              <CardContent className="px-0">
-                <div className="bg-primary/5 overflow-hidden">
-                  <img
-                    src={basin.image}
-                    alt={basin.title}
-                    className="aspect-video h-64 hover:scale-105 transition-transform w-full object-cover"
-                  />
-                </div>
-              </CardContent>
-              <CardHeader>
-                <CardTitle>{basin.title}</CardTitle>
-                <CardDescription>{basin.description}</CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
+          <PhotoProvider>
+            {basinData.map((basin, index) => (
+              <Card className="max-w-md pt-0" key={index}>
+                <CardContent className="px-0 select-none overflow-hidden">
+                  <PhotoView key={index} src={basin.image}>
+                    <img
+                      src={basin.image}
+                      alt={basin.title}
+                      className="aspect-video h-64 w-full hover:scale-105 transition-transform object-cover cursor-pointer"
+                    />
+                  </PhotoView>
+                </CardContent>
+                <CardHeader>
+                  <CardTitle>{basin.title}</CardTitle>
+                  <CardDescription>{basin.description}</CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
+          </PhotoProvider>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 justify-items-center items-center mt-8 border-t pt-8 md:pt-12 border-primary/40">
           <div className="bg-white rounded-3xl w-full max-w-xl h-48 md:h-64 lg:h-80 text-center flex items-center justify-center">
