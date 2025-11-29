@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/chart'
 
 const chartData = [
-  { month: '2553', temperature: 40 },
+  { month: '2553', temperature: 44 },
   { month: '2554', temperature: 41 },
   { month: '2555', temperature: 42 },
   { month: '2556', temperature: 43 },
@@ -58,7 +58,13 @@ const TemperatureHistory = forwardRef<HTMLElement>((_props, ref) => {
               }}
             >
               <defs>
-                <linearGradient id="fillTemperature" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient
+                  id="fillTemperature"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
                   <stop
                     offset="5%"
                     stopColor="var(--chart-1)"
@@ -81,7 +87,11 @@ const TemperatureHistory = forwardRef<HTMLElement>((_props, ref) => {
                 tickMargin={8}
                 tickFormatter={(value) => value.toString().slice(-2)}
               />
-              <YAxis width={16} />
+              <YAxis
+                width={24}
+                domain={[40, 46]}
+                ticks={[40, 41, 42, 43, 44, 45, 46]}
+              />
               <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent indicator="line" />}
