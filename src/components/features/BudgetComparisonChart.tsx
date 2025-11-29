@@ -19,7 +19,7 @@ const BudgetComparisonChart = forwardRef<HTMLElement>((_props, ref) => {
   const chartConfig = {
     budget: {
       label: 'งบประมาณ',
-      color: '#2563eb',
+      color: 'var(--primary)',
     },
   } satisfies ChartConfig
 
@@ -30,7 +30,7 @@ const BudgetComparisonChart = forwardRef<HTMLElement>((_props, ref) => {
     >
       <div className="w-full space-y-8">
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-[#5D4E37]">
+          <h2 className="text-2xl md:text-4xl font-bold text-primary">
             กราฟแสดงการเปรียบเทียบของงบประมาณ ในปี 2563-2567
           </h2>
         </div>
