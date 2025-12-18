@@ -1,119 +1,150 @@
-import { forwardRef } from 'react'
+import { forwardRef, useRef, useImperativeHandle } from 'react'
+import { motion } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { Thermometer, AlertTriangle, Flame, Droplets } from 'lucide-react'
 
-const heatLevels = [
+const HEAT_LEVELS = [
   {
     label: 'เฝ้าระวัง',
-    color: 'bg-gradient-to-br from-[#9DC65D] to-[#7FA84A]',
-    shadowColor: 'shadow-[#7FA84A]/50',
+    icon: Droplets,
+    color: 'from-emerald-500 to-green-600',
+    bg: 'bg-emerald-50',
+    border: 'border-emerald-200',
+    text: 'text-emerald-700',
     temp: '27.0 - 32.9°C',
     description:
-      'ผลกระทบ : เริ่มมีอาการอ่อนเพลีย ปวดศีรษะ ตัวแสบร้อน อาจเป็นตะคริวจากความร้อน',
+      'เริ่มมีอาการอ่อนเพลีย ปวดศีรษะ ตัวแสบร้อน อาจเป็นตะคริวจากความร้อน',
   },
   {
     label: 'เตือนภัย',
-    color: 'bg-gradient-to-br from-[#F4D03F] to-[#D4AF37]',
-    shadowColor: 'shadow-[#D4AF37]/50',
+    icon: Thermometer,
+    color: 'from-yellow-400 to-amber-500',
+    bg: 'bg-yellow-50',
+    border: 'border-yellow-200',
+    text: 'text-amber-700',
     temp: '33.0 - 41.9°C',
     description:
-      'ผลกระทบ : เสี่ยงโรคเพลียแดด และตะคริวจาก ความร้อน อาจพัฒนาเป็นลมร้อนหรือฮีสโตรกได้',
+      'เสี่ยงโรคเพลียแดด และตะคริวจากความร้อน อาจพัฒนาเป็นตมร้อนหรือฮีทสโตรกได้',
   },
   {
     label: 'อันตราย',
-    color: 'bg-gradient-to-br from-[#E67E22] to-[#CA6510]',
-    shadowColor: 'shadow-[#CA6510]/50',
+    icon: Flame,
+    color: 'from-orange-500 to-red-500',
+    bg: 'bg-orange-50',
+    border: 'border-orange-200',
+    text: 'text-orange-700',
     temp: '42.0 - 51.9°C',
     description:
-      'ผลกระทบ : ร้างกายทำงานผิดปกติ เสี่ยงเพลียแดด ตะคริว และลมร้อน / ฮีสโตรกสูง',
+      'ร่างกายทำงานผิดปกติ เสี่ยงเพลียแดด ตะคริว และลมร้อน/ฮีทสโตรกสูง',
   },
   {
     label: 'อันตรายมาก',
-    color: 'bg-gradient-to-br from-[#C0392B] to-[#922B21]',
-    shadowColor: 'shadow-[#922B21]/50',
+    icon: AlertTriangle,
+    color: 'from-red-600 to-rose-700',
+    bg: 'bg-red-50',
+    border: 'border-red-200',
+    text: 'text-red-800',
     temp: '≥ 52.0°C',
-    description: 'ผลกระทบ : เสี่ยงลมร้อนหรือฮีสโตรกอย่างรุนแรง อันตรายถึงชีวิต',
+    description: 'เสี่ยงลมร้อนหรือฮีทสโตรกอย่างรุนแรง อันตรายถึงชีวิต',
   },
 ]
 
-const MyLangIsNotEqual = forwardRef<HTMLElement>((_props, ref) => {
+export const MyLangIsNotEqual = forwardRef<HTMLElement>((_props, ref) => {
+  const containerRef = useRef<HTMLElement>(null)
+  useImperativeHandle(ref, () => containerRef.current!)
+
   return (
     <section
-      ref={ref}
-      className="relative bg-[#ffe3bb] min-h-svh px-12 flex items-center justify-center"
+      ref={containerRef}
+      className="relative bg-[#ffe3bb] min-h-screen py-20 px-4 md:px-8 overflow-hidden"
     >
-      <div className="grid md:grid-cols-2 w-full">
-        <div className="relative">
-          {heatLevels.map((level, index) => (
-            <div
-              key={index}
-              className="group relative mb-6 md:mb-8 max-w-md"
-              style={{
-                transform: `translateX(${index * 60}px) translateY(${index * -20}px)`,
-                zIndex: heatLevels.length - index,
-              }}
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-24">
+          <div className="flex-1 lg:sticky lg:top-32 lg:h-fit z-10">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
             >
-              <div className="relative">
-                <div
-                  className={`${level.color} ${level.shadowColor} shadow-2xl rounded-lg p-6 md:p-8 transform transition-transform hover:scale-105`}
-                  style={{
-                    clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)',
-                    minHeight: '100px',
-                  }}
-                >
-                  <h3 className="text-xl md:text-2xl font-bold text-white text-center drop-shadow-lg">
-                    {level.label}
-                  </h3>
-                </div>
-
-                <div
-                  className="absolute top-4 left-0 w-full h-full opacity-60"
-                  style={{
-                    background: `linear-gradient(to bottom right, rgba(0,0,0,0.3), rgba(0,0,0,0.5))`,
-                    clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)',
-                    zIndex: -1,
-                    filter: 'blur(4px)',
-                  }}
-                />
+              <div className="inline-block px-4 py-1.5 rounded-full bg-orange-100 text-orange-600 font-bold text-sm mb-6 border border-orange-200">
+                HEAT INDEX
               </div>
-
-              <div
-                className={cn(
-                  'absolute top-1/2 -translate-y-1/2 rotate-67 transition-all',
-                  index + 1 === heatLevels.length
-                    ? '-right-8 group-hover:-right-10'
-                    : '-right-12 group-hover:-right-14',
-                )}
-              >
-                <span className="text-sm md:text-base font-semibold whitespace-nowrap px-2 py-1 rounded">
-                  {level.temp}
-                </span>
+              <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-gray-900 leading-tight mb-6">
+                "ที่ของฉัน"
+                <br />
+                <span className="text-gray-500">...ที่ของเธอ</span>
+              </h2>
+              <div className="space-y-2">
+                <p className="text-2xl md:text-4xl font-bold text-gray-800">
+                  "
+                  <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-600 to-red-600">
+                    แล้ง
+                  </span>
+                  " เราไม่เท่ากัน
+                </p>
+                <p className="text-lg text-gray-700 max-w-md leading-relaxed mt-4">
+                  ผลกระทบจากความร้อนที่มีต่อร่างกายแตกต่างกันไปตามระดับอุณหภูมิและความชื้นสัมพัทธ์
+                </p>
               </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="space-y-6">
-          <div className="text-primary text-center">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              "ที่ของฉัน"...... "ที่ของเธอ"
-            </h2>
-            <p className="text-2xl md:text-4xl font-bold">
-              "<span className="text-orange-500">แล้ง</span>" เราไม่เท่ากัน
-            </p>
+            </motion.div>
           </div>
-          <div className="space-y-4 text-white">
-            {heatLevels.map((level, index) => (
-              <div
-                key={index}
-                className={cn(
-                  'backdrop-blur-sm rounded-lg p-4 md:p-6 shadow-md hover:shadow-lg transition-shadow',
-                  level.color,
-                  level.shadowColor,
-                )}
-              >
-                <p className="leading-relaxed">{level.description}</p>
-              </div>
-            ))}
+
+          <div className="flex-1 space-y-6">
+            {HEAT_LEVELS.map((level, index) => {
+              const Icon = level.icon
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className={cn(
+                    'group relative overflow-hidden rounded-3xl p-6 md:p-8 transition-all duration-300',
+                    'bg-white/80 backdrop-blur-xl border-2 hover:border-transparent',
+                    level.border,
+                    'hover:shadow-2xl hover:scale-[1.02]',
+                  )}
+                >
+                  <div
+                    className={cn(
+                      'absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-linear-to-br',
+                      level.color,
+                    )}
+                  />
+
+                  <div className="relative z-10 flex flex-col md:flex-row gap-6 items-start md:items-center">
+                    <div
+                      className={cn(
+                        'w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 shadow-lg',
+                        'bg-linear-to-br text-white',
+                        level.color,
+                      )}
+                    >
+                      <Icon size={32} strokeWidth={2.5} />
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+                        <h3 className={cn('text-2xl font-bold', level.text)}>
+                          {level.label}
+                        </h3>
+                        <span className="text-3xl font-black text-gray-800 tracking-tight">
+                          {level.temp}
+                        </span>
+                      </div>
+
+                      <div className="h-px w-full bg-gray-200 my-3" />
+
+                      <p className="text-gray-600 font-medium leading-relaxed">
+                        {level.description}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )
+            })}
           </div>
         </div>
       </div>
@@ -121,4 +152,4 @@ const MyLangIsNotEqual = forwardRef<HTMLElement>((_props, ref) => {
   )
 })
 
-export { MyLangIsNotEqual }
+MyLangIsNotEqual.displayName = 'MyLangIsNotEqual'
