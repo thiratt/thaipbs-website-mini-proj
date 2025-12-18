@@ -59,7 +59,7 @@ export const TemperatureHistory = forwardRef<HTMLElement>((_props, ref) => {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-orange-200/20 blur-[100px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto px-4 md:px-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2">
+        <div className="grid grid-cols-1 xl:grid-cols-2">
           <div className="text-center mb-16 space-y-6">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
