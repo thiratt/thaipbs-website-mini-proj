@@ -1,85 +1,133 @@
 import { forwardRef } from 'react'
+import { motion } from 'motion/react'
+import { CloudSun, CloudOff, Info } from 'lucide-react'
 
 const WhatIsLangSection = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative min-h-svh overflow-hidden bg-linear-to-b from-[#e8e4dc] to-[#ffe3bb] flex items-center px-8 py-18 md:px-18 md:py-0"
+      className="relative min-h-screen bg-linear-to-b from-[#e8e4dc] to-[#ffe3bb] flex items-center justify-center py-20 px-4 md:px-8 overflow-hidden"
     >
-      <div className="grid grid-cols-1 items-center lg:grid-cols-[65%_auto] w-full">
-        <div className="space-y-8">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-primary leading-tight">
-            คุณเข้าใจคำว่า "ฤดูแล้ง" มาก แค่ไหน?
-          </h2>
-
-          <div className="space-y-6 text-primary/90 text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl">
-            <p>
-              แล้ง หมายถึง แห้ง ไม่มีน้ำไม่มีฝน
-              เรียกฤดูกาลน้ำแห้งหรือฤดูกาลไม่มีฝนตกว่า หน้าแล้ง หรือ ฤดูแล้ง
-              เช่น ปริมาณน้ำในเขื่อนต่างๆ ลดลงมากในหน้าแล้ง
-              ฤดูแล้งปีนี้ยาวนานกว่าปีก่อน ๆ เกษตรกรในหลายจังหวัด
-              ต้องเลื่อนการเพาะปลูกข้าวเพราะประสบกับปัญหาภัยแล้ง.
-            </p>
-            <p>
-              ฝนแล้ง หมายถึง ไม่มีฝนตก เช่น
-              ประเทศเอธิโอเปียประสบปัญหาฝนแล้งติดต่อกันหลายปี.
-            </p>
-          </div>
+      <div className="container mx-auto max-w-6xl relative z-10">
+        <div className="text-center mb-16 space-y-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-500/10 text-yellow-700 rounded-full text-sm font-bold uppercase tracking-wider mb-2"
+          >
+            <Info size={16} strokeWidth={3} />
+            Definition
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-6xl font-black text-gray-900 leading-tight"
+          >
+            คุณเข้าใจคำว่า
+            <br />
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-600 to-orange-600">
+              "ฤดูแล้ง"
+            </span>{' '}
+            มากแค่ไหน?
+          </motion.h2>
         </div>
 
-        <div className="relative">
-          <div className="relative max-w-md mx-auto lg:ml-auto aspect-2/3">
-            <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <clipPath id="blobClip">
-                  <path
-                    d="M44.7,-76.4C58.8,-69.3,71.8,-59.1,79.9,-45.8C88,-32.6,91.2,-16.3,89.8,-0.9C88.4,14.6,82.4,29.2,74.2,42.8C66,56.4,55.6,68.9,42.8,76.9C30,84.9,15,88.4,-0.3,88.9C-15.6,89.4,-31.2,86.9,-44.3,79.2C-57.4,71.5,-68,58.6,-75.4,44.2C-82.8,29.8,-87,13.9,-86.8,-2.1C-86.6,-18.1,-82,-36.2,-73.2,-50.1C-64.4,-64,-51.4,-73.7,-37.2,-81C-23,-88.3,-11.5,-93.1,1.8,-96.1C15.1,-99.1,30.6,-100.3,44.7,-76.4Z"
-                    transform="translate(100 150)"
-                  />
-                </clipPath>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="group relative bg-white/60 backdrop-blur-md rounded-[2.5rem] p-8 lg:p-12 border border-white/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+          >
+            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+              <CloudSun size={120} className="text-orange-500" />
+            </div>
 
-                <filter id="blobShadow">
-                  <feGaussianBlur in="SourceAlpha" stdDeviation="4" />
-                  <feOffset dx="4" dy="4" result="offsetblur" />
-                  <feComponentTransfer>
-                    <feFuncA type="linear" slope="0.3" />
-                  </feComponentTransfer>
-                  <feMerge>
-                    <feMergeNode />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
+            <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-6 text-orange-600 group-hover:scale-110 transition-transform duration-300">
+              <CloudSun size={32} />
+            </div>
 
-              <path
-                fill="#a67c52"
-                opacity="0.15"
-                d="M44.7,-76.4C58.8,-69.3,71.8,-59.1,79.9,-45.8C88,-32.6,91.2,-16.3,89.8,-0.9C88.4,14.6,82.4,29.2,74.2,42.8C66,56.4,55.6,68.9,42.8,76.9C30,84.9,15,88.4,-0.3,88.9C-15.6,89.4,-31.2,86.9,-44.3,79.2C-57.4,71.5,-68,58.6,-75.4,44.2C-82.8,29.8,-87,13.9,-86.8,-2.1C-86.6,-18.1,-82,-36.2,-73.2,-50.1C-64.4,-64,-51.4,-73.7,-37.2,-81C-23,-88.3,-11.5,-93.1,1.8,-96.1C15.1,-99.1,30.6,-100.3,44.7,-76.4Z"
-                transform="translate(106 156)"
-              />
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 group-hover:text-orange-700 transition-colors">
+              แล้ง (Drought)
+            </h3>
+            <p className="text-lg text-gray-600 leading-relaxed">
+              หมายถึง{' '}
+              <span className="font-semibold text-gray-800">
+                ช่วงเวลาที่แห้ง ไม่มีน้ำ ไม่มีฝน
+              </span>{' '}
+              เรียกว่า "หน้าแล้ง" หรือ "ฤดูแล้ง" เป็นวัฏจักรปกติตามฤดูกาล เช่น
+              ปริมาณน้ำในเขื่อนลดลงเพราะฝนทิ้งช่วง
+              ทำให้กิจกรรมเพาะปลูกบางอย่างต้องเลื่อนออกไป
+            </p>
+            <div className="mt-8 pt-6 border-t border-orange-100/50">
+              <span className="text-sm font-semibold text-orange-600/80 uppercase tracking-wide">
+                Example Scenarios
+              </span>
+              <ul className="mt-2 space-y-2 text-gray-500">
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                  น้ำในเขื่อนลดลงตามฤดู
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                  เลื่อนการทำนาปี
+                </li>
+              </ul>
+            </div>
+          </motion.div>
 
-              <image
-                href="/lang.webp"
-                x="0"
-                y="0"
-                width="200"
-                height="300"
-                preserveAspectRatio="xMidYMid slice"
-                clipPath="url(#blobClip)"
-                className="transition-transform duration-700"
-              />
-            </svg>
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="group relative bg-white/60 backdrop-blur-md rounded-[2.5rem] p-8 lg:p-12 border border-white/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+          >
+            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+              <CloudOff size={120} className="text-red-500" />
+            </div>
 
-            {/* <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-[#a67c52] rounded-full opacity-30 blur-2xl animate-pulse"></div> */}
-            <div className="absolute -top-6 -right-6 w-32 h-32 bg-[#c9a882] rounded-full opacity-20 blur-3xl animate-pulse [animation-delay:1s]"></div>
-          </div>
+            <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-6 text-red-600 group-hover:scale-110 transition-transform duration-300">
+              <CloudOff size={32} />
+            </div>
+
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 group-hover:text-red-700 transition-colors">
+              ฝนแล้ง (Rain Shortage)
+            </h3>
+            <p className="text-lg text-gray-600 leading-relaxed">
+              หมายถึง{' '}
+              <span className="font-semibold text-gray-800">
+                ภาวะที่ไม่มีฝนตกยาวนานผิดปกติ
+              </span>{' '}
+              จนเกิดความเสียหายรุนแรง
+              เป็นภัยพิบัติทางธรรมชาติที่ส่งผลกระทบต่อเนื่องหลายปี เช่น
+              ในประเทศเอธิโอเปีย
+            </p>
+
+            <div className="mt-8 pt-6 border-t border-red-100/50">
+              <span className="text-sm font-semibold text-red-600/80 uppercase tracking-wide">
+                Example Scenarios
+              </span>
+              <ul className="mt-2 space-y-2 text-gray-500">
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                  ฝนไม่ตกต้องตามฤดูกาล
+                </li>
+                <li className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                  วิกฤตขาดแคลนน้ำอย่างหนัก
+                </li>
+              </ul>
+            </div>
+          </motion.div>
         </div>
       </div>
 
-      <div className="absolute top-20 left-10 w-2 h-2 bg-[#6b4423] rounded-full opacity-20"></div>
-      <div className="absolute top-40 right-20 w-3 h-3 bg-[#a67c52] rounded-full opacity-20"></div>
-      <div className="absolute bottom-40 left-1/4 w-2 h-2 bg-[#6b4423] rounded-full opacity-20"></div>
-      <div className="absolute bottom-20 right-1/3 w-3 h-3 bg-[#a67c52] rounded-full opacity-20"></div>
+      <div className="absolute top-20 left-10 w-24 h-24 bg-yellow-300 rounded-full blur-[80px] opacity-40 mix-blend-multiply animate-pulse" />
+      <div className="absolute bottom-20 right-10 w-32 h-32 bg-orange-300 rounded-full blur-[80px] opacity-40 mix-blend-multiply animate-pulse [animation-delay:2s]" />
     </section>
   )
 })
