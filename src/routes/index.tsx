@@ -59,12 +59,12 @@ function App() {
       <LangCircleSection ref={langCircleSectionRef} />
       <TemperatureHistory ref={temperatureHistoryRef} />
       <MyLangIsNotEqual ref={myLangIsNotEqualRef} />
+      <BudgetComparisonChart ref={budgetComparisonChartRef} />
       <HeatImpactChart ref={heatImpactChartRef} />
       <ThaiRiverBasinsMap ref={thaiRiverBasinsMapRef} />
       <IsanRiverBasins ref={isanRiverBasinsRef} />
       <DroughtTraditions ref={droughtTraditionsRef} />
       <DroughtFoodMenu ref={droughtFoodMenuRef} />
-      <BudgetComparisonChart ref={budgetComparisonChartRef} />
       <DroughtRecovery ref={droughtRecoveryRef} />
       <NewGenFooter ref={null} />
     </>
