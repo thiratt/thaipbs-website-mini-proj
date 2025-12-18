@@ -72,6 +72,17 @@ function NavigationBar({
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen)
 
+  const mobileButtonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({})
+
+  useEffect(() => {
+    if (isMobileMenuOpen && activeItem) {
+      const element = mobileButtonRefs.current[activeItem]
+      if (element) {
+        element.scrollIntoView({ block: 'center', behavior: 'smooth' })
+      }
+    }
+  }, [isMobileMenuOpen, activeItem])
+
   return (
     <>
       <header className="fixed top-4 left-0 right-0 flex justify-center px-4 z-50 select-none pointer-events-none">
@@ -181,9 +192,12 @@ function NavigationBar({
                     transition={{ delay: index * 0.05 }}
                   >
                     <Button
+                      ref={(el) => {
+                        mobileButtonRefs.current[item.label] = el
+                      }}
                       variant="ghost"
                       className={cn(
-                        'w-full justify-start text-lg py-6 font-medium',
+                        'w-full justify-start text-lg py-6 font-medium relative',
                         activeItem === item.label
                           ? 'bg-orange-50 text-orange-600'
                           : 'text-gray-600 hover:text-gray-900',
@@ -197,6 +211,17 @@ function NavigationBar({
                         setIsMobileMenuOpen(false)
                       }}
                     >
+                      {activeItem === item.label && (
+                        <motion.div
+                          layoutId="mobile-indicator"
+                          className="absolute left-0 top-0 bottom-0 w-1 bg-orange-600 rounded-r-full"
+                          transition={{
+                            type: 'spring',
+                            stiffness: 400,
+                            damping: 30,
+                          }}
+                        />
+                      )}
                       {item.label}
                     </Button>
                   </motion.div>
