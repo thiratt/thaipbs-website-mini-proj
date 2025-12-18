@@ -8,7 +8,7 @@ const AnimatedNumber = ({ value }: { value: number }) => {
     stiffness: 200,
     damping: 40,
   })
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const isInView = useInView(ref, { once: true, margin: '0px' })
 
   useEffect(() => {
     if (isInView) {
@@ -27,14 +27,14 @@ const AnimatedNumber = ({ value }: { value: number }) => {
     })
   }, [springValue])
 
-  return <span ref={ref} />
+  return <span ref={ref}>0.0000</span>
 }
 
 export const BudgetComparisonChart = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-[#ffe3bb] min-h-svh flex flex-col items-center justify-center px-6 py-20 md:px-12"
+      className="relative bg-[#ffe3bb] min-h-svh flex flex-col px-6 py-8 md:py-20 md:px-12"
     >
       <div className="w-full max-w-6xl mx-auto text-center space-y-12">
         <motion.div
@@ -68,14 +68,14 @@ export const BudgetComparisonChart = forwardRef<HTMLElement>((_props, ref) => {
           </p>
 
           <div className="py-4">
-            <div className="flex flex-col md:flex-row items-baseline justify-center gap-4 md:gap-6 bg-white/40 backdrop-blur-sm p-8 rounded-3xl border border-[#d2b48c]/30 shadow-xl shadow-[#d2b48c]/10">
-              <span className="text-3xl md:text-5xl font-bold text-[#8b4513]">
+            <div className="flex flex-col xl:flex-row items-center justify-center gap-2 md:gap-6 bg-white/40 backdrop-blur-sm p-6 md:p-8 rounded-3xl border border-[#d2b48c]/30 shadow-xl shadow-[#d2b48c]/10">
+              <span className="text-2xl md:text-5xl font-bold text-[#8b4513]">
                 วงเงิน
               </span>
-              <span className="text-6xl md:text-8xl lg:text-9xl font-black text-[#A03522] tracking-tighter tabular-nums drop-shadow-sm">
+              <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-[#A03522] tracking-tighter tabular-nums drop-shadow-sm break-all">
                 <AnimatedNumber value={7606.4972} />
               </span>
-              <span className="text-3xl md:text-5xl font-bold text-[#8b4513]">
+              <span className="text-2xl md:text-5xl font-bold text-[#8b4513]">
                 ล้านบาท
               </span>
             </div>
