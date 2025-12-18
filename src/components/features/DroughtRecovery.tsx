@@ -44,7 +44,7 @@ export const DroughtRecovery = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-[#f0fdf4] min-h-screen py-20 px-4 md:px-12"
+      className="relative bg-[#f0fdf4] min-h-svh py-20 px-4 md:px-12"
     >
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute -top-[10%] -right-[10%] w-[50%] h-[50%] bg-green-200/20 rounded-full blur-3xl" />

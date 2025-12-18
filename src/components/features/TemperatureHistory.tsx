@@ -54,7 +54,7 @@ export const TemperatureHistory = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative min-h-screen bg-[#ffe3bb] flex flex-col justify-center py-20 overflow-hidden"
+      className="relative min-h-svh bg-[#ffe3bb] flex flex-col justify-center py-20 overflow-hidden"
     >
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-orange-200/20 blur-[100px] rounded-full pointer-events-none" />
 

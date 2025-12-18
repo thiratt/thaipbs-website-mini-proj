@@ -56,7 +56,7 @@ export const MyLangIsNotEqual = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={containerRef}
-      className="relative bg-[#ffe3bb] min-h-screen py-20 px-4 md:px-8 overflow-hidden"
+      className="relative bg-[#ffe3bb] min-h-svh py-20 px-4 md:px-8 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24">

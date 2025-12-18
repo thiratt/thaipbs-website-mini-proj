@@ -34,7 +34,7 @@ export const IsanRiverBasins = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-[#003b5c] min-h-screen py-24 overflow-hidden"
+      className="relative bg-[#003b5c] min-h-svh py-24 overflow-hidden"
     >
       <div
         className="absolute inset-0 opacity-10 pointer-events-none"

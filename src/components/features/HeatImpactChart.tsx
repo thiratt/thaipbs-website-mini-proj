@@ -78,7 +78,7 @@ export const HeatImpactChart = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-[#FFF8F0] min-h-screen py-20 px-6 md:px-12 flex flex-col justify-center"
+      className="relative bg-[#FFF8F0] min-h-svh py-20 px-6 md:px-12 flex flex-col justify-center"
     >
       <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">

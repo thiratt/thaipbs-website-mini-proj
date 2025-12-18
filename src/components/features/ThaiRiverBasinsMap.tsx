@@ -13,7 +13,7 @@ const ThaiRiverBasinsMap = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-[#003b5c] min-h-screen flex flex-col justify-center py-20 overflow-hidden"
+      className="relative bg-[#003b5c] min-h-svh flex flex-col justify-center py-20 overflow-hidden"
     >
       <div className="absolute top-0 left-0 w-full overflow-hidden pointer-events-none opacity-40">
         <svg

@@ -6,7 +6,7 @@ const WhatIsLangSection = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative min-h-screen bg-linear-to-b from-[#e8e4dc] to-[#ffe3bb] flex items-center justify-center py-20 px-4 md:px-8 overflow-hidden"
+      className="relative min-h-svh bg-linear-to-b from-[#e8e4dc] to-[#ffe3bb] flex items-center justify-center py-20 px-4 md:px-8 overflow-hidden"
     >
       <div className="container mx-auto max-w-6xl relative z-10">
         <div className="text-center mb-16 space-y-4">
