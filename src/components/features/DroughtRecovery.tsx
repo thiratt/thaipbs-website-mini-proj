@@ -100,7 +100,7 @@ export const DroughtRecovery = forwardRef<HTMLElement>((_props, ref) => {
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
 
-              <div className="absolute inset-0 bg-linear-to-t from-black via-black/20 to-transparent opacity-40 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-linear-to-t from-black xl:via-black/20 to-transparent opacity-100 xl:opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="absolute inset-0 p-8 flex flex-col justify-end text-white">
                 <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
                   <div className="flex items-center justify-between mb-2">
@@ -114,8 +114,8 @@ export const DroughtRecovery = forwardRef<HTMLElement>((_props, ref) => {
                   </h3>
                 </div>
 
-                <div className="max-h-0 overflow-hidden group-hover:max-h-[200px] transition-[max-height] duration-500 ease-in-out">
-                  <p className="text-gray-200 leading-relaxed text-sm md:text-base pb-2 opacity-0 group-hover:opacity-100 transition-opacity delay-100 duration-500">
+                <div className="max-h-[200px] xl:max-h-0 overflow-hidden group-hover:max-h-[200px] transition-[max-height] duration-500 ease-in-out">
+                  <p className="text-gray-200 leading-relaxed text-sm md:text-base pb-2 opacity-100 xl:opacity-0 group-hover:opacity-100 transition-opacity delay-100 duration-500">
                     {item.description}
                   </p>
                 </div>
