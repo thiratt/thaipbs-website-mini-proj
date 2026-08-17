@@ -3,7 +3,6 @@ import type { NavItem, SectionName } from '@/types/navigation'
 export const NAV_ITEMS: Array<NavItem> = [
   { label: 'หน้าหลัก' },
   { label: 'แล้งคืออะไร' },
-  { label: 'วัฏจักรฤดูแล้ง' },
   { label: 'สถิติ' },
   { label: 'แล้งเราไม่เท่ากัน' },
   { label: 'งบประมาณ' },
@@ -18,7 +17,6 @@ export const NAV_ITEMS: Array<NavItem> = [
 export const SECTION_NAMES: Array<SectionName> = [
   'หน้าหลัก',
   'แล้งคืออะไร',
-  'วัฏจักรฤดูแล้ง',
   'สถิติ',
   'แล้งเราไม่เท่ากัน',
   'งบประมาณ',

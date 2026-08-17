@@ -8,12 +8,12 @@ import {
   HeroSection,
   IsanRiverBasins,
   LangCircleSection,
-  WhatIsLangSection,
   MyLangIsNotEqual,
   NavigationBar,
   NewGenFooter,
   TemperatureHistory,
   ThaiRiverBasinsMap,
+  WhatIsLangSection,
 } from '@/components'
 import { useActiveSection, useSectionNavigation, useSectionRefs } from '@/hooks'
 

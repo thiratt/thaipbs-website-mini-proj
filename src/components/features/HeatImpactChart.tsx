@@ -1,6 +1,7 @@
 import { forwardRef, useState } from 'react'
 import { motion } from 'motion/react'
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts'
+import { Cell, Pie, PieChart, ResponsiveContainer, Sector } from 'recharts'
+import type { PieSectorShapeProps } from 'recharts'
 import { cn } from '@/lib/utils'
 
 const DATA = [
@@ -10,7 +11,7 @@ const DATA = [
   { name: 'ภาคอีสาน', value: 2.8, color: '#14b8a6' },
 ]
 
-const renderActiveShape = (props: any) => {
+const renderSector = (props: PieSectorShapeProps, outerRadiusOffset = 0) => {
   const {
     cx,
     cy,
@@ -19,9 +20,24 @@ const renderActiveShape = (props: any) => {
     startAngle,
     endAngle,
     fill,
-    payload,
-    value,
   } = props
+
+  return (
+    <Sector
+      cx={cx}
+      cy={cy}
+      innerRadius={innerRadius}
+      outerRadius={outerRadius + outerRadiusOffset}
+      startAngle={startAngle}
+      endAngle={endAngle}
+      fill={fill}
+    />
+  )
+}
+
+const renderActiveShape = (props: PieSectorShapeProps) => {
+  const { cx, cy, outerRadius, startAngle, endAngle, fill, payload, value } =
+    props
 
   return (
     <g>
@@ -45,15 +61,7 @@ const renderActiveShape = (props: any) => {
       >
         {`${value}%`}
       </text>
-      <Sector
-        cx={cx}
-        cy={cy}
-        innerRadius={innerRadius}
-        outerRadius={outerRadius + 10}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        fill={fill}
-      />
+      {renderSector(props, 10)}
       <Sector
         className="animate-in fade-in duration-300"
         cx={cx}
@@ -74,6 +82,9 @@ export const HeatImpactChart = forwardRef<HTMLElement>((_props, ref) => {
   const onPieEnter = (_: any, index: number) => {
     setActiveIndex(index)
   }
+
+  const renderShape = (props: PieSectorShapeProps) =>
+    props.index === activeIndex ? renderActiveShape(props) : renderSector(props)
 
   return (
     <section
@@ -168,8 +179,6 @@ export const HeatImpactChart = forwardRef<HTMLElement>((_props, ref) => {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  activeIndex={activeIndex}
-                  activeShape={renderActiveShape}
                   animationBegin={0}
                   animationEasing="ease-out"
                   data={DATA}
@@ -181,6 +190,7 @@ export const HeatImpactChart = forwardRef<HTMLElement>((_props, ref) => {
                   dataKey="value"
                   onMouseEnter={onPieEnter}
                   paddingAngle={2}
+                  shape={renderShape}
                 >
                   {DATA.map((entry, index) => (
                     <Cell

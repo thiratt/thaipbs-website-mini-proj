@@ -1,7 +1,7 @@
-import { forwardRef, useRef, useImperativeHandle } from 'react'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
 import { motion } from 'motion/react'
+import { AlertTriangle, Droplets, Flame, Thermometer } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Thermometer, AlertTriangle, Flame, Droplets } from 'lucide-react'
 
 const HEAT_LEVELS = [
   {

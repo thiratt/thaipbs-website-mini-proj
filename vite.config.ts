@@ -15,6 +15,11 @@ export default defineConfig({
     viteReact(),
     tailwindcss(),
   ],
+  server: {
+    watch: {
+      ignored: ['**/*.exconal-*.tmp'],
+    },
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

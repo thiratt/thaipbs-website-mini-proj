@@ -1,8 +1,8 @@
 import { forwardRef, useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
-import { cn } from '@/lib/utils'
-import { Map, PlayCircle, Waves } from 'lucide-react'
+import { AnimatePresence, motion } from 'motion/react'
+import { Map, Waves } from 'lucide-react'
 import { PhotoProvider, PhotoView } from 'react-photo-view'
+import { cn } from '@/lib/utils'
 
 const BASIN_DATA = [
   {
@@ -164,35 +164,46 @@ export const IsanRiverBasins = forwardRef<HTMLElement>((_props, ref) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {[
               {
-                title: 'วิดีโอทุ่งกุลาร้องไห้',
-                subtitle: 'ตำนานแห่งความแห้งแล้ง',
+                title: 'วิดีโอ 1',
+                src: 'https://www.youtube.com/embed/-mDqtZeul2s',
               },
-              { title: 'วิดีโอแม่น้ำชี', subtitle: 'วิถีลุ่มแม่น้ำ' },
+              {
+                title: 'วิดีโอ 2',
+                src: 'https://www.youtube.com/embed/OFkjTq93xFo',
+              },
+              {
+                title: 'วิดีโอ 3',
+                src: 'https://www.youtube.com/embed/Eotc982Ngrw',
+              },
+              {
+                title: 'วิดีโอ 4',
+                src: 'https://www.youtube.com/embed/en7VNTsU-SY',
+              },
+              {
+                title: 'วิดีโอ 5',
+                src: 'https://www.youtube.com/embed/7F_S_0nUfvo',
+              },
+              {
+                title: 'วิดีโอ 6',
+                src: 'https://www.youtube.com/embed/Eotc982Ngrw',
+              },
             ].map((video, idx) => (
               <motion.div
-                key={idx}
+                key={`${video.title}-${video.src}`}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.2 }}
-                className="group relative aspect-video rounded-3xl bg-black overflow-hidden border border-white/10 cursor-pointer shadow-2xl"
+                transition={{ delay: idx * 0.08 }}
+                className="relative aspect-video overflow-hidden rounded-3xl border border-white/10 bg-black shadow-2xl"
               >
-                <div className="absolute inset-0 bg-linear-to-br from-cyan-900/40 to-blue-900/40 opacity-50 group-hover:opacity-75 transition-opacity" />
-
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 group-hover:scale-105 transition-transform duration-300">
-                  <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-cyan-500 group-hover:border-cyan-400 transition-all shadow-[0_0_30px_rgba(0,0,0,0.3)]">
-                    <PlayCircle
-                      size={32}
-                      className="text-white fill-white/20"
-                    />
-                  </div>
-                  <div className="text-center">
-                    <h4 className="text-xl font-bold text-white mb-1">
-                      {video.title}
-                    </h4>
-                    <p className="text-cyan-200 text-sm">{video.subtitle}</p>
-                  </div>
-                </div>
+                <iframe
+                  src={video.src}
+                  title={video.title}
+                  className="absolute inset-0 h-full w-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
               </motion.div>
             ))}
           </div>

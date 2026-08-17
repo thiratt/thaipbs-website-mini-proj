@@ -1,51 +1,59 @@
 import { forwardRef } from 'react'
 
-const SocialIcon = ({ name }: { name: string }) => (
-  <div className="w-8 h-8 border border-[#5D4E37] rounded-full flex items-center justify-center text-[#5D4E37] hover:bg-[#5D4E37]/10 transition-colors cursor-pointer">
-    <span className="text-lg font-bold">{name}</span>
-  </div>
-)
+const logos = [
+  { src: '/ITMSULOGO.webp', alt: 'IT MSU' },
+  { src: '/MSULOGO.webp', alt: 'MSU' },
+  { src: '/favicon.ico', alt: 'Thai PBS Local' },
+  { src: '/THAIPBSLOGO.jpg', alt: 'Thai PBS' },
+]
+
+const credits = [
+  'เกียรติศักดิ์ ไชยศิรินทร์',
+  'ลักษมณ ภูสีทอง',
+  'ชัยชนะ ขนานแข็ง',
+  'อนุชิต มาตรพระคลัง',
+  'สุพิชญา คูคำ',
+  'เขมิกา โพธิ์ษา',
+  'มณฑณา สิงห์ชู',
+]
 
 const NewGenFooter = forwardRef<HTMLElement>((_props, ref) => {
   return (
-    <footer
-      ref={ref}
-      className="relative bg-primary/5 border-t border-gray-300/50"
-    >
-      <div className="container mx-auto px-4 py-8 md:py-12 max-w-6xl">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="text-center md:text-left mb-6 md:mb-0">
-            <h2
-              className="text-4xl md:text-5xl font-bold text-[#5D4E37] mb-2"
-              style={{
-                fontFamily: 'serif',
-                textShadow: '2px 2px 0px rgba(0,0,0,0.1)',
-              }}
-            >
-              New Gen
-            </h2>
-            <p className="text-sm text-gray-700">
-              หน้าแรก หมวดหมู่บทความมัลติมีเดีย
-            </p>
+    <footer ref={ref} className="bg-[#202020] text-white">
+      <div className="mx-auto grid min-h-[440px] max-w-[1160px] grid-cols-1 items-center gap-12 px-6 py-14 lg:grid-cols-[1fr_520px_260px] lg:gap-16 lg:py-0">
+        <div className="hidden lg:block" aria-hidden="true" />
+
+        <div className="flex flex-col items-center text-center lg:translate-y-6">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-5">
+            {logos.map((logo, index) => (
+              <div
+                key={logo?.src ?? `empty-${index}`}
+                className="flex h-[88px] w-[88px] items-center justify-center overflow-hidden rounded-full bg-white sm:h-[102px] sm:w-[102px]"
+              >
+                {logo && (
+                  <img
+                    src={logo.src}
+                    alt={logo.alt}
+                    className="h-full w-full object-contain p-2"
+                  />
+                )}
+              </div>
+            ))}
           </div>
 
-          <div className="flex flex-col items-center md:items-end">
-            <div className="flex space-x-4 mb-4">
-              <SocialIcon name="IG" />
-              <SocialIcon name="FB" />
-              <SocialIcon name="X" />
-              <SocialIcon name="YT" />
-            </div>
+          <p className="mt-10 text-[15px] font-semibold leading-[1.45] sm:text-[16px]">
+            ศูนย์สร้างสรรค์สื่อเพื่อสาธารณะ มหาวิทยาลัยมหาสารคาม
+            <br />
+            ร่วมกับ สำนักเครือข่ายและการมีส่วนร่วมสาธารณะ ไทยพีบีเอส
+            <br />© 2025 Longform Article Project
+          </p>
+        </div>
 
-            <div className="text-sm text-right">
-              <a href="#" className="text-[#5D4E37] hover:underline block">
-                เข้าร่วมกับเชียร์ประสบการณ์
-              </a>
-              <a href="#" className="text-[#5D4E37] hover:underline block">
-                เกี่ยวกับเรา New Gen
-              </a>
-            </div>
-          </div>
+        <div className="self-center text-left text-[18px] font-semibold leading-[1.28] sm:text-[20px] lg:translate-y-8 lg:pl-7 lg:text-[19px]">
+          <p>จัดทำโดย</p>
+          {credits.map((name) => (
+            <p key={name}>{name}</p>
+          ))}
         </div>
       </div>
     </footer>

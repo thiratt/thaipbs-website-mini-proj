@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
-import { AnimatePresence, motion } from 'motion/react'
+import {
+  AnimatePresence,
+  LayoutGroup,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from 'motion/react'
 import { Button } from '../ui/button'
 import type { NavigationBarProps, SectionName } from '@/types'
 import { cn } from '@/lib/utils'
@@ -11,7 +17,9 @@ function NavigationBar({
   onNavigate,
 }: NavigationBarProps) {
   const [internalActiveItem, setInternalActiveItem] =
-    useState<string>('หน้าหลัก')
+    useState<SectionName>('หน้าหลัก')
+  const [pendingActiveItem, setPendingActiveItem] =
+    useState<SectionName | null>(null)
   const [indicatorStyle, setIndicatorStyle] = useState({
     left: 0,
     width: 0,
@@ -21,7 +29,30 @@ function NavigationBar({
   const navRef = useRef<HTMLDivElement>(null)
   const buttonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({})
 
-  const activeItem = externalActiveSection || internalActiveItem
+  const activeItem =
+    pendingActiveItem ?? externalActiveSection ?? internalActiveItem
+
+  const handleNavigate = (sectionName: SectionName) => {
+    if (onNavigate) {
+      setPendingActiveItem(sectionName)
+      onNavigate(sectionName)
+      return
+    }
+
+    setInternalActiveItem(sectionName)
+  }
+
+  const [isScrolled, setIsScrolled] = useState(false)
+  const { scrollY } = useScroll()
+
+  useMotionValueEvent(scrollY, 'change', (currentY) => {
+    setIsScrolled((previous) => {
+      if (!previous && currentY > 32) return true
+      if (previous && currentY < 8) return false
+
+      return previous
+    })
+  })
 
   useEffect(() => {
     const updateIndicator = () => {
@@ -55,6 +86,12 @@ function NavigationBar({
   }, [activeItem, isMobileMenuOpen])
 
   useEffect(() => {
+    if (pendingActiveItem && externalActiveSection === pendingActiveItem) {
+      setPendingActiveItem(null)
+    }
+  }, [externalActiveSection, pendingActiveItem])
+
+  useEffect(() => {
     setIsMobileMenuOpen(false)
   }, [activeItem])
 
@@ -72,7 +109,9 @@ function NavigationBar({
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen)
 
-  const mobileButtonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({})
+  const mobileButtonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>(
+    {},
+  )
 
   useEffect(() => {
     if (isMobileMenuOpen && activeItem) {
@@ -85,8 +124,8 @@ function NavigationBar({
 
   return (
     <>
-      <header className="fixed top-4 left-0 right-0 flex justify-center px-4 z-50 select-none pointer-events-none">
-        <div className="absolute top-0 right-4 pointer-events-auto nav-lg:hidden">
+      <header className="fixed inset-x-0 top-0 z-50 select-none pointer-events-none">
+        <div className="absolute top-4 right-4 pointer-events-auto nav-lg:hidden">
           <Button
             onClick={toggleMobileMenu}
             className="rounded-full bg-white/80 backdrop-blur-md shadow-lg hover:bg-white text-gray-800"
@@ -96,62 +135,107 @@ function NavigationBar({
           </Button>
         </div>
 
-        <AnimatePresence initial={false} mode="wait">
-          <motion.div
-            key="desktop-nav"
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className={cn(
-              'hidden nav-lg:flex pointer-events-auto',
-              'mx-auto relative h-fit p-1.5 items-center rounded-full',
-              'bg-linear-to-r from-white/40 via-white/30 to-white/40',
-              'backdrop-blur-xs backdrop-saturate-150',
-              'shadow-[0_8px_32px_0_rgba(0,0,0,0.12)]',
-              'border border-white/20',
-              'border-white/60',
-            )}
-          >
-            <nav ref={navRef} className="relative flex items-center">
+        <LayoutGroup id="desktop-navigation">
+          <div className="relative hidden w-full justify-center nav-lg:flex">
+            {!isScrolled && (
               <motion.div
-                className="absolute bg-white rounded-full h-full shadow-sm"
-                animate={{
-                  left: indicatorStyle.left,
-                  width: indicatorStyle.width,
-                }}
+                layoutId="navigation-surface"
+                className={cn(
+                  'absolute inset-0',
+                  'bg-white/50 backdrop-blur-md backdrop-saturate-150',
+                )}
                 transition={{
                   type: 'spring',
-                  stiffness: 400,
-                  damping: 30,
+                  stiffness: 360,
+                  damping: 36,
+                  mass: 0.8,
                 }}
               />
+            )}
 
-              {NAV_ITEMS.map((item) => (
-                <Button
-                  key={item.label}
-                  ref={(el) => {
-                    buttonRefs.current[item.label] = el
-                  }}
-                  variant="ghost"
-                  onClick={() => {
-                    if (onNavigate) {
-                      onNavigate(item.label as SectionName)
-                    } else {
-                      setInternalActiveItem(item.label)
-                    }
-                  }}
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{
+                y: isScrolled ? 16 : 0,
+                opacity: 1,
+              }}
+              transition={{
+                y: {
+                  type: 'spring',
+                  stiffness: 360,
+                  damping: 32,
+                  mass: 0.8,
+                },
+                opacity: {
+                  duration: 0.2,
+                },
+              }}
+              className={cn(
+                'relative pointer-events-auto',
+                isScrolled ? 'p-2' : 'p-3',
+              )}
+            >
+              {/* พื้นหลังตอนเลื่อน: หดมาครอบเมนู */}
+              {isScrolled && (
+                <motion.div
+                  layoutId="navigation-surface"
                   className={cn(
-                    'relative rounded-full z-10 px-6 font-medium transition-colors duration-200',
-                    activeItem === item.label
-                      ? 'text-orange-600'
-                      : 'text-foreground',
+                    'absolute inset-0 rounded-full',
+                    'bg-linear-to-r from-white/70 via-white/55 to-white/70',
+                    'backdrop-blur-xl backdrop-saturate-150',
+                    'border border-white/60',
+                    'shadow-[0_8px_32px_rgba(0,0,0,0.12)]',
                   )}
-                >
-                  {item.label}
-                </Button>
-              ))}
-            </nav>
-          </motion.div>
-        </AnimatePresence>
+                  transition={{
+                    type: 'spring',
+                    stiffness: 360,
+                    damping: 36,
+                    mass: 0.8,
+                  }}
+                />
+              )}
+
+              <nav ref={navRef} className="relative flex shrink-0 items-center">
+                <motion.div
+                  className="absolute h-full rounded-full bg-white shadow-sm"
+                  animate={{
+                    left: indicatorStyle.left,
+                    width: indicatorStyle.width,
+                  }}
+                  transition={{
+                    type: 'tween',
+                    duration: 0.8,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                />
+
+                {NAV_ITEMS.map((item) => (
+                  <Button
+                    key={item.label}
+                    ref={(element) => {
+                      buttonRefs.current[item.label] = element
+                    }}
+                    variant="ghost"
+                    onClick={() => handleNavigate(item.label as SectionName)}
+                    className={cn(
+                      'relative z-10 shrink-0 rounded-full px-6',
+                      'font-medium bg-transparent',
+                      'transition-colors duration-200',
+                      'hover:bg-white/60',
+                      activeItem === item.label
+                        ? 'text-orange-600'
+                        : isScrolled
+                          ? 'text-foreground'
+                          : 'text-white',
+                    )}
+                  >
+                    {item.label}
+                  </Button>
+                ))}
+              </nav>
+            </motion.div>
+          </div>
+        </LayoutGroup>
       </header>
 
       <AnimatePresence>
@@ -203,11 +287,7 @@ function NavigationBar({
                           : 'text-gray-600 hover:text-gray-900',
                       )}
                       onClick={() => {
-                        if (onNavigate) {
-                          onNavigate(item.label as SectionName)
-                        } else {
-                          setInternalActiveItem(item.label)
-                        }
+                        handleNavigate(item.label as SectionName)
                         setIsMobileMenuOpen(false)
                       }}
                     >
