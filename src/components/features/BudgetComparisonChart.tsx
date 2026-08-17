@@ -73,7 +73,7 @@ export const BudgetComparisonChart = forwardRef<HTMLElement>((_props, ref) => {
                 <span className="text-2xl md:text-5xl font-bold text-white">
                   วงเงิน
                 </span>
-                <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter tabular-nums drop-shadow-sm break-all">
+                <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-orange-500 tracking-tighter tabular-nums drop-shadow-sm break-all">
                   <AnimatedNumber value={7606.4972} />
                 </span>
                 <span className="text-2xl md:text-5xl font-bold text-white">
