@@ -51,17 +51,8 @@ export const DroughtRecovery = forwardRef<HTMLElement>((_props, ref) => {
         <div className="absolute top-[20%] -left-[10%] w-[40%] h-[40%] bg-emerald-200/20 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto relative z-10">
+      <div className="container mx-auto mt-4 relative z-10">
         <div className="text-center mb-16 space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-block px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-sm tracking-wide mb-4"
-          >
-            RECOVERY PLAN
-          </motion.div>
-
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -84,7 +75,7 @@ export const DroughtRecovery = forwardRef<HTMLElement>((_props, ref) => {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-6">
           {RECOVERY_ITEMS.map((item, index) => (
             <motion.div
               key={index}
@@ -92,7 +83,13 @@ export const DroughtRecovery = forwardRef<HTMLElement>((_props, ref) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative h-[400px] md:h-[500px] rounded-4xl overflow-hidden cursor-pointer"
+              className={`group relative h-[400px] cursor-pointer overflow-hidden rounded-4xl md:h-[500px] lg:col-span-2 ${
+                index === 3
+                  ? 'lg:col-start-2'
+                  : index === 4
+                    ? 'lg:col-start-4'
+                    : ''
+              }`}
             >
               <img
                 src={item.imagePlaceholder}
@@ -103,12 +100,6 @@ export const DroughtRecovery = forwardRef<HTMLElement>((_props, ref) => {
               <div className="absolute inset-0 bg-linear-to-t from-black xl:via-black/20 to-transparent opacity-100 xl:opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="absolute inset-0 p-8 flex flex-col justify-end text-white">
                 <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-emerald-300 font-semibold tracking-wider text-sm uppercase">
-                      {item.category}
-                    </span>
-                    <ArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0 text-emerald-300" />
-                  </div>
                   <h3 className="text-3xl font-bold leading-tight mb-4 group-hover:text-emerald-100 transition-colors">
                     {item.title}
                   </h3>
