@@ -8,26 +8,50 @@ const FOOD_ITEMS = [
   {
     name: 'ห่อหมกผักหวานไข่มดแดง',
     description:
-      'อาหารอีสานที่เป็นที่นิยมในช่วงหน้าแล้งคือไข่มดแดงและผักหวาน ที่จะหาได้ในช่วงฤดูแล้งของทุกปี',
-    imagePlaceholder: 'Hor-Mok-Pak-Wan-Kai-Mot-Daeng.jpg',
+      'อาหารอีสานที่เป็นที่นิยมในช่วงหน้าแล้ง คือไข่มดแดงและผักหวาน ที่จะหาได้ในช่วงฤดูแล้งของทุกปี',
+    imagePlaceholder: 'MokPakWan.png',
+  },
+  {
+    name: 'ซุปดอกผักติ้ว',
+    description:
+      'เมนูเด็ดหน้าแล้ง ถือเป็นเมนูอาหารป่าที่หาได้ยาก เนื่องจากดอกผักติ้วจะออกดอกในช่วงหน้าแล้งเท่านั้น',
+    imagePlaceholder: 'SupDokPakTiw.png',
   },
   {
     name: 'ข้าวปุ้นแกงปู',
     description:
-      'นำวัตถุดิบตามฤดูกาลในช่วงหน้าแล้งอย่างปูนาที่มีมันปูมากกำให้ อาหารมีรสชาติอร่อยมากขึ้น มาทำอาหารพื้นถิ่นอย่างข้าวปุ้นแกงปู',
-    imagePlaceholder: 'Khao-Pun-Kaeng-Pu.jpg',
+      'นำวัตถุดิบตามฤดูกาลในช่วงหน้าแล้งอย่างปูนาที่มีมันปูมาก มาทำให้อาหารมีรสชาติอร่อยมากขึ้นกับอาหารพื้นถิ่นอย่างข้าวปุ้นแกงปู',
+    imagePlaceholder: 'KaoPunKangPoo.png',
   },
   {
-    name: 'อ่อมหอยขม',
+    name: 'อ่อมหอยขัว',
     description:
       'เป็นเมนูอีสานในหน้าแล้ง เป็นหอยที่จำศีลในหน้าแล้ง เมื่อน้ำแห้งมันจะจำศีลซ่อนตัวอยู่ใต้ดินตามแหล่งที่เคยมีน้ำ',
-    imagePlaceholder: 'Om-Hoi-Khom.jpg',
+    imagePlaceholder: 'OrmHoyKua.png',
   },
   {
     name: 'อ่อมเขียดน้อย',
     description:
-      'เมื่อน้ำแห้งขอดเหลือเพียงลำน้ำใหญ่แล้วแหล่งอาหารหายากจึงต้องหาไส้เขียดน้อย ส่องเขียดน้อย ส่องเขียดน้อย นำมาทำแกงอ่อมกินกันตามครัวเรือน',
-    imagePlaceholder: 'Om-Kiad-Noi.jpg',
+      'เมื่อน้ำแห้งขอด เหลือเพียงลำน้ำใหญ่ แล้วแหล่งอาหารหายาก จึงต้องหาเขียดน้อยมาทำแกงอ่อมกินกันตามครัวเรือน',
+    imagePlaceholder: 'OrmKiead.png',
+  },
+  {
+    name: 'แกงผักเสี้ยน',
+    description:
+      'ผักเสี้ยนเป็นผักตามฤดูกาลที่พบได้ในช่วงหน้าแล้ง นิยมนำยอดและใบอ่อนมาปรุงเป็นอาหารพื้นบ้าน ให้รสชาติเป็นเอกลักษณ์',
+    imagePlaceholder: 'KangPakSiean.png',
+  },
+  {
+    name: 'ผักหวานป่าผัดหมูสับ',
+    description:
+      'ผักหวานป่าจะแตกยอดและใบใหม่ในช่วงฤดูแล้ง ตั้งแต่เดือนมีนาคมถึงพฤษภาคม จึงเป็นช่วงที่ผักหวานมีรสชาติอร่อยและหาได้มาก',
+    imagePlaceholder: 'PakWanPhaMooSub.png',
+  },
+  {
+    name: 'วุ้นหมาน้อย',
+    description:
+      'วัตถุดิบตามฤดูกาลในช่วงหน้าแล้งอย่างใบหมาน้อย เป็นใบไม้ที่มีความพิเศษเฉพาะตัว นำมาทำเป็นวุ้นหมาน้อยกินคู่กับมะม่วงสุก',
+    imagePlaceholder: 'WoonMaNoi.png',
   },
 ]
 
@@ -54,7 +78,7 @@ export const DroughtFoodMenu = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative bg-[#b85a3a] min-h-svh py-20 px-4 md:px-12 flex flex-col items-center justify-center"
+      className="relative bg-[#232323] min-h-svh py-20 px-4 md:px-12 flex flex-col items-center justify-center"
     >
       <div className="w-full max-w-6xl mx-auto text-center space-y-12 md:space-y-16">
         <motion.div
