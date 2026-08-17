@@ -1,84 +1,69 @@
 import { forwardRef } from 'react'
-import type { LucideIcon } from 'lucide-react'
-import {
-  Droplets,
-  Factory,
-  Flame,
-  PawPrint,
-  ShieldPlus,
-  Sprout,
-  UserRound,
-  Wind,
-  Wrench,
-  Zap,
-} from 'lucide-react'
 import { motion } from 'motion/react'
 
 type ImpactItem = {
-  icon: LucideIcon
+  iconSrc: string
+  iconAlt: string
   text: string
-  iconClassName: string
 }
 
 const LEFT_ITEMS: Array<ImpactItem> = [
   {
-    icon: Sprout,
+    iconSrc: '/ต้นกล้า.png',
+    iconAlt: 'ต้นกล้า',
     text: 'ผลผลิตทางการเกษตรลดลง ไม่เพียงพอต่อการบริโภค และการเลี้ยงปศุสัตว์',
-    iconClassName: 'text-[#7c4d23]',
   },
   {
-    icon: Wrench,
+    iconSrc: '/ดิน.png',
+    iconAlt: 'ดิน',
     text: 'เกิดการกัดเซาะ ทัดกร่อนภูมิทัศน์ พื้นดินแห้งแล้งและเกิดการพังทลายของผิวดิน',
-    iconClassName: 'text-[#8b5e3c]',
   },
   {
-    icon: Wind,
+    iconSrc: '/ลม.png',
+    iconAlt: 'ลม',
     text: 'เกิดฝุ่นละออง พายุฝุ่น เพราะพื้นดินแห้งแล้งขาดน้ำ',
-    iconClassName: 'text-[#406c94]',
   },
   {
-    icon: Droplets,
+    iconSrc: '/น้ำ.png',
+    iconAlt: 'น้ำ',
     text: 'ประชาชนเกิดความอดอยากเนื่องจากการขาดน้ำ ในการอุปโภคบริโภค',
-    iconClassName: 'text-[#1f88c9]',
   },
   {
-    icon: PawPrint,
+    iconSrc: '/ธรรมชาติ.png',
+    iconAlt: 'ธรรมชาติ',
     text: 'เกิดความเสียหายต่อที่อยู่อาศัยของสัตว์ ที่ได้รับผลกระทบทั้งบนบกและในน้ำ',
-    iconClassName: 'text-[#5d4937]',
   },
 ]
 
 const RIGHT_ITEMS: Array<ImpactItem> = [
   {
-    icon: ShieldPlus,
+    iconSrc: '/ไวรัส.png',
+    iconAlt: 'โรคระบาด',
     text: 'เกิดภาวะขาดน้ำ ขาดสารอาหาร และเพิ่มโอกาสเกิดโรคระบาด',
-    iconClassName: 'text-[#3a6fb1]',
   },
   {
-    icon: UserRound,
+    iconSrc: '/หาม.png',
+    iconAlt: 'การอพยพ',
     text: 'เกิดการอพยพย้ายถิ่นของประชากร',
-    iconClassName: 'text-[#b85f3a]',
   },
   {
-    icon: Zap,
+    iconSrc: '/โรงน้ำ.png',
+    iconAlt: 'โรงไฟฟ้าพลังน้ำ',
     text: 'ผลผลิตกระแสไฟฟ้าลดลง เนื่องจากการไหลของน้ำผ่านเขื่อนลดลง',
-    iconClassName: 'text-[#b7841a]',
   },
   {
-    icon: Factory,
+    iconSrc: '/โรงงาน.png',
+    iconAlt: 'โรงงาน',
     text: 'การประกอบการด้านอุตสาหกรรมต้องหยุดชะงัก เพราะขาดแคลนน้ำที่ใช้ในกระบวนการผลิต',
-    iconClassName: 'text-[#3e6d8d]',
   },
   {
-    icon: Flame,
+    iconSrc: '/ไฟไหม้.png',
+    iconAlt: 'ไฟป่า',
     text: 'เพิ่มโอกาสการเกิดไฟป่าในช่วงเกิดภัยแล้ง',
-    iconClassName: 'text-[#da7d17]',
   },
 ]
 
 function ImpactCard({ item, index }: { item: ImpactItem; index: number }) {
-  const Icon = item.icon
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 18 }}
@@ -87,10 +72,12 @@ function ImpactCard({ item, index }: { item: ImpactItem; index: number }) {
       transition={{ duration: 0.45, delay: index * 0.06 }}
       className="flex items-start gap-4 md:gap-5"
     >
-      <div className="flex size-[68px] shrink-0 items-center justify-center rounded-full border-2 border-black/70 bg-[#e7e4df] shadow-[0_8px_18px_rgba(0,0,0,0.2)] md:size-[78px]">
-        <Icon
-          className={`size-8 md:size-9 ${item.iconClassName}`}
-          strokeWidth={2.2}
+      <div className="flex size-[68px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#e7e4df] shadow-[0_8px_18px_rgba(0,0,0,0.2)] md:size-[78px]">
+        <img
+          src={item.iconSrc}
+          alt={item.iconAlt}
+          className="size-full object-cover"
+          loading="lazy"
         />
       </div>
 
