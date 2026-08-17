@@ -1,6 +1,5 @@
 import { forwardRef } from 'react'
 import { motion } from 'motion/react'
-import { ArrowUpRight } from 'lucide-react'
 
 const RECOVERY_ITEMS = [
   {
