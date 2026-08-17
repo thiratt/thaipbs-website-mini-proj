@@ -47,7 +47,7 @@ const ThaiRiverBasinsMap = forwardRef<HTMLElement>((_props, ref) => {
                   <Map className="text-cyan-400" size={32} />
                 </div>
                 <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
-                  22 ลุ่มน้ำไทย
+                  มารู้จักลุ่มน้ำทั่วไทย
                 </h2>
               </div>
 
