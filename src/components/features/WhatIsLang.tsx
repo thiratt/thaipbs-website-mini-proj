@@ -103,81 +103,92 @@ const WhatIsLangSection = forwardRef<HTMLElement>((_props, ref) => {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#232323] px-5 py-20 text-white md:px-8 md:py-24">
+      <section className="relative overflow-hidden bg-[#232323] px-5 py-20 text-white md:px-8 md:py-28">
         <div className="mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.55, ease: 'easeOut' }}
-            className="mb-12 text-center md:mb-16"
+            className="mb-12 max-w-3xl md:mb-16"
           >
             <h2 className="text-4xl font-black tracking-tight md:text-6xl">
               สาเหตุการเกิด <span className="text-[#f18717]">ภัยแล้ง</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-white/78 md:text-xl">
-              สาเหตุการเกิดภัยแล้งอาจเกิดขึ้นได้จากสาเหตุต่าง ๆ ดังนี้
+            <p className="mt-4 text-base leading-relaxed text-white/60 md:text-xl">
+              ภัยแล้งไม่ได้เกิดจากธรรมชาติเพียงอย่างเดียว
+              แต่ยังเกิดจากกิจกรรมของมนุษย์ที่ทำให้วงจรน้ำและสภาพแวดล้อมเปลี่ยนแปลงไป
             </p>
           </motion.div>
 
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-x-16 lg:gap-y-14">
-            <motion.img
-              src="/NatureLang.png"
-              alt="พื้นที่แห้งแล้งจากสาเหตุทางธรรมชาติ"
-              initial={{ opacity: 0, x: -24 }}
-              whileInView={{ opacity: 1, x: 0 }}
+          <div className="space-y-6 md:space-y-8">
+            <motion.article
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.55, ease: 'easeOut' }}
-              className="aspect-[16/9] w-full object-cover"
-            />
-
-            <motion.div
-              initial={{ opacity: 0, x: 24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.55, ease: 'easeOut' }}
-              className="self-center"
+              className="grid overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035] lg:grid-cols-[0.9fr_1.1fr]"
             >
-              <h3 className="mb-4 text-2xl font-bold md:text-3xl">
-                1. โดยธรรมชาติ
-              </h3>
-              <ul className="space-y-2 pl-5 text-base leading-relaxed text-white/90 marker:text-white md:text-lg">
-                {NATURAL_CAUSES.map((cause) => (
-                  <li key={cause} className="list-disc pl-1">
-                    {cause}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+              <img
+                src="/NatureLang.png"
+                alt="พื้นที่แห้งแล้งจากสาเหตุทางธรรมชาติ"
+                className="h-full min-h-72 w-full object-cover lg:min-h-[30rem]"
+              />
 
-            <motion.div
-              initial={{ opacity: 0, x: -24 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              <div className="flex flex-col justify-center p-7 md:p-10 lg:p-12">
+                <div className="mb-5 flex items-baseline gap-4">
+                  <span className="text-sm font-black tracking-[0.2em] text-[#f18717]">
+                    01
+                  </span>
+                  <h3 className="text-2xl font-black md:text-4xl">
+                    โดยธรรมชาติ
+                  </h3>
+                </div>
+
+                <ul className="space-y-4 text-sm leading-relaxed text-white/75 md:text-base">
+                  {NATURAL_CAUSES.map((cause) => (
+                    <li key={cause} className="flex gap-3">
+                      <span className="mt-[0.65em] size-1.5 shrink-0 rounded-full bg-[#f18717]" />
+                      <span>{cause}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.article>
+
+            <motion.article
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.55, ease: 'easeOut' }}
-              className="order-4 self-center lg:order-3"
+              transition={{ duration: 0.55, delay: 0.08, ease: 'easeOut' }}
+              className="grid overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035] lg:grid-cols-[1.1fr_0.9fr]"
             >
-              <h3 className="mb-4 text-2xl font-bold md:text-3xl">
-                2. โดยการกระทำของมนุษย์
-              </h3>
-              <ul className="space-y-2 pl-5 text-base leading-relaxed text-white/90 marker:text-white md:text-lg">
-                {HUMAN_CAUSES.map((cause) => (
-                  <li key={cause} className="list-disc pl-1">
-                    {cause}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+              <div className="order-2 flex flex-col justify-center p-7 md:p-10 lg:order-1 lg:p-12">
+                <div className="mb-5 flex items-baseline gap-4">
+                  <span className="text-sm font-black tracking-[0.2em] text-[#f18717]">
+                    02
+                  </span>
+                  <h3 className="text-2xl font-black md:text-4xl">
+                    โดยการกระทำของมนุษย์
+                  </h3>
+                </div>
 
-            <motion.img
-              src="/HumanLang.png"
-              alt="โรงงานอุตสาหกรรมและมลพิษจากกิจกรรมของมนุษย์"
-              initial={{ opacity: 0, x: 24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.55, ease: 'easeOut' }}
-              className="order-3 aspect-[16/9] w-full object-cover lg:order-4"
-            />
+                <ul className="space-y-4 text-sm leading-relaxed text-white/75 md:text-base">
+                  {HUMAN_CAUSES.map((cause) => (
+                    <li key={cause} className="flex gap-3">
+                      <span className="mt-[0.65em] size-1.5 shrink-0 rounded-full bg-[#f18717]" />
+                      <span>{cause}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <img
+                src="/HumanLang.png"
+                alt="โรงงานอุตสาหกรรมและมลพิษจากกิจกรรมของมนุษย์"
+                className="order-1 h-full min-h-72 w-full object-cover lg:order-2 lg:min-h-[30rem]"
+              />
+            </motion.article>
           </div>
         </div>
       </section>
