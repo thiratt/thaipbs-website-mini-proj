@@ -6,7 +6,7 @@ export const NAV_ITEMS: Array<NavItem> = [
   { label: 'สถิติ' },
   { label: 'แล้งเราไม่เท่ากัน' },
   { label: 'งบประมาณ' },
-  { label: 'ผลกระทบ' },
+  // { label: 'ผลกระทบ' },
   { label: 'ลุ่มน้ำไทย' },
   { label: 'ลุ่มน้ำอีสาน' },
   { label: 'ประเพณีในหน้าแล้ง' },

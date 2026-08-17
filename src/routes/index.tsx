@@ -60,7 +60,7 @@ function App() {
       <TemperatureHistory ref={temperatureHistoryRef} />
       <MyLangIsNotEqual ref={myLangIsNotEqualRef} />
       <BudgetComparisonChart ref={budgetComparisonChartRef} />
-      <HeatImpactChart ref={heatImpactChartRef} />
+      {/* <HeatImpactChart ref={heatImpactChartRef} /> */}
       <ThaiRiverBasinsMap ref={thaiRiverBasinsMapRef} />
       <IsanRiverBasins ref={isanRiverBasinsRef} />
       <DroughtTraditions ref={droughtTraditionsRef} />
