@@ -1,19 +1,18 @@
 import { forwardRef } from 'react'
 import {
-  Area,
-  AreaChart,
   CartesianGrid,
-  ReferenceLine,
+  Line,
+  LineChart,
+  ReferenceDot,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts'
 import { motion } from 'motion/react'
-import { Flame, ThermometerSun } from 'lucide-react'
+import { ThermometerSun } from 'lucide-react'
 
 const CHART_DATA = [
-  { year: '2553', temp: 44 },
   { year: '2554', temp: 41 },
   { year: '2555', temp: 42 },
   { year: '2556', temp: 43 },
@@ -29,17 +28,17 @@ const CHART_DATA = [
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white/90 backdrop-blur-md p-4 rounded-xl border border-orange-200 shadow-xl">
-        <div className="flex items-center gap-2 mb-2 border-b border-orange-100 pb-2">
-          <span className="font-bold text-gray-700">ปี {label}</span>
+      <div className="rounded-xl border border-white/10 bg-[#171717]/95 p-4 text-white shadow-xl backdrop-blur-md">
+        <div className="mb-2 flex items-center gap-2 border-b border-white/10 pb-2">
+          <span className="font-bold text-white/80">ปี {label}</span>
         </div>
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-orange-100 rounded-lg">
-            <ThermometerSun className="text-orange-600" size={24} />
+          <div className="rounded-lg bg-orange-500/10 p-2">
+            <ThermometerSun className="text-orange-400" size={24} />
           </div>
           <div>
-            <p className="text-sm text-gray-500">อุณหภูมิสูงสุด</p>
-            <p className="text-2xl font-black text-orange-600">
+            <p className="text-sm text-white/50">อุณหภูมิสูงสุด</p>
+            <p className="text-2xl font-black text-orange-400">
               {payload[0].value}°C
             </p>
           </div>
@@ -54,144 +53,106 @@ export const TemperatureHistory = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <section
       ref={ref}
-      className="relative min-h-svh bg-[#ffe3bb] flex flex-col justify-center py-20 overflow-hidden"
+      className="relative overflow-hidden bg-[#232323] px-5 py-20 text-white md:px-8 md:py-24"
     >
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-orange-200/20 blur-[100px] rounded-full pointer-events-none" />
+      <div className="mx-auto max-w-6xl">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.55, ease: 'easeOut' }}
+          className="mb-10 text-center md:mb-14"
+        >
+          <h2 className="text-3xl font-black tracking-tight md:text-5xl">
+            สถิติ <span className="text-[#f18717]">อุณหภูมิสูง</span>{' '}
+            ที่สุดในรอบ 10 ปีของประเทศไทย
+          </h2>
+        </motion.div>
 
-      <div className="container mx-auto px-4 md:px-12 relative z-10">
-        <div className="grid grid-cols-1 xl:grid-cols-2">
-          <div className="text-center mb-16 space-y-6">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-red-100 text-red-600 rounded-full text-sm font-bold uppercase tracking-wider mb-4"
-            >
-              <Flame size={16} fill="currentColor" />
-              Historical Record
-            </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, delay: 0.08, ease: 'easeOut' }}
+          className="rounded-3xl border border-white/10 bg-white/[0.03] px-3 py-6 sm:px-5 md:px-8 md:py-10"
+        >
+          <div className="h-[320px] w-full md:h-[420px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                data={CHART_DATA}
+                margin={{ top: 32, right: 18, left: -12, bottom: 8 }}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  vertical={false}
+                  stroke="rgba(255,255,255,0.1)"
+                />
+                <XAxis
+                  dataKey="year"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'rgba(255,255,255,0.58)', fontSize: 13 }}
+                  dy={12}
+                />
+                <YAxis
+                  domain={[40, 46]}
+                  ticks={[40, 41, 42, 43, 44, 45, 46]}
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'rgba(255,255,255,0.58)', fontSize: 13 }}
+                  tickFormatter={(value) => `${value}°`}
+                />
+                <Tooltip
+                  content={<CustomTooltip />}
+                  cursor={{
+                    stroke: 'rgba(249,115,22,0.55)',
+                    strokeWidth: 1,
+                    strokeDasharray: '4 4',
+                  }}
+                />
 
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-4xl md:text-6xl font-black text-gray-900 leading-tight"
-            >
-              สถิติความร้อน
-              <br />
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-500 to-red-600">
-                ในรอบ 10 ปี
-              </span>
-            </motion.h2>
+                <Line
+                  type="monotone"
+                  dataKey="temp"
+                  stroke="#f18717"
+                  strokeWidth={4}
+                  dot={{
+                    r: 4,
+                    stroke: '#f18717',
+                    strokeWidth: 2,
+                    fill: '#232323',
+                  }}
+                  activeDot={{
+                    r: 7,
+                    stroke: '#ffffff',
+                    strokeWidth: 2,
+                    fill: '#f18717',
+                  }}
+                />
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="flex justify-center gap-12 pt-4"
-            >
-              <div className="text-center">
-                <p className="text-gray-500 mb-1">สูงสุดที่เคยบันทึก</p>
-                <p className="text-5xl font-black text-red-500">45°C</p>
-                <p className="text-sm text-red-400 font-medium mt-1">ปี 2559</p>
-              </div>
-              <div className="w-px bg-gray-200" />
-              <div className="text-center">
-                <p className="text-gray-500 mb-1">ค่าเฉลี่ย 10 ปี</p>
-                <p className="text-5xl font-black text-orange-500">43°C</p>
-                <p className="text-sm text-orange-400 font-medium mt-1">
-                  สูงกว่าเกณฑ์ปกติ
-                </p>
-              </div>
-            </motion.div>
+                <ReferenceDot
+                  x="2559"
+                  y={45}
+                  r={7}
+                  fill="#f18717"
+                  stroke="#ffffff"
+                  strokeWidth={2}
+                  label={{
+                    value: '45°C',
+                    position: 'top',
+                    fill: '#fb923c',
+                    fontSize: 14,
+                    fontWeight: 800,
+                  }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="bg-white/40 backdrop-blur-xl border border-white/50 rounded-3xl p-6 md:p-12 shadow-[0_20px_40px_rgba(0,0,0,0.05)] w-full max-w-5xl mx-auto"
-          >
-            <div className="h-[400px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={CHART_DATA}
-                  margin={{ top: 20, right: 0, left: -20, bottom: 0 }}
-                >
-                  <defs>
-                    <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    vertical={false}
-                    stroke="#e5e7eb"
-                  />
-                  <XAxis
-                    dataKey="year"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: '#6b7280', fontSize: 14 }}
-                    dy={10}
-                  />
-                  <YAxis
-                    domain={[35, 48]}
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: '#6b7280', fontSize: 14 }}
-                  />
-                  <Tooltip
-                    content={<CustomTooltip />}
-                    cursor={{
-                      stroke: '#f97316',
-                      strokeWidth: 2,
-                      strokeDasharray: '4 4',
-                    }}
-                  />
-
-                  <ReferenceLine y={40} stroke="#ef4444" strokeDasharray="3 3">
-                    <g transform="translate(20, -10)">
-                      <text
-                        x="0"
-                        y="40"
-                        fill="#ef4444"
-                        fontSize="12"
-                        fontWeight="bold"
-                      >
-                        Danger Zone (40°C+)
-                      </text>
-                    </g>
-                  </ReferenceLine>
-
-                  <Area
-                    type="monotone"
-                    dataKey="temp"
-                    stroke="#ef4444"
-                    strokeWidth={4}
-                    fillOpacity={1}
-                    fill="url(#colorTemp)"
-                    activeDot={{
-                      r: 8,
-                      stroke: '#fff',
-                      strokeWidth: 2,
-                      fill: '#ef4444',
-                    }}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-
-            <div className="mt-8 text-center">
-              <p className="text-gray-500 text-sm">
-                ข้อมูลจากกรมอุตุนิยมวิทยา แสดงอุณหภูมิสูงสุดรายปีในช่วงฤดูแล้ง
-              </p>
-            </div>
-          </motion.div>
-        </div>
+          <p className="mt-5 text-center text-xs leading-relaxed text-white/45 md:text-sm">
+            ที่มา : กรมอุตุนิยมวิทยา · อุณหภูมิสูงสุดรายปีในช่วง พ.ศ. 2554–2563
+          </p>
+        </motion.div>
       </div>
     </section>
   )
