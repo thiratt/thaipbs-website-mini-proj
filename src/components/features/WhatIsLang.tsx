@@ -8,6 +8,22 @@ const DROUGHT_DESCRIPTION = `ภัยแล้งเป็นภัยธรร
 เกิดผลกระทบอย่างมากต่อการดำรงชีวิต
 การเกษตร และระบบนิเวศในพื้นที่ที่เกิดภัย`
 
+const NATURAL_CAUSES = [
+  'การเปลี่ยนแปลงอุณหภูมิโลก เช่น ระบบการหมุนเวียนหรือส่วนผสมของบรรยากาศเปลี่ยนแปลง สภาวะอากาศในฤดูร้อนที่ร้อนมากกว่าปกติ',
+  'การเปลี่ยนแปลงสภาพภูมิอากาศและสิ่งแวดล้อม เช่น ฝนทิ้งช่วง ฝนตกน้อย ดินเก็บความชื้นต่ำได้ไม่ดี ปริมาณน้ำใต้ดินมีน้อย',
+  'การเปลี่ยนแปลงของระดับน้ำทะเล',
+  'ความผิดปกติของตำแหน่งร่องมรสุมทำให้ฝนตกในพื้นที่ไม่ต่อเนื่อง',
+  'ความผิดปกติเนื่องจากพายุหมุนเขตร้อนเคลื่อนที่ผ่านประเทศน้อยกว่าปกติ',
+]
+
+const HUMAN_CAUSES = [
+  'การใช้น้ำอย่างไม่เหมาะสมหรือสิ้นเปลืองเกินไป ทั้งการอุปโภค บริโภค และการเกษตร ทำให้ปริมาณน้ำในอ่างเก็บน้ำและน้ำใต้ดินลดลง',
+  'พฤติกรรมการดำรงชีวิตของมนุษย์ที่ทำลายชั้นโอโซน เกิดภาวะเรือนกระจก ทำให้อุณหภูมิของโลกสูงขึ้น เช่น การเผาพลาสติก น้ำมัน และถ่านหิน',
+  'การพัฒนาด้านต่าง ๆ โดยเฉพาะด้านอุตสาหกรรม ทำให้เกิดการตัดไม้ทำลายป่า ส่งผลให้ความชื้นสัมพัทธ์ไม่เพียงพอ เนื่องจากขาดต้นไม้ซับน้ำ และเกิดการบุกรุกพื้นที่ป่าถือครองกรรมสิทธิ์ปลูกพืชไร่',
+  'ระบบการเพาะปลูกและความถี่ของการเพาะปลูก',
+  'ขาดการวางแผนการสร้างแหล่งกักเก็บน้ำไว้ใช้ประโยชน์ยามขาดน้ำฝน',
+]
+
 const WhatIsLangSection = forwardRef<HTMLElement>((_props, ref) => {
   return (
     <>
@@ -84,6 +100,85 @@ const WhatIsLangSection = forwardRef<HTMLElement>((_props, ref) => {
           >
             {`“${DROUGHT_DESCRIPTION}”`}
           </motion.p>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-[#232323] px-5 py-20 text-white md:px-8 md:py-24">
+        <div className="mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.55, ease: 'easeOut' }}
+            className="mb-12 text-center md:mb-16"
+          >
+            <h2 className="text-4xl font-black tracking-tight md:text-6xl">
+              สาเหตุการเกิด <span className="text-[#f18717]">ภัยแล้ง</span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-white/78 md:text-xl">
+              สาเหตุการเกิดภัยแล้งอาจเกิดขึ้นได้จากสาเหตุต่าง ๆ ดังนี้
+            </p>
+          </motion.div>
+
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-x-16 lg:gap-y-14">
+            <motion.img
+              src="/NatureLang.png"
+              alt="พื้นที่แห้งแล้งจากสาเหตุทางธรรมชาติ"
+              initial={{ opacity: 0, x: -24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.55, ease: 'easeOut' }}
+              className="aspect-[16/9] w-full object-cover"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, x: 24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.55, ease: 'easeOut' }}
+              className="self-center"
+            >
+              <h3 className="mb-4 text-2xl font-bold md:text-3xl">
+                1. โดยธรรมชาติ
+              </h3>
+              <ul className="space-y-2 pl-5 text-base leading-relaxed text-white/90 marker:text-white md:text-lg">
+                {NATURAL_CAUSES.map((cause) => (
+                  <li key={cause} className="list-disc pl-1">
+                    {cause}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.55, ease: 'easeOut' }}
+              className="order-4 self-center lg:order-3"
+            >
+              <h3 className="mb-4 text-2xl font-bold md:text-3xl">
+                2. โดยการกระทำของมนุษย์
+              </h3>
+              <ul className="space-y-2 pl-5 text-base leading-relaxed text-white/90 marker:text-white md:text-lg">
+                {HUMAN_CAUSES.map((cause) => (
+                  <li key={cause} className="list-disc pl-1">
+                    {cause}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.img
+              src="/HumanLang.png"
+              alt="โรงงานอุตสาหกรรมและมลพิษจากกิจกรรมของมนุษย์"
+              initial={{ opacity: 0, x: 24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.55, ease: 'easeOut' }}
+              className="order-3 aspect-[16/9] w-full object-cover lg:order-4"
+            />
+          </div>
         </div>
       </section>
     </>
