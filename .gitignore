@@ -8,3 +8,9 @@ count.txt
 .nitro
 .tanstack
 .wrangler
+
+# Next.js
+.next
+out
+build
+next-env.d.ts
