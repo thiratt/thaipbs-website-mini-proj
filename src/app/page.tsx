@@ -1,57 +1,42 @@
 "use client";
 
 import {
-	BudgetComparisonChart,
-	DroughtFoodMenu,
-	DroughtRecovery,
-	DroughtTraditions,
+	ChapterNavigation,
+	DroughtBudgetSection,
+	DroughtFoodSection,
+	DroughtImpactsSection,
+	DroughtInequalitySection,
+	DroughtOverviewSection,
+	DroughtRecoverySection,
+	DroughtTraditionsSection,
 	HeroSection,
-	IsanRiverBasins,
-	LangCircleSection,
-	MyLangIsNotEqual,
-	NavigationBar,
-	NewGenFooter,
-	TemperatureHistory,
-	ThaiRiverBasinsMap,
-	WhatIsLangSection,
+	IsanRiverBasinsSection,
+	SiteFooter,
+	TemperatureTrendSection,
+	ThailandRiverBasinsSection,
 } from "@/components";
 import { useActiveSection, useSectionNavigation, useSectionRefs } from "@/hooks";
 
-export default function RootPage() {
-	const {
-		sectionRefs,
-		heroSectionRef,
-		whatIsLangSectionRef,
-		langCircleSectionRef,
-		temperatureHistoryRef,
-		myLangIsNotEqualRef,
-		thaiRiverBasinsMapRef,
-		isanRiverBasinsRef,
-		droughtTraditionsRef,
-		droughtFoodMenuRef,
-		budgetComparisonChartRef,
-		droughtRecoveryRef,
-	} = useSectionRefs();
-
+export default function DocumentaryPage() {
+	const sectionRefs = useSectionRefs();
 	const activeSection = useActiveSection(sectionRefs);
 	const { scrollToSection } = useSectionNavigation(sectionRefs);
 
 	return (
 		<>
-			<NavigationBar activeSection={activeSection} onNavigate={scrollToSection} />
-			<HeroSection ref={heroSectionRef} nextPage={() => scrollToSection("แล้งคืออะไร")} />
-			<WhatIsLangSection ref={whatIsLangSectionRef} />
-			<LangCircleSection ref={langCircleSectionRef} />
-			<TemperatureHistory ref={temperatureHistoryRef} />
-			<MyLangIsNotEqual ref={myLangIsNotEqualRef} />
-			<BudgetComparisonChart ref={budgetComparisonChartRef} />
-			{/* <HeatImpactChart ref={heatImpactChartRef} /> */}
-			<ThaiRiverBasinsMap ref={thaiRiverBasinsMapRef} />
-			<IsanRiverBasins ref={isanRiverBasinsRef} />
-			<DroughtTraditions ref={droughtTraditionsRef} />
-			<DroughtFoodMenu ref={droughtFoodMenuRef} />
-			<DroughtRecovery ref={droughtRecoveryRef} />
-			<NewGenFooter ref={null} />
+			<ChapterNavigation activeSection={activeSection} onNavigate={scrollToSection} />
+			<HeroSection ref={sectionRefs.home} onContinue={() => scrollToSection("drought-overview")} />
+			<DroughtOverviewSection ref={sectionRefs["drought-overview"]} />
+			<DroughtImpactsSection ref={sectionRefs["drought-impacts"]} />
+			<TemperatureTrendSection ref={sectionRefs["temperature-trend"]} />
+			<DroughtInequalitySection ref={sectionRefs["drought-inequality"]} />
+			<DroughtBudgetSection ref={sectionRefs["drought-budget"]} />
+			<ThailandRiverBasinsSection ref={sectionRefs["thailand-basins"]} />
+			<IsanRiverBasinsSection ref={sectionRefs["isan-basins"]} />
+			<DroughtTraditionsSection ref={sectionRefs["drought-traditions"]} />
+			<DroughtFoodSection ref={sectionRefs["drought-food"]} />
+			<DroughtRecoverySection ref={sectionRefs["drought-recovery"]} />
+			<SiteFooter />
 		</>
 	);
 }

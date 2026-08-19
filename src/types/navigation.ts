@@ -1,26 +1,11 @@
-export interface NavItem {
-  label: string
-}
+import type { SectionId } from '@/config/sections'
 
-export interface NavigationBarProps {
-  activeSection?: string
-  onNavigate?: (sectionName: SectionName) => void
+export interface ChapterNavigationProps {
+  activeSection?: SectionId
+  onNavigate?: (sectionId: SectionId) => void
 }
-
-export type SectionName =
-  | 'หน้าหลัก'
-  | 'แล้งคืออะไร'
-  | 'สถิติ'
-  | 'แล้งเราไม่เท่ากัน'
-  | 'ผลกระทบ'
-  | 'ลุ่มน้ำไทย'
-  | 'ลุ่มน้ำอีสาน'
-  | 'ประเพณีในหน้าแล้ง'
-  | 'อาหารรับมือแล้ง'
-  | 'งบประมาณ'
-  | 'การฟื้นฟู'
 
 export type SectionRefs = Record<
-  SectionName,
+  SectionId,
   React.RefObject<HTMLElement | null>
 >
