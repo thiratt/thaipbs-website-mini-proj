@@ -36,17 +36,10 @@ export default function RootPage() {
 	const activeSection = useActiveSection(sectionRefs);
 	const { scrollToSection } = useSectionNavigation(sectionRefs);
 
-	const scrollToWhatIsLangSection = () => {
-		whatIsLangSectionRef.current?.scrollIntoView({
-			behavior: "smooth",
-			block: "start",
-		});
-	};
-
 	return (
 		<>
 			<NavigationBar activeSection={activeSection} onNavigate={scrollToSection} />
-			<HeroSection ref={heroSectionRef} nextPage={scrollToWhatIsLangSection} />
+			<HeroSection ref={heroSectionRef} nextPage={() => scrollToSection("แล้งคืออะไร")} />
 			<WhatIsLangSection ref={whatIsLangSectionRef} />
 			<LangCircleSection ref={langCircleSectionRef} />
 			<TemperatureHistory ref={temperatureHistoryRef} />

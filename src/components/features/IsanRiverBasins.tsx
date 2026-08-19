@@ -1,12 +1,13 @@
 import { forwardRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { Map, Waves } from 'lucide-react'
+import { Waves } from 'lucide-react'
 import { PhotoProvider, PhotoView } from 'react-photo-view'
 import { cn } from '@/lib/utils'
 
 const BASIN_DATA = [
   {
     id: 1,
+    short: 'โขง',
     title: 'ลุ่มน้ำโขงตะวันออกเฉียงเหนือ',
     description:
       'ลุ่มน้ำโขงตะวันออกเฉียงเหนือมีความสำคัญอย่างยิ่งต่อการเกษตรกรรมและการประมงในพื้นที่ น้ำจากแม่น้ำโขงใช้ในการเพาะปลูกข้าว อ้อย และพืชเศรษฐกิจอื่นๆ รวมถึงการเลี้ยงสัตว์น้ำ นอกจากนี้ยังเป็นแหล่งน้ำดื่มและใช้ในครัวเรือนของประชาชนในพื้นที่',
@@ -14,6 +15,7 @@ const BASIN_DATA = [
   },
   {
     id: 2,
+    short: 'มูล',
     title: 'ลุ่มน้ำมูล',
     description:
       'ลุ่มน้ำมูลมีความสำคัญอย่างยิ่งต่อการเกษตรกรรมและการประมงในพื้นที่ เนื่องจากเป็นแหล่งน้ำที่สำคัญสำหรับการปลูกข้าว อ้อย มันสำปะหลัง และพืชอื่นๆ อีกทั้งยังเป็นที่อยู่อาศัยของสัตว์น้ำหลากหลายชนิด ทำให้เป็นแหล่งทรัพยากรธรรมชาติที่สำคัญสำหรับชุมชนในพื้นที่',
@@ -21,203 +23,187 @@ const BASIN_DATA = [
   },
   {
     id: 3,
+    short: 'ชี',
     title: 'ลุ่มน้ำชี',
     description:
       'ลุ่มน้ำชีมีบทบาทสำคัญในด้านเกษตรกรรม การประมง และวิถีชีวิตของชุมชนในพื้นที่ น้ำจากลุ่มน้ำชีใช้ในการเพาะปลูกข้าว ซึ่งเป็นพืชเศรษฐกิจหลักของภาคตะวันออกเฉียงเหนือ รวมถึงการปลูกพืชอื่นๆ เช่น อ้อย มันสำปะหลัง และผักต่างๆ นอกจากนี้ยังเป็นแหล่งประมงน้ำจืดที่สำคัญ ซึ่งมีปลาและสัตว์น้ำหลากหลายชนิด',
     image: 'chee.png',
   },
-]
+] as const
+
+type Basin = (typeof BASIN_DATA)[number]
+
+const VIDEOS = [
+  { title: 'เรื่องราวจากสายน้ำ 01', src: 'https://www.youtube.com/embed/-mDqtZeul2s' },
+  { title: 'เรื่องราวจากสายน้ำ 02', src: 'https://www.youtube.com/embed/OFkjTq93xFo' },
+  { title: 'เรื่องราวจากสายน้ำ 03', src: 'https://www.youtube.com/embed/Eotc982Ngrw' },
+  { title: 'เรื่องราวจากสายน้ำ 04', src: 'https://www.youtube.com/embed/en7VNTsU-SY' },
+  { title: 'เรื่องราวจากสายน้ำ 05', src: 'https://www.youtube.com/embed/7F_S_0nUfvo' },
+  { title: 'เรื่องราวจากสายน้ำ 06', src: 'https://www.youtube.com/embed/Eotc982Ngrw' },
+] as const
 
 export const IsanRiverBasins = forwardRef<HTMLElement>((_props, ref) => {
-  const [activeBasin, setActiveBasin] = useState(BASIN_DATA[0])
+  const [activeBasin, setActiveBasin] = useState<Basin>(BASIN_DATA[0])
 
   return (
-    <section
-      ref={ref}
-      className="relative bg-[#003b5c] min-h-svh py-24 overflow-hidden"
-    >
-      <div
-        className="absolute inset-0 opacity-10 pointer-events-none"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle at 50% 50%, #63c5fc 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
-      />
+    <section ref={ref} className="relative overflow-clip bg-[#0d1517] py-24 text-white md:py-32 lg:py-36">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/12" />
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute right-[-20vw] top-[8%] size-[56vw] rounded-full bg-[#38bdf8]/7 blur-[210px]" />
+        <div className="absolute left-[-22vw] top-[48%] size-[48vw] rounded-full bg-[#38bdf8]/4 blur-[220px]" />
+        <div className="absolute right-[-5vw] top-[3%] hidden select-none text-[clamp(10rem,24vw,27rem)] font-black uppercase leading-none tracking-[-0.08em] text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.025)] lg:block">
+          ISAN
+        </div>
+      </div>
 
-      <div className="container mx-auto px-4 md:px-12 relative z-10 space-y-32">
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
-          <div className="w-full lg:w-1/3 space-y-8">
-            <div>
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-900/50 text-cyan-300 text-sm font-medium mb-4"
-              >
-                <Map size={16} />
-                DIGITAL ATLAS
-              </motion.div>
-              <motion.h2
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl font-bold text-white leading-tight"
-              >
-                3 ลุ่มน้ำหลัก
-                <br />
-                <span className="text-cyan-400">ภาคอีสาน</span>
-              </motion.h2>
+      <div className="relative z-10 mx-auto space-y-32 px-4 sm:px-8 lg:px-10">
+        <div className="grid items-start gap-12 lg:grid-cols-[0.48fr_1.52fr] lg:gap-16 xl:gap-24">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:sticky lg:top-28 lg:self-start"
+          >
+            <div className="border-t border-white/14 pt-5">
+              <div className="flex items-center gap-3 text-[0.66rem] font-black uppercase tracking-[0.22em] text-[#38bdf8] sm:text-xs">
+                <span className="h-px w-8 bg-[#38bdf8]" />
+                <span>Northeast · River systems</span>
+              </div>
+              <div className="mt-8 flex items-end gap-4">
+                <span className="text-[clamp(6rem,12vw,11rem)] font-black leading-[0.68] tracking-[-0.09em] text-[#38bdf8]">03</span>
+                <h2 className="pb-1 text-[clamp(2.2rem,4vw,4.4rem)] font-black leading-[0.9] tracking-[-0.055em]">
+                  ลุ่มน้ำหลัก
+                  <span className="block text-white/42">ภาคอีสาน</span>
+                </h2>
+              </div>
+              <p className="mt-7 max-w-sm text-sm font-medium leading-7 text-white/42 sm:text-base sm:leading-8">
+                สามระบบลุ่มน้ำที่หล่อเลี้ยงพื้นที่เกษตร การประมง และวิถีชีวิตของผู้คนในภาคตะวันออกเฉียงเหนือ
+              </p>
             </div>
 
-            <div className="space-y-4">
-              {BASIN_DATA.map((basin, index) => (
-                <motion.button
-                  key={basin.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + index * 0.1 }}
-                  onClick={() => setActiveBasin(basin)}
-                  className={cn(
-                    'w-full text-left p-6 rounded-2xl transition-all duration-300 border backdrop-blur-sm group',
-                    activeBasin.id === basin.id
-                      ? 'bg-cyan-500/10 border-cyan-400/50 shadow-[0_0_30px_rgba(34,211,238,0.15)]'
-                      : 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/20',
-                  )}
-                >
-                  <div className="flex items-center justify-between">
-                    <span
-                      className={cn(
-                        'text-lg font-bold transition-colors',
-                        activeBasin.id === basin.id
-                          ? 'text-cyan-300'
-                          : 'text-gray-300 group-hover:text-white',
-                      )}
-                    >
-                      {basin.title}
+            <div className="mt-10 border-y border-white/12">
+              {BASIN_DATA.map((basin, index) => {
+                const active = activeBasin.id === basin.id
+                return (
+                  <button
+                    key={basin.id}
+                    type="button"
+                    onClick={() => setActiveBasin(basin)}
+                    className="group relative grid w-full grid-cols-[2.5rem_1fr_auto] items-center gap-4 border-b border-white/10 py-6 text-left last:border-b-0"
+                  >
+                    <span className={cn('text-xs font-black tabular-nums transition-colors duration-300', active ? 'text-[#38bdf8]' : 'text-white/20 group-hover:text-white/45')}>
+                      {String(index + 1).padStart(2, '0')}
                     </span>
-                    {activeBasin.id === activeBasin.id && (
-                      <Waves
-                        size={20}
-                        className={cn(
-                          'transition-opacity duration-300',
-                          activeBasin.id === basin.id
-                            ? 'opacity-100 text-cyan-400'
-                            : 'opacity-0',
-                        )}
-                      />
-                    )}
-                  </div>
-                </motion.button>
-              ))}
+                    <span className={cn('text-[clamp(1.25rem,2vw,1.8rem)] font-black tracking-[-0.03em] transition-colors duration-300', active ? 'text-white' : 'text-white/42 group-hover:text-white/75')}>
+                      {basin.short}
+                    </span>
+                    <Waves className={cn('size-5 transition-all duration-300', active ? 'text-[#38bdf8] opacity-100' : '-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:text-white/35 group-hover:opacity-100')} />
+                    <span className={cn('absolute inset-y-0 left-0 w-px origin-center bg-[#38bdf8] transition-transform duration-300', active ? 'scale-y-100' : 'scale-y-0')} />
+                  </button>
+                )
+              })}
             </div>
-          </div>
+            <div className="mt-5 flex justify-between text-[0.6rem] font-black uppercase tracking-[0.18em] text-white/22">
+              <span>เลือกเพื่อสำรวจ</span>
+              <span>{String(activeBasin.id).padStart(2, '0')} / 03</span>
+            </div>
+          </motion.div>
 
-          <div className="w-full lg:w-2/3">
+          <div className="min-w-0">
             <AnimatePresence mode="wait">
-              <motion.div
+              <motion.article
                 key={activeBasin.id}
-                initial={{ opacity: 0, y: 20, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0.98 }}
-                transition={{ duration: 0.4 }}
-                className="relative bg-black/20 backdrop-blur-xl rounded-[2.5rem] p-2 border border-white/10 overflow-hidden"
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -14 }}
+                transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="relative aspect-video rounded-4xl overflow-hidden bg-[#002639]">
+                <div className="border-y border-white/12 py-5">
+                  <div className="mb-5 flex items-center justify-between gap-5 text-[0.62rem] font-black uppercase tracking-[0.18em] text-white/25">
+                    <span>Digital basin atlas</span>
+                    <span>Click map to enlarge</span>
+                  </div>
                   <PhotoProvider>
                     <PhotoView src={activeBasin.image}>
-                      <img
-                        src={activeBasin.image}
-                        alt={activeBasin.title}
-                        className="w-full h-full object-contain p-8 hover:scale-105 transition-transform duration-700 cursor-zoom-in"
-                      />
+                      <div className="group relative flex min-h-[390px] cursor-zoom-in items-center justify-center overflow-hidden bg-[#111d20] px-5 py-8 sm:min-h-[500px] sm:px-8 lg:min-h-[620px]">
+                        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_62%_42%,rgba(56,189,248,0.12),transparent_36%)]" />
+                        <img
+                          src={activeBasin.image}
+                          alt={activeBasin.title}
+                          className="relative z-10 max-h-[560px] w-full object-contain drop-shadow-[0_24px_55px_rgba(0,0,0,0.48)] transition-transform duration-700 group-hover:scale-[1.025]"
+                        />
+                      </div>
                     </PhotoView>
                   </PhotoProvider>
                 </div>
 
-                <div className="p-8 space-y-4">
-                  <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-                    {activeBasin.title}
-                    <div className="h-px flex-1 bg-linear-to-r from-cyan-500/50 to-transparent" />
-                  </h3>
-                  <p className="text-cyan-100/80 leading-relaxed text-lg">
+                <div className="grid gap-7 border-b border-white/12 py-8 md:grid-cols-[0.55fr_1.45fr] md:gap-12 lg:py-10">
+                  <div>
+                    <p className="text-[0.62rem] font-black uppercase tracking-[0.18em] text-[#38bdf8]">
+                      Basin {String(activeBasin.id).padStart(2, '0')}
+                    </p>
+                    <h3 className="mt-3 text-[clamp(2rem,3.2vw,3.4rem)] font-black leading-[1.05] tracking-[-0.045em]">
+                      {activeBasin.title}
+                    </h3>
+                  </div>
+                  <p className="max-w-3xl text-sm font-medium leading-7 text-white/52 sm:text-base sm:leading-8">
                     {activeBasin.description}
                   </p>
                 </div>
-              </motion.div>
+              </motion.article>
             </AnimatePresence>
           </div>
         </div>
 
-        <div className="space-y-12">
-          <div className="text-center space-y-4">
-            <h3 className="text-3xl md:text-4xl font-bold text-white">
-              เรื่องราวจาก<span className="text-cyan-400">สายน้ำ</span>
+        <div className="border-t border-white/12 pt-10 lg:pt-14">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+            className="grid gap-8 lg:grid-cols-[0.62fr_1.38fr] lg:gap-16"
+          >
+            <div>
+              <p className="text-[0.66rem] font-black uppercase tracking-[0.2em] text-[#38bdf8]">Stories from the river</p>
+              <p className="mt-4 max-w-sm text-sm font-medium leading-7 text-white/40 sm:text-base">
+                จากเส้นบนแผนที่ สู่ชีวิตจริงของผู้คนที่ผูกพันกับแม่น้ำ
+              </p>
+            </div>
+            <h3 className="text-[clamp(3rem,6vw,6.8rem)] font-black leading-[0.86] tracking-[-0.06em]">
+              เรื่องราวจาก
+              <span className="block text-[#38bdf8]">สายน้ำ</span>
             </h3>
-            <p className="text-cyan-200/60 max-w-2xl mx-auto">
-              สำรวจวิถีชีวิตและวัฒนธรรมที่ผูกพันกับแม่น้ำผ่านสารคดีสั้น
-            </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-            {[
-              {
-                title: 'วิดีโอ 1',
-                src: 'https://www.youtube.com/embed/-mDqtZeul2s',
-              },
-              {
-                title: 'วิดีโอ 2',
-                src: 'https://www.youtube.com/embed/OFkjTq93xFo',
-              },
-              {
-                title: 'วิดีโอ 3',
-                src: 'https://www.youtube.com/embed/Eotc982Ngrw',
-              },
-              {
-                title: 'วิดีโอ 4',
-                src: 'https://www.youtube.com/embed/en7VNTsU-SY',
-              },
-              {
-                title: 'วิดีโอ 5',
-                src: 'https://www.youtube.com/embed/7F_S_0nUfvo',
-              },
-              {
-                title: 'วิดีโอ 6',
-                src: 'https://www.youtube.com/embed/Eotc982Ngrw',
-              },
-            ].map((video, idx) => (
-              <motion.div
+          <div className="mt-12 grid gap-x-8 gap-y-12 md:grid-cols-2 lg:mt-16 lg:gap-x-10 lg:gap-y-16">
+            {VIDEOS.map((video, index) => (
+              <motion.article
                 key={`${video.title}-${video.src}`}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 26 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.08 }}
-                className="relative aspect-video overflow-hidden rounded-3xl border border-white/10 bg-black shadow-2xl"
+                viewport={{ once: true, margin: '-70px' }}
+                transition={{ duration: 0.55, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }}
+                className={cn(index % 2 === 1 && 'md:translate-y-16')}
               >
-                <iframe
-                  src={video.src}
-                  title={video.title}
-                  className="absolute inset-0 h-full w-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                />
-              </motion.div>
+                <div className="mb-4 flex items-center justify-between border-t border-white/12 pt-4 text-[0.62rem] font-black uppercase tracking-[0.18em] text-white/24">
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <span>Documentary</span>
+                </div>
+                <div className="relative aspect-video overflow-hidden bg-black">
+                  <iframe
+                    src={video.src}
+                    title={video.title}
+                    className="absolute inset-0 h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
+              </motion.article>
             ))}
           </div>
         </div>
-      </div>
-
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden pointer-events-none opacity-20">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-          <path
-            fill="#63c5fc"
-            fillOpacity="1"
-            d="M0,256L80,245.3C160,235,320,213,480,208C640,203,800,213,960,213.3C1120,213,1280,203,1360,197.3L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"
-          ></path>
-        </svg>
       </div>
     </section>
   )

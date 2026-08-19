@@ -10,7 +10,6 @@ export interface NavigationBarProps {
 export type SectionName =
   | 'หน้าหลัก'
   | 'แล้งคืออะไร'
-  | 'วัฏจักรฤดูแล้ง'
   | 'สถิติ'
   | 'แล้งเราไม่เท่ากัน'
   | 'ผลกระทบ'

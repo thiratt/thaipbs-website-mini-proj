@@ -1,201 +1,380 @@
-import { forwardRef } from 'react'
-import { motion } from 'motion/react'
+import { forwardRef, useEffect, useRef } from "react";
+import { motion } from "motion/react";
 
-const DROUGHT_DESCRIPTION = `ภัยแล้งเป็นภัยธรรมชาติที่เกิดจากการขาดแคลนน้ำ
-เป็นระยะเวลานานเป็นเดือนๆ หรือเป็นปี
-โดยทั่วไปเกิดขึ้นเมื่อพื้นที่ได้รับน้ำอย่างสม่ำเสมอมี
-ฝนตกต่ำกว่าค่าเฉลี่ย
-เกิดผลกระทบอย่างมากต่อการดำรงชีวิต
-การเกษตร และระบบนิเวศในพื้นที่ที่เกิดภัย`
+const PARTICIPATION_URL = "https://wordcloud.csitereport.com/addans?token=79eb60ac96065196d3effdfc23c5961e";
+
+function ParticipationQrCode() {
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		let cancelled = false;
+
+		const renderQrCode = async () => {
+			const { default: QRCodeStyling } = await import("qr-code-styling");
+
+			if (cancelled || !containerRef.current) return;
+
+			containerRef.current.replaceChildren();
+
+			const qrCode = new QRCodeStyling({
+				width: 300,
+				height: 300,
+				type: "canvas",
+				data: PARTICIPATION_URL,
+				qrOptions: {
+					errorCorrectionLevel: "H",
+				},
+				dotsOptions: {
+					color: "#171714",
+					type: "rounded",
+				},
+				cornersSquareOptions: {
+					color: "#f18717",
+					type: "extra-rounded",
+				},
+				cornersDotOptions: {
+					color: "#171714",
+					type: "dot",
+				},
+				backgroundOptions: {
+					color: "#ffffff",
+				},
+				image: "/Logo.png",
+				imageOptions: {
+					margin: 4,
+				},
+			});
+
+			qrCode.append(containerRef.current);
+		};
+
+		void renderQrCode();
+
+		return () => {
+			cancelled = true;
+			containerRef.current?.replaceChildren();
+		};
+	}, []);
+
+	return (
+		<a
+			href={PARTICIPATION_URL}
+			target="_blank"
+			rel="noreferrer"
+			aria-label="เปิดหน้าร่วมตอบคำถามเกี่ยวกับคำว่าแล้ง"
+			className="group block w-[min(72vw,20rem)]"
+		>
+			<div className="relative overflow-hidden rounded-4xl bg-white p-3 shadow-[0_28px_90px_rgba(0,0,0,0.32)] ring-1 ring-white/14 transition-transform duration-300 group-hover:-translate-y-1">
+				<div ref={containerRef} className="aspect-square w-full [&_svg]:block [&_svg]:h-full [&_svg]:w-full" />
+			</div>
+		</a>
+	);
+}
+
+const DROUGHT_DEFINITION = [
+	"ภัยแล้งเป็นภัยธรรมชาติที่เกิดจากการขาดแคลนน้ำเป็นระยะเวลานาน เป็นเดือน ๆ หรือเป็นปี",
+	"โดยทั่วไปเกิดขึ้นเมื่อพื้นที่ที่ได้รับน้ำอย่างสม่ำเสมอมีฝนตกต่ำกว่าค่าเฉลี่ย",
+	"ส่งผลกระทบอย่างมากต่อการดำรงชีวิต การเกษตร และระบบนิเวศในพื้นที่ที่เกิดภัย",
+];
 
 const NATURAL_CAUSES = [
-  'การเปลี่ยนแปลงอุณหภูมิโลก เช่น ระบบการหมุนเวียนหรือส่วนผสมของบรรยากาศเปลี่ยนแปลง สภาวะอากาศในฤดูร้อนที่ร้อนมากกว่าปกติ',
-  'การเปลี่ยนแปลงสภาพภูมิอากาศและสิ่งแวดล้อม เช่น ฝนทิ้งช่วง ฝนตกน้อย ดินเก็บความชื้นต่ำได้ไม่ดี ปริมาณน้ำใต้ดินมีน้อย',
-  'การเปลี่ยนแปลงของระดับน้ำทะเล',
-  'ความผิดปกติของตำแหน่งร่องมรสุมทำให้ฝนตกในพื้นที่ไม่ต่อเนื่อง',
-  'ความผิดปกติเนื่องจากพายุหมุนเขตร้อนเคลื่อนที่ผ่านประเทศน้อยกว่าปกติ',
-]
+	"การเปลี่ยนแปลงอุณหภูมิโลก เช่น ระบบการหมุนเวียนหรือส่วนผสมของบรรยากาศเปลี่ยนแปลง สภาวะอากาศในฤดูร้อนที่ร้อนมากกว่าปกติ",
+	"การเปลี่ยนแปลงสภาพภูมิอากาศและสิ่งแวดล้อม เช่น ฝนทิ้งช่วง ฝนตกน้อย ดินเก็บความชื้นต่ำได้ไม่ดี ปริมาณน้ำใต้ดินมีน้อย",
+	"การเปลี่ยนแปลงของระดับน้ำทะเล",
+	"ความผิดปกติของตำแหน่งร่องมรสุมทำให้ฝนตกในพื้นที่ไม่ต่อเนื่อง",
+	"ความผิดปกติเนื่องจากพายุหมุนเขตร้อนเคลื่อนที่ผ่านประเทศน้อยกว่าปกติ",
+];
 
 const HUMAN_CAUSES = [
-  'การใช้น้ำอย่างไม่เหมาะสมหรือสิ้นเปลืองเกินไป ทั้งการอุปโภค บริโภค และการเกษตร ทำให้ปริมาณน้ำในอ่างเก็บน้ำและน้ำใต้ดินลดลง',
-  'พฤติกรรมการดำรงชีวิตของมนุษย์ที่ทำลายชั้นโอโซน เกิดภาวะเรือนกระจก ทำให้อุณหภูมิของโลกสูงขึ้น เช่น การเผาพลาสติก น้ำมัน และถ่านหิน',
-  'การพัฒนาด้านต่าง ๆ โดยเฉพาะด้านอุตสาหกรรม ทำให้เกิดการตัดไม้ทำลายป่า ส่งผลให้ความชื้นสัมพัทธ์ไม่เพียงพอ เนื่องจากขาดต้นไม้ซับน้ำ และเกิดการบุกรุกพื้นที่ป่าถือครองกรรมสิทธิ์ปลูกพืชไร่',
-  'ระบบการเพาะปลูกและความถี่ของการเพาะปลูก',
-  'ขาดการวางแผนการสร้างแหล่งกักเก็บน้ำไว้ใช้ประโยชน์ยามขาดน้ำฝน',
-]
+	"การใช้น้ำอย่างไม่เหมาะสมหรือสิ้นเปลืองเกินไป ทั้งการอุปโภค บริโภค และการเกษตร ทำให้ปริมาณน้ำในอ่างเก็บน้ำและน้ำใต้ดินลดลง",
+	"พฤติกรรมการดำรงชีวิตของมนุษย์ที่ทำลายชั้นโอโซน เกิดภาวะเรือนกระจก ทำให้อุณหภูมิของโลกสูงขึ้น เช่น การเผาพลาสติก น้ำมัน และถ่านหิน",
+	"การพัฒนาด้านต่าง ๆ โดยเฉพาะด้านอุตสาหกรรม ทำให้เกิดการตัดไม้ทำลายป่า ส่งผลให้ความชื้นสัมพัทธ์ไม่เพียงพอ เนื่องจากขาดต้นไม้ซับน้ำ และเกิดการบุกรุกพื้นที่ป่าถือครองกรรมสิทธิ์ปลูกพืชไร่",
+	"ระบบการเพาะปลูกและความถี่ของการเพาะปลูก",
+	"ขาดการวางแผนการสร้างแหล่งกักเก็บน้ำไว้ใช้ประโยชน์ยามขาดน้ำฝน",
+];
 
 const WhatIsLangSection = forwardRef<HTMLElement>((_props, ref) => {
-  return (
-    <>
-      <section
-        ref={ref}
-        className="relative -mt-px flex items-center justify-center bg-[#232323] px-6 py-20 text-white"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="flex w-full max-w-3xl flex-col items-center text-center"
-        >
-          <h2 className="text-2xl font-bold leading-relaxed tracking-tight md:text-5xl">
-            เมื่อพูดถึงคำว่า{' '}
-            <span className="text-orange-500">&quot;แล้ง&quot;</span>{' '}
-            นึกถึงอะไร?
-          </h2>
+	return (
+		<>
+			<section ref={ref} className="relative overflow-clip bg-[#171714] text-white">
+				<div className="pointer-events-none absolute inset-0">
+					<div className="absolute right-[-18vw] top-[6%] size-[58vw] rounded-full bg-[#f18717]/5 blur-[150px]" />
+					<div className="absolute right-[-14vw] top-[28%] size-[56vw] rounded-full bg-[#f18717]/5 blur-[180px]" />
+					<div className="absolute left-[-22vw] top-[55%] size-[50vw] rounded-full bg-[#f18717]/4 blur-[190px]" />
+					<div className="absolute right-[-18vw] top-[78%] size-[48vw] rounded-full bg-[#f18717]/4 blur-[190px]" />
+					<div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(23,23,20,0)_0%,rgba(0,0,0,0.04)_42%,rgba(0,0,0,0.12)_100%)]" />
+				</div>
 
-          <motion.img
-            src="/wordcloud.png"
-            alt="QR Code สำหรับเข้าร่วมตอบคำถามเกี่ยวกับคำว่าแล้ง"
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: 0.1, ease: 'easeOut' }}
-            className="mt-14 w-40 object-contain sm:w-44 md:mt-16 md:w-72"
-          />
+				<div className="relative mx-auto grid items-center gap-14 px-4 py-28 sm:px-8 md:grid-cols-[0.9fr_1.1fr] md:gap-10 lg:px-10 lg:py-32 xl:gap-20">
+					<motion.div
+						initial={{ opacity: 0, y: 22 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true, margin: "-80px" }}
+						transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+						className="max-w-2xl"
+					>
+						<h2 className="text-[clamp(3.4rem,7vw,7.4rem)] font-black leading-[0.9] tracking-[-0.065em]">
+							เมื่อพูดถึง
+							<span className="block text-[#f18717]">“แล้ง”</span>
+							<span className="block text-white/92">นึกถึงอะไร?</span>
+						</h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: 0.18, ease: 'easeOut' }}
-            className="mt-14 text-xl font-bold leading-relaxed sm:text-2xl md:mt-16 md:text-5xl"
-          >
-            สแกนเข้าร่วมเพื่อเป็นส่วนหนึ่งกับเรา
-          </motion.p>
-        </motion.div>
-      </section>
+						<p className="mt-8 max-w-md text-sm font-medium leading-7 text-white/54 sm:text-base sm:leading-8">
+							ความหมายของความแห้งแล้งอาจไม่เหมือนกันสำหรับทุกคน
+							ลองมองคำนี้ผ่านประสบการณ์ของผู้คนก่อนเข้าสู่เรื่องราวของภัยแล้ง
+						</p>
+					</motion.div>
 
-      <section className="relative min-h-[34rem] overflow-hidden bg-[#232323] px-6 text-white md:min-h-[39rem] md:px-10">
-        <div className="pointer-events-none absolute inset-x-0 top-8 flex justify-center md:top-10">
-          <div className="relative select-none whitespace-nowrap text-[clamp(4.5rem,12.5vw,11rem)] font-black uppercase leading-none tracking-[0.3em] text-white/20">
-            <span>Droughts</span>
-            <span
-              aria-hidden="true"
-              className="absolute inset-0 text-white/18 blur-[6px] [clip-path:inset(48%_-20px_-20px_-20px)]"
-            >
-              Droughts
-            </span>
-          </div>
-        </div>
+					<motion.div
+						initial={{ opacity: 0, scale: 0.97, y: 18 }}
+						whileInView={{ opacity: 1, scale: 1, y: 0 }}
+						viewport={{ once: true, margin: "-80px" }}
+						transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+						className="relative flex min-h-80 flex-col items-center justify-center gap-6 md:min-h-120"
+					>
+						<ParticipationQrCode />
+						<p className="text-center text-xs font-bold tracking-[0.08em] text-white/60 sm:text-base">
+							สแกนหรือแตะเพื่อร่วมตอบคำถาม
+						</p>
+					</motion.div>
+				</div>
 
-        <div className="relative z-10 mx-auto flex min-h-[34rem] max-w-4xl flex-col items-center text-center md:min-h-[39rem]">
-          <motion.h2
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="mt-28 text-[clamp(3.5rem,6vw,5.25rem)] font-black leading-none tracking-tight md:mt-46"
-          >
-            <span className="text-orange-500">ภัยแล้ง</span>
-            <span className="text-white">?</span>
-          </motion.h2>
+				<div className="relative border-white/10">
+					<div className="pointer-events-none absolute inset-0 overflow-hidden">
+						<div className="absolute right-[-2vw] top-[18%] hidden select-none text-[clamp(12rem,28vw,32rem)] font-black leading-none tracking-[-0.08em] text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.055)] lg:block">
+							แล้ง
+						</div>
+					</div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.55, delay: 0.08, ease: 'easeOut' }}
-            className="mt-24 max-w-2xl whitespace-pre-line text-[0.95rem] font-medium leading-[1.45] text-white/88 sm:text-base md:mt-28 md:text-3xl"
-          >
-            {`“${DROUGHT_DESCRIPTION}”`}
-          </motion.p>
-        </div>
-      </section>
+					<div className="relative mx-auto px-4 pb-24 pt-6 sm:px-8 md:pb-32 md:pt-8 lg:px-10 lg:pb-36 lg:pt-10">
+						<motion.div
+							initial={{ opacity: 0, y: 14 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true, margin: "-80px" }}
+							transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+							className="flex items-center gap-4 border-t border-white/14 pt-5 text-[0.68rem] font-black uppercase tracking-[0.22em] text-white/42"
+						>
+							<span>Drought / Definition</span>
+						</motion.div>
 
-      <section className="relative overflow-hidden bg-[#232323] px-5 py-20 text-white md:px-8 md:py-28">
-        <div className="mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.55, ease: 'easeOut' }}
-            className="mb-12 max-w-3xl md:mb-16"
-          >
-            <h2 className="text-4xl font-black tracking-tight md:text-6xl">
-              สาเหตุการเกิด <span className="text-[#f18717]">ภัยแล้ง</span>
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-white/60 md:text-xl">
-              ภัยแล้งไม่ได้เกิดจากธรรมชาติเพียงอย่างเดียว
-              แต่ยังเกิดจากกิจกรรมของมนุษย์ที่ทำให้วงจรน้ำและสภาพแวดล้อมเปลี่ยนแปลงไป
-            </p>
-          </motion.div>
+						<div className="mt-14 grid gap-14 lg:mt-20 lg:grid-cols-[0.68fr_1.32fr] lg:gap-20 xl:gap-28">
+							<motion.div
+								initial={{ opacity: 0, x: -24 }}
+								whileInView={{ opacity: 1, x: 0 }}
+								viewport={{ once: true, margin: "-80px" }}
+								transition={{ duration: 0.68, ease: [0.22, 1, 0.36, 1] }}
+								className="relative lg:sticky lg:top-28 lg:self-start"
+							>
+								<div className="absolute -left-4 top-2 h-[72%] w-px bg-linear-to-b from-[#f18717] via-[#f18717]/45 to-transparent sm:-left-8" />
+								<h2 className="flex text-[clamp(5.5rem,11vw,11rem)] font-black leading-[0.72] tracking-[-0.08em] sm:flex-col">
+									ภัย
+									<span className="block text-[#f18717] sm:ml-10 md:ml-12 lg:ml-16">แล้ง</span>
+								</h2>
+								<p className="mt-8 max-w-sm text-sm font-semibold leading-7 text-white/46 sm:text-base sm:leading-8">
+									ภัยแล้งไม่ใช่เพียงช่วงเวลาที่ฝนไม่ตก แต่คือความขาดแคลนน้ำที่ยืดเยื้อจนกระทบต่อชีวิต
+									การเกษตร และระบบนิเวศ
+								</p>
+							</motion.div>
 
-          <div className="space-y-6 md:space-y-8">
-            <motion.article
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.55, ease: 'easeOut' }}
-              className="grid overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035] lg:grid-cols-[0.9fr_1.1fr]"
-            >
-              <img
-                src="/NatureLang.png"
-                alt="พื้นที่แห้งแล้งจากสาเหตุทางธรรมชาติ"
-                className="h-full min-h-72 w-full object-cover lg:min-h-[30rem]"
-              />
+							<div className="relative">
+								<motion.div
+									initial={{ scaleX: 0 }}
+									whileInView={{ scaleX: 1 }}
+									viewport={{ once: true, margin: "-100px" }}
+									transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+									className="h-px origin-left bg-linear-to-r from-[#f18717] via-[#f18717]/55 to-white/10"
+								/>
 
-              <div className="flex flex-col justify-center p-7 md:p-10 lg:p-12">
-                <div className="mb-5 flex items-baseline gap-4">
-                  <span className="text-sm font-black tracking-[0.2em] text-[#f18717]">
-                    01
-                  </span>
-                  <h3 className="text-2xl font-black md:text-4xl">
-                    โดยธรรมชาติ
-                  </h3>
-                </div>
+								<motion.div
+									initial={{ opacity: 0, y: 26 }}
+									whileInView={{ opacity: 1, y: 0 }}
+									viewport={{ once: true, margin: "-80px" }}
+									transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+									className="grid gap-5 py-9 md:grid-cols-[4rem_1fr] md:py-12"
+								>
+									<span className="pt-2 text-xs font-black tabular-nums text-[#f18717]">01</span>
+									<p className="text-[clamp(2.1rem,4.7vw,5rem)] font-black leading-[1.04] tracking-tighter text-white">
+										{DROUGHT_DEFINITION[0]}
+									</p>
+								</motion.div>
 
-                <ul className="space-y-4 text-sm leading-relaxed text-white/75 md:text-base">
-                  {NATURAL_CAUSES.map((cause) => (
-                    <li key={cause} className="flex gap-3">
-                      <span className="mt-[0.65em] size-1.5 shrink-0 rounded-full bg-[#f18717]" />
-                      <span>{cause}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.article>
+								<div className="border-t border-white/12">
+									{DROUGHT_DEFINITION.slice(1).map((paragraph, index) => (
+										<motion.div
+											key={paragraph}
+											initial={{ opacity: 0, x: 22 }}
+											whileInView={{ opacity: 1, x: 0 }}
+											viewport={{ once: true, margin: "-80px" }}
+											transition={{
+												duration: 0.58,
+												delay: 0.12 + index * 0.07,
+												ease: [0.22, 1, 0.36, 1],
+											}}
+											className="group grid gap-5 border-b border-white/12 py-7 md:grid-cols-[4rem_1fr] md:py-9"
+										>
+											<span className="pt-1 text-xs font-black tabular-nums text-white/25 transition-colors duration-300 group-hover:text-[#f18717]">
+												0{index + 2}
+											</span>
+											<p className="text-[clamp(1.25rem,2.2vw,2rem)] font-bold leading-[1.4] tracking-tight text-white/72 transition-colors duration-300 group-hover:text-white">
+												{paragraph}
+											</p>
+										</motion.div>
+									))}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
-            <motion.article
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.55, delay: 0.08, ease: 'easeOut' }}
-              className="grid overflow-hidden rounded-3xl border border-white/10 bg-white/[0.035] lg:grid-cols-[1.1fr_0.9fr]"
-            >
-              <div className="order-2 flex flex-col justify-center p-7 md:p-10 lg:order-1 lg:p-12">
-                <div className="mb-5 flex items-baseline gap-4">
-                  <span className="text-sm font-black tracking-[0.2em] text-[#f18717]">
-                    02
-                  </span>
-                  <h3 className="text-2xl font-black md:text-4xl">
-                    โดยการกระทำของมนุษย์
-                  </h3>
-                </div>
+				<div className="relative border-white/8">
+					<div className="pointer-events-none absolute inset-0 overflow-hidden">
+						<div className="absolute right-[-2vw] top-0 hidden text-[clamp(8rem,19vw,21rem)] font-black uppercase leading-none tracking-[-0.08em] text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.075)] lg:block">
+							Causes
+						</div>
+					</div>
 
-                <ul className="space-y-4 text-sm leading-relaxed text-white/75 md:text-base">
-                  {HUMAN_CAUSES.map((cause) => (
-                    <li key={cause} className="flex gap-3">
-                      <span className="mt-[0.65em] size-1.5 shrink-0 rounded-full bg-[#f18717]" />
-                      <span>{cause}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+					<div className="relative mx-auto px-4 pb-16 pt-12 sm:px-8 sm:pt-16 md:pb-24 md:pt-20 lg:px-10 lg:pb-28 lg:pt-24">
+						<motion.div
+							initial={{ opacity: 0, y: 18 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true, margin: "-90px" }}
+							transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+							className="border-t border-white/14 pt-8 md:pt-10"
+						>
+							<div className="max-w-5xl">
+								<div className="flex items-center gap-3 text-xs font-black uppercase tracking-[0.22em] text-[#f18717]">
+									<span className="h-px w-8 bg-[#f18717]" />
+									<span>Why drought happens</span>
+								</div>
 
-              <img
-                src="/HumanLang.png"
-                alt="โรงงานอุตสาหกรรมและมลพิษจากกิจกรรมของมนุษย์"
-                className="order-1 h-full min-h-72 w-full object-cover lg:order-2 lg:min-h-[30rem]"
-              />
-            </motion.article>
-          </div>
-        </div>
-      </section>
-    </>
-  )
-})
+								<h2 className="mt-6 text-[clamp(3.7rem,7.2vw,7.2rem)] font-black leading-[0.95] tracking-[-0.065em]">
+									<span className="block text-white">สาเหตุของ</span>
+									<span className="block text-[#f18717]">ภัยแล้ง</span>
+								</h2>
 
-WhatIsLangSection.displayName = 'WhatIsLangSection'
+								<p className="mt-6 max-w-2xl text-sm font-medium leading-7 text-white/56 sm:text-base sm:leading-8">
+									ภัยแล้งไม่ได้เกิดจากปัจจัยเดียว
+									แต่เป็นผลจากทั้งธรรมชาติและกิจกรรมของมนุษย์ที่ซ้อนทับกัน
+								</p>
+							</div>
+						</motion.div>
+					</div>
 
-export { WhatIsLangSection }
+					<article className="relative border-y border-white/12 lg:grid lg:grid-cols-2">
+						<div className="relative min-h-[60svh] overflow-hidden lg:sticky lg:top-0 lg:h-svh">
+							<motion.img
+								src="/NatureLang.png"
+								alt="พื้นที่แห้งแล้งจากสาเหตุทางธรรมชาติ"
+								initial={{ scale: 1.05 }}
+								whileInView={{ scale: 1 }}
+								viewport={{ once: true }}
+								transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+								className="absolute inset-0 h-full w-full object-cover"
+							/>
+							<div className="absolute inset-0 bg-linear-to-t from-[#171714]/90 via-[#171714]/18 to-black/10" />
+							<div className="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-[#171714]/24" />
+							<div className="absolute inset-x-5 bottom-6 flex items-end justify-between gap-6 sm:inset-x-8 sm:bottom-8 lg:inset-x-10 lg:bottom-10">
+								<div>
+									<p className="text-xs font-black uppercase tracking-[0.24em] text-[#f18717]">
+										Natural factors
+									</p>
+									<p className="mt-2 text-[clamp(2.5rem,5vw,5.5rem)] font-black leading-none tracking-tighter">
+										ธรรมชาติ
+									</p>
+								</div>
+								<span className="text-[clamp(4rem,8vw,8rem)] font-black leading-none tabular-nums text-white/12">
+									01
+								</span>
+							</div>
+						</div>
+
+						<div className="relative flex flex-col justify-center px-4 py-16 sm:px-8 sm:py-20 lg:min-h-[112svh] lg:px-12 lg:py-28 xl:px-16">
+							<div className="mb-10 flex items-center gap-4 text-sm font-black uppercase tracking-[0.22em] text-white/60">
+								<span className="h-px w-10 bg-[#f18717]" />
+								<span>เกิดขึ้นจากระบบธรรมชาติที่เปลี่ยนไป</span>
+							</div>
+							<ul className="border-t border-white/14">
+								{NATURAL_CAUSES.map((cause, index) => (
+									<motion.li
+										key={cause}
+										initial={{ opacity: 0, x: 18 }}
+										whileInView={{ opacity: 1, x: 0 }}
+										viewport={{ once: true, margin: "-70px" }}
+										transition={{ duration: 0.5, delay: index * 0.045, ease: [0.22, 1, 0.36, 1] }}
+										className="group grid gap-4 border-b border-white/12 py-6 sm:grid-cols-[2.5rem_1fr] sm:py-7"
+									>
+										<span className="pt-1 text-xs font-black tabular-nums text-white/22 transition-colors duration-300 group-hover:text-[#f18717]">
+											{String(index + 1).padStart(2, "0")}
+										</span>
+										<p className="text-base font-semibold leading-7 text-white/68 transition-colors duration-300 group-hover:text-white sm:text-lg sm:leading-8">
+											{cause}
+										</p>
+									</motion.li>
+								))}
+							</ul>
+						</div>
+					</article>
+
+					<article className="relative border-b border-white/12 lg:grid lg:grid-cols-2">
+						<div className="order-2 relative min-h-[60svh] overflow-hidden lg:sticky lg:top-0 lg:order-2 lg:h-svh">
+							<motion.img
+								src="/HumanLang.png"
+								alt="โรงงานอุตสาหกรรมและมลพิษจากกิจกรรมของมนุษย์"
+								initial={{ scale: 1.05 }}
+								whileInView={{ scale: 1 }}
+								viewport={{ once: true }}
+								transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+								className="absolute inset-0 h-full w-full object-cover"
+							/>
+							<div className="absolute inset-0 bg-linear-to-t from-[#171714]/92 via-[#171714]/18 to-black/10" />
+							<div className="absolute inset-0 bg-linear-to-l from-transparent via-transparent to-[#171714]/24" />
+							<div className="absolute inset-x-5 bottom-6 flex items-end justify-between gap-6 sm:inset-x-8 sm:bottom-8 lg:inset-x-10 lg:bottom-10">
+								<div>
+									<p className="text-xs font-black uppercase tracking-[0.24em] text-[#f18717]">
+										Human factors
+									</p>
+									<p className="mt-2 max-w-xl text-[clamp(2.35rem,4.8vw,5rem)] font-black leading-[0.95] tracking-tighter">
+										การกระทำของมนุษย์
+									</p>
+								</div>
+								<span className="text-[clamp(4rem,8vw,8rem)] font-black leading-none tabular-nums text-white/12">
+									02
+								</span>
+							</div>
+						</div>
+
+						<div className="order-1 relative flex flex-col justify-center px-4 py-16 sm:px-8 sm:py-20 lg:min-h-[112svh] lg:px-12 lg:py-28 xl:px-16">
+							<div className="mb-10 flex items-center gap-4 text-sm font-black uppercase tracking-[0.22em] text-white/60">
+								<span className="h-px w-10 bg-[#f18717]" />
+								<span>มนุษย์ทำให้ความแห้งแล้งหนักขึ้นได้</span>
+							</div>
+							<ul className="border-t border-white/14">
+								{HUMAN_CAUSES.map((cause, index) => (
+									<motion.li
+										key={cause}
+										initial={{ opacity: 0, x: -18 }}
+										whileInView={{ opacity: 1, x: 0 }}
+										viewport={{ once: true, margin: "-70px" }}
+										transition={{ duration: 0.5, delay: index * 0.045, ease: [0.22, 1, 0.36, 1] }}
+										className="group grid gap-4 border-b border-white/12 py-6 sm:grid-cols-[2.5rem_1fr] sm:py-7"
+									>
+										<span className="pt-1 text-xs font-black tabular-nums text-white/22 transition-colors duration-300 group-hover:text-[#f18717]">
+											{String(index + 1).padStart(2, "0")}
+										</span>
+										<p className="text-base font-semibold leading-7 text-white/68 transition-colors duration-300 group-hover:text-white sm:text-lg sm:leading-8">
+											{cause}
+										</p>
+									</motion.li>
+								))}
+							</ul>
+						</div>
+					</article>
+				</div>
+			</section>
+		</>
+	);
+});
+
+WhatIsLangSection.displayName = "WhatIsLangSection";
+
+export { WhatIsLangSection };

@@ -1,318 +1,243 @@
-import { useEffect, useRef, useState } from 'react'
-import { Menu, X } from 'lucide-react'
-import {
-  AnimatePresence,
-  LayoutGroup,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-} from 'motion/react'
-import { Button } from '../ui/button'
-import type { NavigationBarProps, SectionName } from '@/types'
-import { cn } from '@/lib/utils'
-import { NAV_ITEMS } from '@/constants'
+import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { NAV_ITEMS } from "@/constants";
+import type { NavigationBarProps, SectionName } from "@/types";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
 
-function NavigationBar({
-  activeSection: externalActiveSection,
-  onNavigate,
-}: NavigationBarProps) {
-  const [internalActiveItem, setInternalActiveItem] =
-    useState<SectionName>('หน้าหลัก')
-  const [pendingActiveItem, setPendingActiveItem] =
-    useState<SectionName | null>(null)
-  const [indicatorStyle, setIndicatorStyle] = useState({
-    left: 0,
-    width: 0,
-  })
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+function NavigationBar({ activeSection: externalActiveSection, onNavigate }: NavigationBarProps) {
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [isScrolled, setIsScrolled] = useState(false);
 
-  const navRef = useRef<HTMLDivElement>(null)
-  const buttonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({})
+	const activeItem = externalActiveSection ?? "หน้าหลัก";
+	const activeIndex = Math.max(
+		NAV_ITEMS.findIndex((item) => item.label === activeItem),
+		0,
+	);
+	const totalSections = NAV_ITEMS.length;
+	const progress = ((activeIndex + 1) / totalSections) * 100;
+	const activeLabel = NAV_ITEMS[activeIndex]?.label ?? NAV_ITEMS[0].label;
 
-  const activeItem =
-    pendingActiveItem ?? externalActiveSection ?? internalActiveItem
+	useEffect(() => {
+		let frameId: number | null = null;
 
-  const handleNavigate = (sectionName: SectionName) => {
-    if (onNavigate) {
-      setPendingActiveItem(sectionName)
-      onNavigate(sectionName)
-      return
-    }
+		const updateScrolledState = () => {
+			frameId = null;
+			const currentY = window.scrollY;
 
-    setInternalActiveItem(sectionName)
-  }
+			setIsScrolled((previous) => {
+				if (!previous && currentY > 32) return true;
+				if (previous && currentY < 8) return false;
+				return previous;
+			});
+		};
 
-  const [isScrolled, setIsScrolled] = useState(false)
-  const { scrollY } = useScroll()
+		const scheduleUpdate = () => {
+			if (frameId !== null) return;
+			frameId = window.requestAnimationFrame(updateScrolledState);
+		};
 
-  useMotionValueEvent(scrollY, 'change', (currentY) => {
-    setIsScrolled((previous) => {
-      if (!previous && currentY > 32) return true
-      if (previous && currentY < 8) return false
+		updateScrolledState();
+		window.addEventListener("scroll", scheduleUpdate, { passive: true });
 
-      return previous
-    })
-  })
+		return () => {
+			if (frameId !== null) window.cancelAnimationFrame(frameId);
+			window.removeEventListener("scroll", scheduleUpdate);
+		};
+	}, []);
 
-  useEffect(() => {
-    const updateIndicator = () => {
-      const activeButton = buttonRefs.current[activeItem]
-      const navElement = navRef.current
+	useEffect(() => {
+		if (!isMenuOpen) return;
 
-      if (activeButton && navElement) {
-        setIndicatorStyle({
-          left: activeButton.offsetLeft,
-          width: activeButton.offsetWidth,
-        })
-      }
-    }
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape") setIsMenuOpen(false);
+		};
 
-    updateIndicator()
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = "hidden";
+		window.addEventListener("keydown", handleKeyDown);
 
-    const resizeObserver = new ResizeObserver(() => {
-      updateIndicator()
-    })
+		return () => {
+			document.body.style.overflow = previousOverflow;
+			window.removeEventListener("keydown", handleKeyDown);
+		};
+	}, [isMenuOpen]);
 
-    if (navRef.current) {
-      resizeObserver.observe(navRef.current)
-    }
+	const handleNavigate = (sectionName: SectionName) => {
+		setIsMenuOpen(false);
+		window.requestAnimationFrame(() => onNavigate?.(sectionName));
+	};
 
-    window.addEventListener('resize', updateIndicator)
+	return (
+		<>
+			<header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4 lg:px-8">
+				<motion.div
+					initial={{ opacity: 0, y: -14 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+					className={cn(
+						"pointer-events-auto mx-auto flex h-14 w-full items-center gap-4 rounded-2xl px-3 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-500 sm:h-16 sm:px-4",
+						isScrolled || isMenuOpen
+							? "border border-white/10 bg-[#171714]/88 shadow-[0_14px_44px_rgba(0,0,0,0.16)] backdrop-blur-xl"
+							: "border border-transparent bg-transparent",
+					)}
+				>
+					<button
+						type="button"
+						onClick={() => handleNavigate("หน้าหลัก")}
+						className="group flex shrink-0 items-center text-white"
+						aria-label="กลับไปหน้าหลัก"
+					>
+						<Image
+							src="/logo.png"
+							alt="Thai PBS"
+							width={120}
+							height={40}
+							className="h-8 w-auto object-contain"
+							loading="eager"
+						/>
+					</button>
 
-    return () => {
-      resizeObserver.disconnect()
-      window.removeEventListener('resize', updateIndicator)
-    }
-  }, [activeItem, isMobileMenuOpen])
+					<div className="hidden h-4 w-px bg-white/16 md:block" />
 
-  useEffect(() => {
-    if (pendingActiveItem && externalActiveSection === pendingActiveItem) {
-      setPendingActiveItem(null)
-    }
-  }, [externalActiveSection, pendingActiveItem])
+					<div className="relative hidden h-6 min-w-0 flex-1 overflow-hidden md:block">
+						<AnimatePresence initial={false} mode="popLayout">
+							<motion.span
+								key={activeLabel}
+								initial={{ opacity: 0, y: 6 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: -6 }}
+								transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+								className="absolute inset-y-0 left-0 flex max-w-full items-center truncate font-semibold text-white/62"
+							>
+								{activeLabel}
+							</motion.span>
+						</AnimatePresence>
+					</div>
 
-  useEffect(() => {
-    setIsMobileMenuOpen(false)
-  }, [activeItem])
+					<div className="ml-auto flex min-w-0 items-center gap-3 sm:gap-4">
+						<div className="hidden w-32 items-center gap-3 sm:flex lg:w-44">
+							<div className="relative h-2 flex-1 overflow-hidden bg-white/20 rounded-full">
+								<motion.div
+									className="absolute inset-y-0 left-0 bg-[#f18717]"
+									animate={{ width: `${progress}%` }}
+									transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+								/>
+							</div>
+							<div className="flex shrink-0 items-baseline gap-1 tabular-nums">
+								<span className="font-black text-white">
+									{String(activeIndex + 1).padStart(2, "0")}
+								</span>
+								<span className="font-bold text-white/35">
+									/ {String(totalSections).padStart(2, "0")}
+								</span>
+							</div>
+						</div>
 
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
+						<button
+							type="button"
+							onClick={() => setIsMenuOpen((open) => !open)}
+							className="group flex items-center gap-2.5 rounded-xl px-2 py-2 text-white transition-colors hover:bg-white/20 sm:px-3"
+							aria-expanded={isMenuOpen}
+							aria-controls="chapter-navigation"
+							aria-label={isMenuOpen ? "ปิดเมนู" : "เปิดเมนู"}
+						>
+							<span className="hidden text-[0.68rem] font-black uppercase tracking-[0.16em] text-white/72 sm:inline">
+								Chapters
+							</span>
+							<span className="flex size-8 items-center justify-center rounded-full border border-white/18 bg-white/4 transition-colors group-hover:border-white/30 group-hover:bg-white/8">
+								{isMenuOpen ? (
+									<X className="size-4" strokeWidth={1.8} />
+								) : (
+									<Menu className="size-4" strokeWidth={1.8} />
+								)}
+							</span>
+						</button>
+					</div>
+				</motion.div>
+			</header>
 
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [isMobileMenuOpen])
+			<AnimatePresence>
+				{isMenuOpen && (
+					<motion.div
+						id="chapter-navigation"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.28 }}
+						className="fixed inset-0 z-40 scrollbar-none overflow-y-auto bg-[#171714] text-white"
+					>
+						<div className="pointer-events-none absolute inset-0 overflow-hidden">
+							<div className="absolute right-[-12vw] top-[8vh] size-[54vw] rounded-full bg-[#f18717]/5.5 blur-3xl" />
+							<div className="absolute inset-0 bg-[linear-gradient(115deg,transparent_0%,transparent_55%,rgba(255,255,255,0.018)_55%,rgba(255,255,255,0.018)_56%,transparent_56%)]" />
+						</div>
 
-  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen)
+						<div className="relative grid min-h-svh grid-rows-[minmax(0,1fr)_auto] px-3 pb-[clamp(0.75rem,2vh,1.5rem)] pt-[clamp(5.5rem,11vh,7rem)] sm:px-8">
+							<nav className="grid min-h-0 auto-rows-min gap-x-12 md:grid-cols-2 md:grid-rows-6 md:auto-rows-fr">
+								{NAV_ITEMS.map((item, index) => {
+									const isActive = item.label === activeItem;
+									const number = String(index + 1).padStart(2, "0");
 
-  const mobileButtonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>(
-    {},
-  )
+									return (
+										<motion.button
+											key={item.label}
+											type="button"
+											initial={{ opacity: 0, y: 14 }}
+											animate={{ opacity: 1, y: 0 }}
+											transition={{
+												duration: 0.4,
+												delay: 0.04 + index * 0.025,
+												ease: [0.22, 1, 0.36, 1],
+											}}
+											onClick={() => handleNavigate(item.label as SectionName)}
+											className="group relative flex min-h-0 items-center border-b border-white/10 py-[clamp(0.7rem,1.6vh,1.25rem)] text-left md:py-0"
+										>
+											<span
+												className={cn(
+													"w-8 shrink-0 font-black tabular-nums transition-colors duration-300",
+													isActive
+														? "text-[#f18717]"
+														: "text-white/28 group-hover:text-white/55",
+												)}
+											>
+												{number}
+											</span>
 
-  useEffect(() => {
-    if (isMobileMenuOpen && activeItem) {
-      const element = mobileButtonRefs.current[activeItem]
-      if (element) {
-        element.scrollIntoView({ block: 'center', behavior: 'smooth' })
-      }
-    }
-  }, [isMobileMenuOpen, activeItem])
+											<span
+												className={cn(
+													"min-w-0 text-xl font-bold tracking-tight transition-[color,translate] duration-300 ease-out sm:text-2xl md:text-[clamp(1.15rem,2.6vh,1.7rem)]",
+													isActive
+														? "translate-x-1 text-white"
+														: "text-white/62 group-hover:translate-x-1 group-hover:text-white",
+												)}
+											>
+												{item.label}
+											</span>
 
-  return (
-    <>
-      <header className="fixed inset-x-0 top-0 z-50 select-none pointer-events-none">
-        <div className="absolute top-4 right-4 pointer-events-auto nav-lg:hidden">
-          <Button
-            onClick={toggleMobileMenu}
-            className="rounded-full bg-white/80 backdrop-blur-md shadow-lg hover:bg-white text-gray-800"
-            size="icon"
-          >
-            {isMobileMenuOpen ? <X /> : <Menu />}
-          </Button>
-        </div>
+											<span
+												className={cn(
+													"ml-auto h-2 shrink-0 bg-[#f18717] transition-all duration-300 rounded-full",
+													isActive
+														? "w-10 opacity-100"
+														: "w-0 opacity-0 group-hover:w-6 group-hover:opacity-70",
+												)}
+											/>
+										</motion.button>
+									);
+								})}
+							</nav>
 
-        <LayoutGroup id="desktop-navigation">
-          <div className="relative hidden w-full justify-center nav-lg:flex">
-            {!isScrolled && (
-              <motion.div
-                layoutId="navigation-surface"
-                className={cn(
-                  'absolute inset-0',
-                  'bg-white/50 backdrop-blur-md backdrop-saturate-150',
-                )}
-                transition={{
-                  type: 'spring',
-                  stiffness: 360,
-                  damping: 36,
-                  mass: 0.8,
-                }}
-              />
-            )}
-
-            <motion.div
-              initial={{ y: -20, opacity: 0 }}
-              animate={{
-                y: isScrolled ? 16 : 0,
-                opacity: 1,
-              }}
-              transition={{
-                y: {
-                  type: 'spring',
-                  stiffness: 360,
-                  damping: 32,
-                  mass: 0.8,
-                },
-                opacity: {
-                  duration: 0.2,
-                },
-              }}
-              className={cn(
-                'relative pointer-events-auto',
-                isScrolled ? 'p-2' : 'p-3',
-              )}
-            >
-              {/* พื้นหลังตอนเลื่อน: หดมาครอบเมนู */}
-              {isScrolled && (
-                <motion.div
-                  layoutId="navigation-surface"
-                  className={cn(
-                    'absolute inset-0 rounded-full',
-                    'bg-linear-to-r from-white/70 via-white/55 to-white/70',
-                    'backdrop-blur-xl backdrop-saturate-150',
-                    'border border-white/60',
-                    'shadow-[0_8px_32px_rgba(0,0,0,0.12)]',
-                  )}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 360,
-                    damping: 36,
-                    mass: 0.8,
-                  }}
-                />
-              )}
-
-              <nav ref={navRef} className="relative flex shrink-0 items-center">
-                <motion.div
-                  className="absolute h-full rounded-full bg-white shadow-sm"
-                  animate={{
-                    left: indicatorStyle.left,
-                    width: indicatorStyle.width,
-                  }}
-                  transition={{
-                    type: 'tween',
-                    duration: 0.8,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                />
-
-                {NAV_ITEMS.map((item) => (
-                  <Button
-                    key={item.label}
-                    ref={(element) => {
-                      buttonRefs.current[item.label] = element
-                    }}
-                    variant="ghost"
-                    onClick={() => handleNavigate(item.label as SectionName)}
-                    className={cn(
-                      'relative z-10 shrink-0 rounded-full px-6',
-                      'font-medium bg-transparent',
-                      'transition-colors duration-200',
-                      'hover:bg-white/60',
-                      activeItem === item.label
-                        ? 'text-orange-600'
-                        : isScrolled
-                          ? 'text-foreground'
-                          : 'text-white',
-                    )}
-                  >
-                    {item.label}
-                  </Button>
-                ))}
-              </nav>
-            </motion.div>
-          </div>
-        </LayoutGroup>
-      </header>
-
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 nav-lg:hidden"
-            />
-
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 w-[280px] h-full bg-white/95 backdrop-blur-xl z-50 shadow-2xl nav-lg:hidden border-l border-white/20 p-6 flex flex-col overflow-y-auto overscroll-contain"
-            >
-              <div className="flex justify-between items-center mb-8">
-                <h3 className="text-lg font-bold text-gray-800">เมนู</h3>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <X className="w-5 h-5" />
-                </Button>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                {NAV_ITEMS.map((item, index) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                  >
-                    <Button
-                      ref={(el) => {
-                        mobileButtonRefs.current[item.label] = el
-                      }}
-                      variant="ghost"
-                      className={cn(
-                        'w-full justify-start text-lg py-6 font-medium relative',
-                        activeItem === item.label
-                          ? 'bg-orange-50 text-orange-600'
-                          : 'text-gray-600 hover:text-gray-900',
-                      )}
-                      onClick={() => {
-                        handleNavigate(item.label as SectionName)
-                        setIsMobileMenuOpen(false)
-                      }}
-                    >
-                      {activeItem === item.label && (
-                        <motion.div
-                          layoutId="mobile-indicator"
-                          className="absolute left-0 top-0 bottom-0 w-1 bg-orange-600 rounded-r-full"
-                          transition={{
-                            type: 'spring',
-                            stiffness: 400,
-                            damping: 30,
-                          }}
-                        />
-                      )}
-                      {item.label}
-                    </Button>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </>
-  )
+							<div className="mt-[clamp(0.65rem,1.7vh,1.35rem)] flex items-center justify-between gap-4 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-white/60">
+								<span>Thai PBS · Next Gen</span>
+								<span>Interactive Documentary · 2569</span>
+							</div>
+						</div>
+					</motion.div>
+				)}
+			</AnimatePresence>
+		</>
+	);
 }
 
-export { NavigationBar }
+export { NavigationBar };

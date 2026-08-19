@@ -1,19 +1,23 @@
-import { useCallback } from 'react'
-import type { SectionName, SectionRefs } from '@/types/navigation'
+import { useCallback } from "react";
+import type { SectionName, SectionRefs } from "@/types/navigation";
 
 export function useSectionNavigation(sectionRefs: SectionRefs) {
-  const scrollToSection = useCallback(
-    (sectionName: SectionName) => {
-      const ref = sectionRefs[sectionName]
-      if (ref.current) {
-        ref.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        })
-      }
-    },
-    [sectionRefs],
-  )
+	const scrollToSection = useCallback(
+		(sectionName: SectionName) => {
+			const element = sectionRefs[sectionName].current;
+			if (!element) return;
 
-  return { scrollToSection }
+			const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+			const targetTop =
+				sectionName === "หน้าหลัก" ? 0 : Math.max(0, window.scrollY + element.getBoundingClientRect().top);
+
+			window.scrollTo({
+				top: targetTop,
+				behavior: prefersReducedMotion ? "auto" : "smooth",
+			});
+		},
+		[sectionRefs],
+	);
+
+	return { scrollToSection };
 }
