@@ -1,84 +1,92 @@
-import { forwardRef } from 'react'
-import { motion } from 'motion/react'
-import { DROUGHT_RECOVERY_ITEMS } from '@/content/recovery'
+import { forwardRef } from "react";
+import Image from "next/image";
+import { motion, useReducedMotion } from "motion/react";
+import { SectionEndBorder } from "@/components/editorial/SectionEndBorder";
+import { DROUGHT_RECOVERY_ITEMS } from "@/content/recovery";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+const RECOVERY_DETAILS = [
+	{ label: "เปิดทางน้ำ", alt: "รถขุดกำลังขุดลอกดินริมคลอง" },
+	{ label: "เก็บน้ำไว้ใช้", alt: "รถขุดกำลังปรับพื้นที่สำหรับแหล่งเก็บน้ำ" },
+	{ label: "สำรองน้ำใต้ดิน", alt: "เครื่องขุดเจาะบ่อบาดาลกำลังทำงาน" },
+	{ label: "รักษาความชุ่มชื้น", alt: "ต้นอ่อนของพืชในแปลงเกษตร" },
+	{ label: "คืนสมดุลต้นน้ำ", alt: "สายน้ำที่ไหลผ่านป่าต้นน้ำสีเขียว มองจากมุมสูง" },
+] as const;
 
 export const DroughtRecoverySection = forwardRef<HTMLElement>((_props, ref) => {
-  return (
-    <section
-      ref={ref}
-      className="relative bg-[#f0fdf4] min-h-svh py-20 px-4 md:px-12"
-    >
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-[10%] -right-[10%] w-[50%] h-[50%] bg-green-200/20 rounded-full blur-3xl" />
-        <div className="absolute top-[20%] -left-[10%] w-[40%] h-[40%] bg-emerald-200/20 rounded-full blur-3xl" />
-      </div>
+	const reduceMotion = useReducedMotion();
 
-      <div className="container mx-auto mt-4 relative z-10">
-        <div className="text-center mb-16 space-y-6">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl font-black text-emerald-950"
-          >
-            การฟื้นฟู<span className="text-emerald-600">หลังฤดูแล้ง</span>
-          </motion.h2>
+	return (
+		<section
+			id="drought-recovery"
+			ref={ref}
+			aria-labelledby="drought-recovery-title"
+			className="relative isolate overflow-hidden bg-ink text-white [overflow-anchor:none]"
+		>
+			<div className="relative px-4 pb-16 pt-28 sm:px-8 sm:pb-20">
+				<motion.header
+					initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true, amount: 0.2 }}
+					transition={{ duration: reduceMotion ? 0 : 0.6, ease: EASE }}
+					className="grid items-end gap-5 pb-7 sm:pb-8 lg:grid-cols-[1.2fr_0.8fr] lg:gap-12"
+				>
+					<div>
+						<h2
+							id="drought-recovery-title"
+							className="text-[clamp(2rem,4.4vw,4rem)] font-black leading-[1.3] tracking-[-0.055em]"
+						>
+							<span className="whitespace-nowrap">
+								ฟื้นน้ำ <span className="text-drought">ฟื้นดิน</span>
+							</span>
+							<span className="block text-white/65">ฟื้นต้นน้ำ</span>
+						</h2>
+					</div>
+				</motion.header>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-lg md:text-xl text-emerald-800/80 max-w-3xl mx-auto leading-relaxed"
-          >
-            แนวทางการบริหารจัดการและฟื้นฟูทรพยากรธรรมชาติและสิ่งแวดล้อม{' '}
-            <br className="hidden md:block" /> เพื่อความยั่งยืนของระบบนิเวศ
-          </motion.p>
-        </div>
+				<div className="mt-4 grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-6">
+					{DROUGHT_RECOVERY_ITEMS.map((item, index) => {
+						const detail = RECOVERY_DETAILS[index];
+						const ecosystem = index >= 3;
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-6">
-          {DROUGHT_RECOVERY_ITEMS.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`group relative h-[400px] cursor-pointer overflow-hidden rounded-4xl md:h-[500px] lg:col-span-2 ${
-                index === 3
-                  ? 'lg:col-start-2'
-                  : index === 4
-                    ? 'lg:col-start-4'
-                    : ''
-              }`}
-            >
-              <img
-                src={item.imageSrc}
-                alt={item.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
+						return (
+							<motion.article
+								key={item.title}
+								initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								viewport={{ once: true, amount: 0.12 }}
+								transition={{ duration: reduceMotion ? 0 : 0.55, ease: EASE }}
+								className={`group overflow-hidden rounded-xl border border-white/10 bg-ink-elevated ${ecosystem ? "lg:col-span-3 xl:grid xl:grid-cols-[0.42fr_0.58fr]" : "lg:col-span-2"}`}
+							>
+								<div
+									className={`relative h-44 overflow-hidden bg-ink-soft sm:h-48 ${ecosystem ? "xl:h-full xl:min-h-60" : ""}`}
+								>
+									<Image
+										src={item.imageSrc}
+										alt={detail.alt}
+										fill
+										sizes={
+											ecosystem
+												? "(min-width: 1280px) calc(21vw - 19px), (min-width: 1024px) calc(50vw - 44px), (min-width: 640px) calc(50vw - 44px), calc(100vw - 32px)"
+												: "(min-width: 1024px) calc(33.33vw - 38px), (min-width: 640px) calc(50vw - 44px), calc(100vw - 32px)"
+										}
+										className="object-cover transition-transform duration-700 group-hover:scale-[1.035] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+									/>
+								</div>
+								<div className="p-5">
+									<h3 className="text-[1.375rem] font-bold leading-[1.4] tracking-[-0.035em] sm:text-2xl">
+										{item.title}
+									</h3>
+									<p className="mt-2 text-sm text-white/60">{item.description}</p>
+								</div>
+							</motion.article>
+						);
+					})}
+				</div>
+			</div>
+			<SectionEndBorder />
+		</section>
+	);
+});
 
-              <div className="absolute inset-0 bg-linear-to-t from-black xl:via-black/20 to-transparent opacity-100 xl:opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute inset-0 p-8 flex flex-col justify-end text-white">
-                <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
-                  <h3 className="text-3xl font-bold leading-tight mb-4 group-hover:text-emerald-100 transition-colors">
-                    {item.title}
-                  </h3>
-                </div>
-
-                <div className="max-h-[200px] xl:max-h-0 overflow-hidden group-hover:max-h-[200px] transition-[max-height] duration-500 ease-in-out">
-                  <p className="text-gray-200 leading-relaxed text-sm md:text-base pb-2 opacity-100 xl:opacity-0 group-hover:opacity-100 transition-opacity delay-100 duration-500">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-})
-
-DroughtRecoverySection.displayName = 'DroughtRecoverySection'
+DroughtRecoverySection.displayName = "DroughtRecoverySection";

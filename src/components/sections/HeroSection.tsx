@@ -1,14 +1,23 @@
 import { forwardRef } from "react";
+import Image from "next/image";
 import { ArrowDown } from "lucide-react";
 import { motion } from "motion/react";
+import { SectionEndBorder } from "@/components/editorial/SectionEndBorder";
+import { SECTIONS } from "@/config/sections";
+
+const MotionImage = motion.create(Image);
 
 const HeroSection = forwardRef<HTMLElement, { onContinue?: () => void }>(({ onContinue }, ref) => {
 	return (
-		<section ref={ref} className="relative min-h-svh flex flex-col overflow-hidden bg-ink text-white">
+		<section id="home" ref={ref} className="relative min-h-svh flex flex-col overflow-hidden bg-ink text-white">
 			<div className="absolute inset-0">
-				<motion.img
+				<MotionImage
 					src="/images/hero/drought-hero.jpg"
 					alt="พื้นที่ที่ได้รับผลกระทบจากภัยแล้ง"
+					fill
+					preload
+					sizes="100vw"
+					quality={85}
 					initial={{ scale: 1.025 }}
 					animate={{ scale: 1.075 }}
 					transition={{
@@ -33,10 +42,6 @@ const HeroSection = forwardRef<HTMLElement, { onContinue?: () => void }>(({ onCo
 						transition={{ duration: 0.75, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
 						className="font-black tracking-[-0.075em]"
 					>
-						<p className="relative z-10 translate-x-1 translate-y-[clamp(0.75rem,2vw,1rem)] text-[clamp(4rem,12vw,8rem)] leading-[0.72] text-white/80 sm:translate-x-2">
-							ภัย
-						</p>
-
 						<h1>
 							<span className="block text-[clamp(6.5rem,18vw,13rem)] leading-[0.7] text-drought">
 								แล้ง
@@ -82,15 +87,17 @@ const HeroSection = forwardRef<HTMLElement, { onContinue?: () => void }>(({ onCo
 						initial={{ scaleX: 0 }}
 						animate={{ scaleX: 1 }}
 						transition={{ duration: 1.1, delay: 0.58, ease: [0.22, 1, 0.36, 1] }}
-						className="absolute inset-y-0 left-0 w-[9.1%] origin-left bg-drought"
+						className="absolute inset-y-0 left-0 origin-left bg-drought"
+						style={{ width: `${100 / SECTIONS.length}%` }}
 					/>
 				</div>
 
 				<div className="flex items-baseline gap-2 tabular-nums">
 					<span className="text-sm font-black text-white">01</span>
-					<span className="text-[0.68rem] font-bold text-white/40">/ 11</span>
+					<span className="text-[0.68rem] font-bold text-white/40">/ {SECTIONS.length}</span>
 				</div>
 			</motion.div>
+			<SectionEndBorder />
 		</section>
 	);
 });

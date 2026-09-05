@@ -1,129 +1,81 @@
-import { forwardRef } from 'react'
-import { motion } from 'motion/react'
-import { THAILAND_BASIN_REGIONS } from '@/content/river-basins'
-import { SectionTopline } from '@/components/editorial/SectionTopline'
+import { forwardRef } from "react";
+import Image from "next/image";
+import { motion, useReducedMotion } from "motion/react";
+import { SectionBackdropWord } from "@/components/editorial/SectionBackdropWord";
+import { SectionEndBorder } from "@/components/editorial/SectionEndBorder";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 const ThailandRiverBasinsSection = forwardRef<HTMLElement>((_props, ref) => {
-  return (
-    <section ref={ref} className="relative overflow-clip bg-basin-ink text-white">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/12" />
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute right-[-18vw] top-[8%] size-[58vw] rounded-full bg-water/8 blur-[220px]" />
-        <div className="absolute left-[-22vw] top-[58%] size-[50vw] rounded-full bg-drought/4 blur-[220px]" />
-        <div className="absolute right-[-6vw] top-[2%] hidden select-none text-[clamp(10rem,23vw,25rem)] font-black uppercase leading-none tracking-[-0.08em] text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.024)] lg:block">
-          Basins
-        </div>
-      </div>
+	const reduceMotion = useReducedMotion();
 
-      <div className="relative mx-auto px-4 pb-24 pt-24 sm:px-8 md:pb-32 md:pt-32 lg:px-10 lg:pb-40 lg:pt-36">
-        <motion.header
-          initial={{ opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-90px' }}
-          transition={{ duration: 0.68, ease: [0.22, 1, 0.36, 1] }}
-          className="border-t border-white/14 pt-6 lg:pt-8"
-        >
-          <SectionTopline label="Water geography · Thailand" tone="water" />
+	return (
+		<section
+			id="thailand-basins"
+			ref={ref}
+			aria-labelledby="thailand-basins-title"
+			className="relative isolate overflow-clip bg-ink text-white"
+		>
+			<div className="pointer-events-none absolute inset-0 overflow-hidden">
+				<SectionBackdropWord>Basins</SectionBackdropWord>
+				<div className="absolute right-[-12vw] top-[8%] size-[52vw] rounded-full bg-water/5 blur-[160px]" />
+			</div>
 
-          <div className="mt-12 grid items-end gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16 xl:gap-24">
-            <div className="flex items-start">
-              <span className="text-[clamp(9rem,23vw,23rem)] font-black leading-[0.66] tracking-[-0.095em] text-white">22</span>
-              <span className="ml-3 mt-[0.08em] text-[clamp(1.4rem,3vw,3.2rem)] font-black leading-none text-water">ลุ่มน้ำ</span>
-            </div>
+			<div className="relative mx-auto px-4 pb-16 pt-28 sm:px-8 sm:pb-20 lg:flex lg:h-svh lg:flex-col lg:pb-6 lg:pt-24">
+				<div className="grid items-center gap-10 lg:min-h-0 lg:flex-1 lg:grid-cols-[0.95fr_1.05fr] lg:gap-10 xl:gap-16">
+					<motion.div
+						initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true, amount: 0.2 }}
+						transition={{ duration: 0.7, ease: EASE }}
+						className="relative z-10 lg:py-1"
+					>
+						<h2
+							id="thailand-basins-title"
+							className="text-[clamp(3.75rem,7.7vw,8rem)] font-black leading-[1.15] tracking-[-0.065em] lg:text-[clamp(2.5rem,min(8vw,11svh),8rem)]"
+						>
+							มารู้จัก
+							<br />
+							<span className="ml-4 text-drought">ลุ่มน้ำ</span>ทั่วไทย
+						</h2>
+						<p className="mt-7 max-w-lg text-base font-medium leading-8 text-white/65 sm:mt-9 lg:mt-8 lg:max-w-[42rem] lg:text-[clamp(1.125rem,min(1.25vw,2.7svh),1.12rem)] lg:leading-[1.75]">
+							เมื่อวันที่ 11 กุมภาพันธ์ 2564 พระราชกฤษฎีกากำหนดลุ่มน้ำ พ.ศ.2564
+							ได้แบ่งพื้นที่ลุ่มน้ำของประเทศไทยใหม่ เพื่อให้การบริหารจัดการน้ำสอดคล้องกับวิถีชีวิตประชาชน
+							โดยกำหนดให้มี <strong className="font-bold text-drought">22 ลุ่มน้ำหลัก</strong> และ{" "}
+							<strong className="font-bold text-drought">353 ลุ่มน้ำสาขา</strong>
+						</p>
 
-            <div className="border-l border-white/12 pl-5 sm:pl-8 lg:mb-4 lg:pl-10">
-              <h2 className="text-[clamp(3rem,5.8vw,6.4rem)] font-black leading-[0.9] tracking-[-0.06em]">
-                <span className="block">ลุ่มน้ำหลัก</span>
-                <span className="block text-water">ของประเทศไทย</span>
-              </h2>
-              <p className="mt-6 max-w-2xl text-sm font-medium leading-7 text-white/48 sm:text-base sm:leading-8">
-                พื้นที่น้ำของประเทศไม่ได้แบ่งตามเส้นจังหวัด แต่เชื่อมต่อกันตามภูมิประเทศและทางไหลของน้ำ
-                การแบ่งลุ่มน้ำจึงเป็นฐานสำคัญของการบริหารจัดการทรัพยากรน้ำทั้งระบบ
-              </p>
-            </div>
-          </div>
-        </motion.header>
+						<blockquote className="mt-6 max-w-lg border-l-2 border-drought pl-5 text-base leading-8 text-white/85 lg:mt-8 lg:max-w-[42rem] lg:text-[clamp(1.125rem,min(1.15vw,2.5svh),1.375rem)] lg:leading-[1.75]">
+							<p className="italic">
+								“ถือเป็นการเปลี่ยนแปลงครั้งสำคัญในรอบ 3 ทศวรรษ
+								เพื่อการจัดการทรัพยากรน้ำที่ยั่งยืนและครอบคลุมพื้นที่กว่า 500,000 ตร.กม. ทั่วประเทศ”
+							</p>
+						</blockquote>
+					</motion.div>
 
-        <div className="mt-20 grid gap-14 lg:mt-28 lg:grid-cols-[0.58fr_1.42fr] lg:gap-20 xl:gap-28">
-          <motion.aside
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:sticky lg:top-28 lg:self-start"
-          >
-            <div className="border-y border-white/12 py-7">
-              <p className="text-[0.66rem] font-black uppercase tracking-[0.2em] text-white/30">New basin framework</p>
-              <h3 className="mt-4 text-[clamp(2rem,3.8vw,4rem)] font-black leading-[0.95] tracking-[-0.05em]">
-                มารู้จัก
-                <span className="block text-water">ลุ่มน้ำทั่วไทย</span>
-              </h3>
-              <p className="mt-6 max-w-md text-sm font-medium leading-7 text-white/44 sm:text-base sm:leading-8">
-                เมื่อวันที่ 11 กุมภาพันธ์ 2564 พระราชกฤษฎีกากำหนดลุ่มน้ำ พ.ศ. 2564
-                ได้ปรับการแบ่งพื้นที่ลุ่มน้ำใหม่ เพื่อให้การจัดการน้ำสอดคล้องกับพื้นที่และวิถีชีวิตประชาชนมากขึ้น
-              </p>
-            </div>
+					<motion.figure
+						initial={reduceMotion ? false : { opacity: 0, y: 40, scale: 0.97 }}
+						whileInView={{ opacity: 1, y: 0, scale: 1 }}
+						viewport={{ once: true, amount: 0.15 }}
+						transition={{ duration: 0.9, ease: EASE }}
+						className="relative mx-auto w-full max-w-[620px] lg:h-full lg:min-h-0"
+					>
+						<Image
+							src="/images/basins/thailand-river-basins.png"
+							alt="ภาพประกอบประเทศไทย แสดงภูเขา สายน้ำ พื้นที่เกษตร เมือง และผู้คนที่ใช้น้ำ"
+							width={2187}
+							height={3200}
+							sizes="(min-width: 1280px) 560px, (min-width: 1024px) 50vw, (min-width: 640px) 480px, 100vw"
+							className="mx-auto h-auto max-h-[72svh] w-auto max-w-full object-contain lg:h-full lg:max-h-full lg:w-full"
+						/>
+					</motion.figure>
+				</div>
+			</div>
+			<SectionEndBorder />
+		</section>
+	);
+});
 
-            <div className="grid grid-cols-2 border-b border-white/12">
-              <div className="border-r border-white/12 py-6 pr-5">
-                <p className="text-[0.62rem] font-black uppercase tracking-[0.18em] text-white/28">ลุ่มน้ำหลัก</p>
-                <p className="mt-2 text-[clamp(2.8rem,5vw,5.2rem)] font-black leading-none tabular-nums text-white">22</p>
-              </div>
-              <div className="py-6 pl-5">
-                <p className="text-[0.62rem] font-black uppercase tracking-[0.18em] text-white/28">ลุ่มน้ำสาขา</p>
-                <p className="mt-2 text-[clamp(2.8rem,5vw,5.2rem)] font-black leading-none tabular-nums text-water">353</p>
-              </div>
-            </div>
+ThailandRiverBasinsSection.displayName = "ThailandRiverBasinsSection";
 
-            <p className="mt-6 max-w-md text-xs font-semibold leading-6 text-white/30 sm:text-sm sm:leading-7">
-              การปรับครั้งนี้ถือเป็นการเปลี่ยนแปลงสำคัญในรอบ 3 ทศวรรษ และครอบคลุมพื้นที่กว่า 500,000 ตร.กม. ทั่วประเทศ
-            </p>
-          </motion.aside>
-
-          <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-90px' }}
-            transition={{ duration: 0.78, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
-            className="relative"
-          >
-            <div className="pointer-events-none absolute inset-[8%_8%_16%] rounded-full bg-water/12 blur-[100px]" />
-            <div className="relative border-y border-white/12 py-8 sm:py-10 lg:py-12">
-              <div className="mb-8 flex items-center justify-between gap-6 text-[0.64rem] font-black uppercase tracking-[0.18em] text-white/28">
-                <span>22 main river basins</span>
-                <span>Thailand</span>
-              </div>
-
-              <img src="/images/basins/thailand-river-basins.png" alt="แผนที่ลุ่มน้ำหลักของประเทศไทย" className="mx-auto w-full max-w-2xl drop-shadow-[0_28px_60px_rgba(0,0,0,0.5)]" />
-
-              <div className="mt-10 grid border-t border-white/10 sm:grid-cols-2">
-                {THAILAND_BASIN_REGIONS.map((item, index) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-50px' }}
-                    transition={{ duration: 0.45, delay: index * 0.05 }}
-                    className="flex items-center gap-3 border-b border-white/10 py-4 sm:odd:border-r sm:odd:pr-5 sm:even:pl-5"
-                  >
-                    <span className="h-2.5 w-8 shrink-0" style={{ backgroundColor: item.color }} />
-                    <span className="text-sm font-bold text-white/62">{item.label}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-5 text-[0.66rem] font-bold uppercase tracking-[0.16em] text-white/24 sm:flex-row sm:items-center sm:justify-between">
-          <span>River basin framework · พ.ศ. 2564</span>
-          <span className="shrink-0">22 ลุ่มน้ำหลัก · 353 ลุ่มน้ำสาขา</span>
-        </div>
-      </div>
-    </section>
-  )
-})
-
-ThailandRiverBasinsSection.displayName = 'ThailandRiverBasinsSection'
-
-export { ThailandRiverBasinsSection }
+export { ThailandRiverBasinsSection };

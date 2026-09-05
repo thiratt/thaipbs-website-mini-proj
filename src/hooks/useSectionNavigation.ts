@@ -1,11 +1,10 @@
 import { useCallback } from "react";
 import type { SectionId } from "@/config/sections";
-import type { SectionRefs } from "@/types/navigation";
 
-export function useSectionNavigation(sectionRefs: SectionRefs) {
+export function useSectionNavigation() {
 	const scrollToSection = useCallback(
 		(sectionId: SectionId) => {
-			const element = sectionRefs[sectionId].current;
+			const element = document.getElementById(sectionId);
 			if (!element) return;
 
 			const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -17,7 +16,7 @@ export function useSectionNavigation(sectionRefs: SectionRefs) {
 				behavior: prefersReducedMotion ? "auto" : "smooth",
 			});
 		},
-		[sectionRefs],
+		[],
 	);
 
 	return { scrollToSection };

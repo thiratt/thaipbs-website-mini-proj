@@ -1,25 +1,23 @@
 import { forwardRef, useEffect, useRef } from "react";
 import { motion } from "motion/react";
-import {
-	DROUGHT_DEFINITION,
-	HUMAN_DROUGHT_CAUSES,
-	NATURAL_DROUGHT_CAUSES,
-	PARTICIPATION_URL,
-} from "@/content/drought-overview";
-import { SectionTopline } from "@/components/editorial/SectionTopline";
+import { SectionBackdropWord } from "@/components/editorial/SectionBackdropWord";
+import { SectionEndBorder } from "@/components/editorial/SectionEndBorder";
+import { DROUGHT_DEFINITION, PARTICIPATION_URL } from "@/content/drought-overview";
 
 function ParticipationQrCode() {
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		let cancelled = false;
+		const container = containerRef.current;
+		if (!container) return;
 
 		const renderQrCode = async () => {
 			const { default: QRCodeStyling } = await import("qr-code-styling");
 
-			if (cancelled || !containerRef.current) return;
+			if (cancelled) return;
 
-			containerRef.current.replaceChildren();
+			container.replaceChildren();
 
 			const qrCode = new QRCodeStyling({
 				width: 300,
@@ -50,14 +48,14 @@ function ParticipationQrCode() {
 				},
 			});
 
-			qrCode.append(containerRef.current);
+			qrCode.append(container);
 		};
 
 		void renderQrCode();
 
 		return () => {
 			cancelled = true;
-			containerRef.current?.replaceChildren();
+			container.replaceChildren();
 		};
 	}, []);
 
@@ -79,7 +77,7 @@ function ParticipationQrCode() {
 const DroughtOverviewSection = forwardRef<HTMLElement>((_props, ref) => {
 	return (
 		<>
-			<section ref={ref} className="relative overflow-clip bg-ink text-white">
+			<section id="drought-overview" ref={ref} className="relative overflow-clip bg-ink text-white">
 				<div className="pointer-events-none absolute inset-0">
 					<div className="absolute right-[-18vw] top-[6%] size-[58vw] rounded-full bg-drought/5 blur-[150px]" />
 					<div className="absolute right-[-14vw] top-[28%] size-[56vw] rounded-full bg-drought/5 blur-[180px]" />
@@ -104,6 +102,7 @@ const DroughtOverviewSection = forwardRef<HTMLElement>((_props, ref) => {
 
 						<p className="mt-8 max-w-md text-sm font-medium leading-7 text-white/54 sm:text-base sm:leading-8">
 							ความหมายของความแห้งแล้งอาจไม่เหมือนกันสำหรับทุกคน
+							<br />
 							ลองมองคำนี้ผ่านประสบการณ์ของผู้คนก่อนเข้าสู่เรื่องราวของภัยแล้ง
 						</p>
 					</motion.div>
@@ -124,21 +123,11 @@ const DroughtOverviewSection = forwardRef<HTMLElement>((_props, ref) => {
 
 				<div className="relative border-white/10">
 					<div className="pointer-events-none absolute inset-0 overflow-hidden">
-						<div className="absolute right-[-2vw] top-[18%] hidden select-none text-[clamp(12rem,28vw,32rem)] font-black leading-none tracking-[-0.08em] text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.055)] lg:block">
-							แล้ง
-						</div>
+						<SectionBackdropWord>Drought</SectionBackdropWord>
 					</div>
 
 					<div className="relative mx-auto px-4 pb-24 pt-6 sm:px-8 md:pb-32 md:pt-8 lg:px-10 lg:pb-36 lg:pt-10">
-						<motion.div
-							initial={{ opacity: 0, y: 14 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true, margin: "-80px" }}
-							transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-							className="flex items-center gap-4 border-t border-white/14 pt-5 text-[0.68rem] font-black uppercase tracking-[0.22em] text-white/42"
-						>
-							<span>Drought / Definition</span>
-						</motion.div>
+						<div className="flex items-center gap-4 border-t border-white/14 pt-5 text-[0.68rem] font-black uppercase tracking-[0.22em] text-white/42" />
 
 						<div className="mt-14 grid gap-14 lg:mt-20 lg:grid-cols-[0.68fr_1.32fr] lg:gap-20 xl:gap-28">
 							<motion.div
@@ -153,7 +142,7 @@ const DroughtOverviewSection = forwardRef<HTMLElement>((_props, ref) => {
 									ภัย
 									<span className="block text-drought sm:ml-10 md:ml-12 lg:ml-16">แล้ง</span>
 								</h2>
-								<p className="mt-8 max-w-sm text-sm font-semibold leading-7 text-white/46 sm:text-base sm:leading-8">
+								<p className="mt-8 max-w-100 text-sm font-semibold leading-7 text-white/46 sm:text-base sm:leading-8">
 									ภัยแล้งไม่ใช่เพียงช่วงเวลาที่ฝนไม่ตก แต่คือความขาดแคลนน้ำที่ยืดเยื้อจนกระทบต่อชีวิต
 									การเกษตร และระบบนิเวศ
 								</p>
@@ -209,147 +198,7 @@ const DroughtOverviewSection = forwardRef<HTMLElement>((_props, ref) => {
 					</div>
 				</div>
 
-				<div className="relative border-white/8">
-					<div className="pointer-events-none absolute inset-0 overflow-hidden">
-						<div className="absolute right-[-2vw] top-0 hidden text-[clamp(8rem,19vw,21rem)] font-black uppercase leading-none tracking-[-0.08em] text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.075)] lg:block">
-							Causes
-						</div>
-					</div>
-
-					<div className="relative mx-auto px-4 pb-16 pt-12 sm:px-8 sm:pt-16 md:pb-24 md:pt-20 lg:px-10 lg:pb-28 lg:pt-24">
-						<motion.div
-							initial={{ opacity: 0, y: 18 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true, margin: "-90px" }}
-							transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
-							className="border-t border-white/14 pt-8 md:pt-10"
-						>
-							<div className="max-w-5xl">
-								<SectionTopline label="Why drought happens" />
-
-								<h2 className="mt-6 text-[clamp(3.7rem,7.2vw,7.2rem)] font-black leading-[0.95] tracking-[-0.065em]">
-									<span className="block text-white">สาเหตุของ</span>
-									<span className="block text-drought">ภัยแล้ง</span>
-								</h2>
-
-								<p className="mt-6 max-w-2xl text-sm font-medium leading-7 text-white/56 sm:text-base sm:leading-8">
-									ภัยแล้งไม่ได้เกิดจากปัจจัยเดียว
-									แต่เป็นผลจากทั้งธรรมชาติและกิจกรรมของมนุษย์ที่ซ้อนทับกัน
-								</p>
-							</div>
-						</motion.div>
-					</div>
-
-					<article className="relative border-y border-white/12 lg:grid lg:grid-cols-2">
-						<div className="relative min-h-[60svh] overflow-hidden lg:sticky lg:top-0 lg:h-svh">
-							<motion.img
-								src="/images/overview/natural-drought-causes.png"
-								alt="พื้นที่แห้งแล้งจากสาเหตุทางธรรมชาติ"
-								initial={{ scale: 1.05 }}
-								whileInView={{ scale: 1 }}
-								viewport={{ once: true }}
-								transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-								className="absolute inset-0 h-full w-full object-cover"
-							/>
-							<div className="absolute inset-0 bg-linear-to-t from-[#171714]/90 via-[#171714]/18 to-black/10" />
-							<div className="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-[#171714]/24" />
-							<div className="absolute inset-x-5 bottom-6 flex items-end justify-between gap-6 sm:inset-x-8 sm:bottom-8 lg:inset-x-10 lg:bottom-10">
-								<div>
-									<p className="text-xs font-black uppercase tracking-[0.24em] text-drought">
-										Natural factors
-									</p>
-									<p className="mt-2 text-[clamp(2.5rem,5vw,5.5rem)] font-black leading-none tracking-tighter">
-										ธรรมชาติ
-									</p>
-								</div>
-								<span className="text-[clamp(4rem,8vw,8rem)] font-black leading-none tabular-nums text-white/12">
-									01
-								</span>
-							</div>
-						</div>
-
-						<div className="relative flex flex-col justify-center px-4 py-16 sm:px-8 sm:py-20 lg:min-h-[112svh] lg:px-12 lg:py-28 xl:px-16">
-							<div className="mb-10 flex items-center gap-4 text-sm font-black uppercase tracking-[0.22em] text-white/60">
-								<span className="h-px w-10 bg-drought" />
-								<span>เกิดขึ้นจากระบบธรรมชาติที่เปลี่ยนไป</span>
-							</div>
-							<ul className="border-t border-white/14">
-								{NATURAL_DROUGHT_CAUSES.map((cause, index) => (
-									<motion.li
-										key={cause}
-										initial={{ opacity: 0, x: 18 }}
-										whileInView={{ opacity: 1, x: 0 }}
-										viewport={{ once: true, margin: "-70px" }}
-										transition={{ duration: 0.5, delay: index * 0.045, ease: [0.22, 1, 0.36, 1] }}
-										className="group grid gap-4 border-b border-white/12 py-6 sm:grid-cols-[2.5rem_1fr] sm:py-7"
-									>
-										<span className="pt-1 text-xs font-black tabular-nums text-white/22 transition-colors duration-300 group-hover:text-drought">
-											{String(index + 1).padStart(2, "0")}
-										</span>
-										<p className="text-base font-semibold leading-7 text-white/68 transition-colors duration-300 group-hover:text-white sm:text-lg sm:leading-8">
-											{cause}
-										</p>
-									</motion.li>
-								))}
-							</ul>
-						</div>
-					</article>
-
-					<article className="relative border-b border-white/12 lg:grid lg:grid-cols-2">
-						<div className="order-2 relative min-h-[60svh] overflow-hidden lg:sticky lg:top-0 lg:order-2 lg:h-svh">
-							<motion.img
-								src="/images/overview/human-drought-causes.png"
-								alt="โรงงานอุตสาหกรรมและมลพิษจากกิจกรรมของมนุษย์"
-								initial={{ scale: 1.05 }}
-								whileInView={{ scale: 1 }}
-								viewport={{ once: true }}
-								transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-								className="absolute inset-0 h-full w-full object-cover"
-							/>
-							<div className="absolute inset-0 bg-linear-to-t from-[#171714]/92 via-[#171714]/18 to-black/10" />
-							<div className="absolute inset-0 bg-linear-to-l from-transparent via-transparent to-[#171714]/24" />
-							<div className="absolute inset-x-5 bottom-6 flex items-end justify-between gap-6 sm:inset-x-8 sm:bottom-8 lg:inset-x-10 lg:bottom-10">
-								<div>
-									<p className="text-xs font-black uppercase tracking-[0.24em] text-drought">
-										Human factors
-									</p>
-									<p className="mt-2 max-w-xl text-[clamp(2.35rem,4.8vw,5rem)] font-black leading-[0.95] tracking-tighter">
-										การกระทำของมนุษย์
-									</p>
-								</div>
-								<span className="text-[clamp(4rem,8vw,8rem)] font-black leading-none tabular-nums text-white/12">
-									02
-								</span>
-							</div>
-						</div>
-
-						<div className="order-1 relative flex flex-col justify-center px-4 py-16 sm:px-8 sm:py-20 lg:min-h-[112svh] lg:px-12 lg:py-28 xl:px-16">
-							<div className="mb-10 flex items-center gap-4 text-sm font-black uppercase tracking-[0.22em] text-white/60">
-								<span className="h-px w-10 bg-drought" />
-								<span>มนุษย์ทำให้ความแห้งแล้งหนักขึ้นได้</span>
-							</div>
-							<ul className="border-t border-white/14">
-								{HUMAN_DROUGHT_CAUSES.map((cause, index) => (
-									<motion.li
-										key={cause}
-										initial={{ opacity: 0, x: -18 }}
-										whileInView={{ opacity: 1, x: 0 }}
-										viewport={{ once: true, margin: "-70px" }}
-										transition={{ duration: 0.5, delay: index * 0.045, ease: [0.22, 1, 0.36, 1] }}
-										className="group grid gap-4 border-b border-white/12 py-6 sm:grid-cols-[2.5rem_1fr] sm:py-7"
-									>
-										<span className="pt-1 text-xs font-black tabular-nums text-white/22 transition-colors duration-300 group-hover:text-drought">
-											{String(index + 1).padStart(2, "0")}
-										</span>
-										<p className="text-base font-semibold leading-7 text-white/68 transition-colors duration-300 group-hover:text-white sm:text-lg sm:leading-8">
-											{cause}
-										</p>
-									</motion.li>
-								))}
-							</ul>
-						</div>
-					</article>
-				</div>
+				<SectionEndBorder />
 			</section>
 		</>
 	);

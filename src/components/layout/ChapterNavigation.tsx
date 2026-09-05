@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { SECTIONS, type SectionId } from "@/config/sections";
 import type { ChapterNavigationProps } from "@/types";
@@ -138,20 +137,32 @@ function ChapterNavigation({ activeSection: externalActiveSection, onNavigate }:
 						<button
 							type="button"
 							onClick={() => setIsMenuOpen((open) => !open)}
-							className="group flex items-center gap-2.5 rounded-xl px-2 py-2 text-white transition-colors hover:bg-white/20 sm:px-3"
+							className="group flex items-center gap-2.5 rounded-full p-2 text-white transition-colors hover:bg-white/20"
 							aria-expanded={isMenuOpen}
 							aria-controls="chapter-navigation"
 							aria-label={isMenuOpen ? "ปิดเมนู" : "เปิดเมนู"}
 						>
-							<span className="hidden text-[0.68rem] font-black uppercase tracking-[0.16em] text-white/72 sm:inline">
-								Chapters
-							</span>
-							<span className="flex size-8 items-center justify-center rounded-full border border-white/18 bg-white/4 transition-colors group-hover:border-white/30 group-hover:bg-white/8">
-								{isMenuOpen ? (
-									<X className="size-4" strokeWidth={1.8} />
-								) : (
-									<Menu className="size-4" strokeWidth={1.8} />
-								)}
+							<span className="relative flex size-8 items-center justify-center rounded-full border border-white/18 bg-white/4 transition-colors group-hover:border-white/30 group-hover:bg-white/8">
+								<span aria-hidden="true" className="relative block size-4">
+									<motion.span
+										initial={false}
+										animate={{ y: isMenuOpen ? 0 : -5, rotate: isMenuOpen ? -45 : 0 }}
+										transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+										className="absolute left-0 top-1.75 h-px w-4 origin-center rounded-full bg-current"
+									/>
+									<motion.span
+										initial={false}
+										animate={{ opacity: isMenuOpen ? 0 : 1, scaleX: isMenuOpen ? 0.35 : 1 }}
+										transition={{ duration: 0.16, ease: "easeOut" }}
+										className="absolute left-0 top-1.75 h-px w-4 origin-center rounded-full bg-current"
+									/>
+									<motion.span
+										initial={false}
+										animate={{ y: isMenuOpen ? 0 : 5, rotate: isMenuOpen ? 45 : 0 }}
+										transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+										className="absolute left-0 top-1.75 h-px w-4 origin-center rounded-full bg-current"
+									/>
+								</span>
 							</span>
 						</button>
 					</div>
@@ -206,7 +217,7 @@ function ChapterNavigation({ activeSection: externalActiveSection, onNavigate }:
 
 											<span
 												className={cn(
-													"min-w-0 text-xl font-bold tracking-tight transition-[color,translate] duration-300 ease-out sm:text-2xl md:text-[clamp(1.15rem,2.6vh,1.7rem)]",
+												"min-w-0 text-xl font-bold tracking-tight transition-[color,translate] duration-300 ease-out sm:text-2xl md:text-[clamp(1.15rem,2.6vh,1.7rem)]",
 													isActive
 														? "translate-x-1 text-white"
 														: "text-white/62 group-hover:translate-x-1 group-hover:text-white",
@@ -229,7 +240,7 @@ function ChapterNavigation({ activeSection: externalActiveSection, onNavigate }:
 							</nav>
 
 							<div className="mt-[clamp(0.65rem,1.7vh,1.35rem)] flex items-center justify-between gap-4 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-white/60">
-								<span>Thai PBS · Next Gen</span>
+								<span>Thai PBS · New Gen</span>
 								<span>Interactive Documentary · 2569</span>
 							</div>
 						</div>

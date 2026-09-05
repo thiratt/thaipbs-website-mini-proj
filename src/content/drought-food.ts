@@ -3,48 +3,48 @@ export const DROUGHT_FOOD_ITEMS = [
     name: 'ห่อหมกผักหวานไข่มดแดง',
     description:
       'อาหารอีสานที่เป็นที่นิยมในช่วงหน้าแล้ง คือไข่มดแดงและผักหวาน ที่จะหาได้ในช่วงฤดูแล้งของทุกปี',
-    imageSrc: '/images/food/mok-pak-wan.png',
+    imageSrc: '/images/food/hor-mok-pak-wan-kai-mot-daeng.jpg',
   },
   {
     name: 'ซุปดอกผักติ้ว',
     description:
       'เมนูเด็ดหน้าแล้ง ถือเป็นเมนูอาหารป่าที่หาได้ยาก เนื่องจากดอกผักติ้วจะออกดอกในช่วงหน้าแล้งเท่านั้น',
-    imageSrc: '/images/food/sup-dok-pak-tiw.png',
+    imageSrc: '/images/food/sup-dok-pak-tiw.jpg',
   },
   {
     name: 'ข้าวปุ้นแกงปู',
     description:
       'นำวัตถุดิบตามฤดูกาลในช่วงหน้าแล้งอย่างปูนาที่มีมันปูมาก มาทำให้อาหารมีรสชาติอร่อยมากขึ้นกับอาหารพื้นถิ่นอย่างข้าวปุ้นแกงปู',
-    imageSrc: '/images/food/khao-pun-kaeng-pu.png',
+    imageSrc: '/images/food/khao-pun-kaeng-pu.jpg',
   },
   {
     name: 'อ่อมหอยขัว',
     description:
       'เป็นเมนูอีสานในหน้าแล้ง เป็นหอยที่จำศีลในหน้าแล้ง เมื่อน้ำแห้งมันจะจำศีลซ่อนตัวอยู่ใต้ดินตามแหล่งที่เคยมีน้ำ',
-    imageSrc: '/images/food/om-hoi-khua.png',
+    imageSrc: '/images/food/om-hoi-khua.jpg',
   },
   {
     name: 'อ่อมเขียดน้อย',
     description:
       'เมื่อน้ำแห้งขอด เหลือเพียงลำน้ำใหญ่ แล้วแหล่งอาหารหายาก จึงต้องหาเขียดน้อยมาทำแกงอ่อมกินกันตามครัวเรือน',
-    imageSrc: '/images/food/om-khiat-noi.png',
+    imageSrc: '/images/food/om-kiad-noi.jpg',
   },
   {
     name: 'แกงผักเสี้ยน',
     description:
       'ผักเสี้ยนเป็นผักตามฤดูกาลที่พบได้ในช่วงหน้าแล้ง นิยมนำยอดและใบอ่อนมาปรุงเป็นอาหารพื้นบ้าน ให้รสชาติเป็นเอกลักษณ์',
-    imageSrc: '/images/food/kaeng-pak-sian.png',
+    imageSrc: '/images/food/kaeng-pak-sian.jpg',
   },
   {
     name: 'ผักหวานป่าผัดหมูสับ',
     description:
       'ผักหวานป่าจะแตกยอดและใบใหม่ในช่วงฤดูแล้ง ตั้งแต่เดือนมีนาคมถึงพฤษภาคม จึงเป็นช่วงที่ผักหวานมีรสชาติอร่อยและหาได้มาก',
-    imageSrc: '/images/food/pak-wan-pad-moo-sub.png',
+    imageSrc: '/images/food/pak-wan-pad-moo-sub.jpg',
   },
   {
     name: 'วุ้นหมาน้อย',
     description:
       'วัตถุดิบตามฤดูกาลในช่วงหน้าแล้งอย่างใบหมาน้อย เป็นใบไม้ที่มีความพิเศษเฉพาะตัว นำมาทำเป็นวุ้นหมาน้อยกินคู่กับมะม่วงสุก',
-    imageSrc: '/images/food/woon-ma-noi.png',
+    imageSrc: '/images/food/woon-ma-noi.jpg',
   },
 ] as const

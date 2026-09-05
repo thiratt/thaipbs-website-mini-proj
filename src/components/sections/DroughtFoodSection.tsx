@@ -1,137 +1,185 @@
-import { forwardRef, useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { DROUGHT_FOOD_ITEMS } from '@/content/drought-food'
+import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
+import { SectionBackdropWord } from "@/components/editorial/SectionBackdropWord";
+import { SectionEndBorder } from "@/components/editorial/SectionEndBorder";
+import { DROUGHT_FOOD_ITEMS } from "@/content/drought-food";
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export const DroughtFoodSection = forwardRef<HTMLElement>((_props, ref) => {
-  const [activeIndex, setActiveIndex] = useState(0)
+	const reduceMotion = useReducedMotion();
+	const galleryRef = useRef<HTMLUListElement>(null);
+	const dragRef = useRef<{ pointerId: number; clientX: number; scrollLeft: number } | null>(null);
+	const [canGoBack, setCanGoBack] = useState(false);
+	const [canGoForward, setCanGoForward] = useState(true);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveIndex((current) => (current + 1) % DROUGHT_FOOD_ITEMS.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [activeIndex])
+	const updateScrollEdges = useCallback(() => {
+		const gallery = galleryRef.current;
+		if (!gallery) return;
+		setCanGoBack(gallery.scrollLeft > 2);
+		setCanGoForward(gallery.scrollLeft + gallery.clientWidth < gallery.scrollWidth - 2);
+	}, []);
 
-  const nextSlide = () => {
-    setActiveIndex((current) => (current + 1) % DROUGHT_FOOD_ITEMS.length)
-  }
+	useEffect(() => {
+		const gallery = galleryRef.current;
+		if (!gallery) return;
+		updateScrollEdges();
+		const observer = new ResizeObserver(updateScrollEdges);
+		observer.observe(gallery);
+		return () => observer.disconnect();
+	}, [updateScrollEdges]);
 
-  const prevSlide = () => {
-    setActiveIndex(
-      (current) => (current - 1 + DROUGHT_FOOD_ITEMS.length) % DROUGHT_FOOD_ITEMS.length,
-    )
-  }
+	const moveGallery = (direction: -1 | 1) => {
+		const gallery = galleryRef.current;
+		if (!gallery) return;
+		const first = gallery.children[0] as HTMLElement | undefined;
+		const second = gallery.children[1] as HTMLElement | undefined;
+		if (!first || !second) return;
+		gallery.scrollBy({
+			left: direction * (second.offsetLeft - first.offsetLeft),
+			behavior: reduceMotion ? "instant" : "smooth",
+		});
+	};
 
-  return (
-    <section
-      ref={ref}
-      className="relative bg-ink-soft min-h-svh py-20 px-4 md:px-12 flex flex-col items-center justify-center"
-    >
-      <div className="w-full max-w-6xl mx-auto text-center space-y-12 md:space-y-16">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex flex-col items-center gap-4"
-        >
-          <div className="flex items-center gap-3 md:gap-4 drop-shadow-md">
-            <span className="text-8xl md:text-9xl font-black text-white tracking-tighter">
-              {DROUGHT_FOOD_ITEMS.length}
-            </span>
-            <h2 className="text-3xl md:text-5xl font-bold text-white tracking-wide">
-              เมนูอาหารแนะนำใน{' '}
-              <span className="underline decoration-4 underline-offset-8">
-                ฤดูแล้ง
-              </span>
-            </h2>
-          </div>
-        </motion.div>
+	return (
+		<section
+			id="drought-food"
+			ref={ref}
+			aria-labelledby="drought-food-title"
+			className="relative isolate overflow-clip bg-ink text-white"
+		>
+			<div className="pointer-events-none absolute inset-0 overflow-hidden">
+				<SectionBackdropWord>Food</SectionBackdropWord>
+			</div>
 
-        <div className="relative w-full max-w-4xl mx-auto">
-          <Button
-            onClick={prevSlide}
-            className="hidden xl:flex absolute -left-16 top-1/3 -translate-y-1/2 z-20 rounded-full"
-            variant="secondary"
-            size="icon-lg"
-          >
-            <ChevronLeft />
-          </Button>
-          <Button
-            onClick={nextSlide}
-            className="hidden xl:flex absolute -right-16 top-1/3 -translate-y-1/2 z-20 rounded-full"
-            variant="secondary"
-            size="icon-lg"
-          >
-            <ChevronRight />
-          </Button>
+			<div className="relative px-4 pb-16 pt-28 sm:px-8 sm:pb-20 lg:pt-32">
+				<motion.header
+					initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true, amount: 0.2 }}
+					transition={{ duration: 0.7, ease: EASE }}
+					className="grid items-end gap-7 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16"
+				>
+					<h2
+						id="drought-food-title"
+						className="text-[clamp(3rem,7.2vw,8rem)] font-black leading-[1.12] tracking-[-0.065em]"
+					>
+						แล้งนี้
+						<span className="text-drought">ที่อีสาน</span>
+						<span className="block">
+							กับ <span className="text-drought">8 เมนู</span>อาหาร
+						</span>
+						<span className="block">แนะนำ</span>
+					</h2>
+					<div className="max-w-lg lg:pb-2">
+						<p className="text-2xl font-bold leading-snug tracking-[-0.035em] sm:text-3xl">
+							กินตามฤดู <span className="text-white/55">อยู่กับผืนดิน</span>
+						</p>
+						<p className="mt-4 text-base leading-8 text-white/65">
+							วัตถุดิบจากนา ป่า และแหล่งน้ำรอบตัว กลายเป็นสำรับที่เปลี่ยนไปตามฤดูกาล
+							อาหารแต่ละจานจึงเล่าทั้งเรื่องรสชาติ และวิธีอยู่กับธรรมชาติของชุมชนอีสาน
+						</p>
+					</div>
+				</motion.header>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIndex}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.05 }}
-              transition={{ duration: 0.4 }}
-              className="flex flex-col items-center gap-8"
-            >
-              <div className="relative w-full aspect-video md:aspect-21/9 lg:aspect-2/1 bg-black/10 rounded-3xl overflow-hidden shadow-2xl border-4 border-background">
-                <img
-                  src={DROUGHT_FOOD_ITEMS[activeIndex].imageSrc}
-                  alt={DROUGHT_FOOD_ITEMS[activeIndex].name}
-                  className="w-full h-full object-cover"
-                />
+				<div className="mt-10 flex items-center justify-end gap-4 border-t border-white/15 pt-5 sm:mt-12 lg:mt-14">
+					<div className="flex gap-2">
+						<button
+							type="button"
+							aria-label="เมนูก่อนหน้า"
+							aria-controls="drought-food-gallery"
+							disabled={!canGoBack}
+							onClick={() => moveGallery(-1)}
+							className="flex size-11 items-center justify-center rounded-full border border-white/25 transition-colors hover:border-drought hover:bg-drought hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-drought disabled:cursor-default disabled:border-white/10 disabled:text-white/25 disabled:hover:bg-transparent disabled:hover:text-white/25 motion-reduce:transition-none"
+						>
+							<ArrowLeft aria-hidden="true" className="size-5" strokeWidth={1.6} />
+						</button>
+						<button
+							type="button"
+							aria-label="เมนูถัดไป"
+							aria-controls="drought-food-gallery"
+							disabled={!canGoForward}
+							onClick={() => moveGallery(1)}
+							className="flex size-11 items-center justify-center rounded-full border border-white/25 transition-colors hover:border-drought hover:bg-drought hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-drought disabled:cursor-default disabled:border-white/10 disabled:text-white/25 disabled:hover:bg-transparent disabled:hover:text-white/25 motion-reduce:transition-none"
+						>
+							<ArrowRight aria-hidden="true" className="size-5" strokeWidth={1.6} />
+						</button>
+					</div>
+				</div>
 
-                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent md:hidden flex flex-col justify-end p-6 text-left">
-                  <h3 className="text-2xl font-bold text-white mb-2">
-                    {DROUGHT_FOOD_ITEMS[activeIndex].name}
-                  </h3>
-                </div>
-              </div>
+				<p id="food-gallery-hint" className="sr-only">
+					ใช้ปุ่มก่อนหน้าและถัดไป หรือเลื่อนในแนวนอนเพื่อดูเมนูทั้งหมด
+				</p>
 
-              <div className="hidden md:block max-w-2xl space-y-4">
-                <h3 className="text-4xl text-background font-bold drop-shadow-sm">
-                  {DROUGHT_FOOD_ITEMS[activeIndex].name}
-                </h3>
-                <p className="text-xl text-background leading-relaxed font-medium">
-                  {DROUGHT_FOOD_ITEMS[activeIndex].description}
-                </p>
-              </div>
+				<ul
+					ref={galleryRef}
+					id="drought-food-gallery"
+					aria-label="อาหารรับมือหน้าแล้ง 8 เมนู"
+					aria-describedby="food-gallery-hint"
+					tabIndex={-1}
+					onScroll={updateScrollEdges}
+					onPointerDown={(event) => {
+						// Touch keeps native scrolling; mouse dragging must not select text or drag an image.
+						if (event.pointerType !== "mouse" || event.button !== 0) return;
+						event.preventDefault();
+						event.currentTarget.scrollTo({ left: event.currentTarget.scrollLeft, behavior: "instant" });
+						dragRef.current = {
+							pointerId: event.pointerId,
+							clientX: event.clientX,
+							scrollLeft: event.currentTarget.scrollLeft,
+						};
+						event.currentTarget.setPointerCapture(event.pointerId);
+					}}
+					onPointerMove={(event) => {
+						const drag = dragRef.current;
+						if (!drag || drag.pointerId !== event.pointerId) return;
+						event.currentTarget.scrollTo({
+							left: drag.scrollLeft + drag.clientX - event.clientX,
+							behavior: "instant",
+						});
+					}}
+					onPointerUp={() => {
+						dragRef.current = null;
+					}}
+					onPointerCancel={() => {
+						dragRef.current = null;
+					}}
+					onLostPointerCapture={() => {
+						dragRef.current = null;
+					}}
+					onDragStart={(event) => event.preventDefault()}
+					className="relative mt-6 flex cursor-grab select-none snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-contain active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [@media(pointer:fine)]:snap-none sm:gap-8"
+				>
+					{DROUGHT_FOOD_ITEMS.map((food) => (
+						<li
+							key={food.name}
+							className="w-[84%] max-w-[380px] shrink-0 snap-start sm:w-[44%] lg:w-[30%] xl:w-[28%]"
+						>
+							<article aria-label={food.name} className="group">
+								<div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-ink-elevated">
+									<Image
+										src={food.imageSrc}
+										alt={food.name}
+										draggable={false}
+										fill
+										sizes="(min-width: 1440px) 380px, (min-width: 1024px) 30vw, (min-width: 640px) 44vw, 84vw"
+										className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.035] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+									/>
+								</div>
+								<h3 className="mt-5 text-2xl font-bold leading-[1.4] tracking-[-0.035em] sm:text-[1.7rem]">
+									{food.name}
+								</h3>
+								<p className="text-[0.9375rem] leading-7 text-white/65">{food.description}</p>
+							</article>
+						</li>
+					))}
+				</ul>
+			</div>
+			<SectionEndBorder />
+		</section>
+	);
+});
 
-              <div className="md:hidden text-left space-y-3 px-2">
-                <p className="text-lg text-background leading-relaxed">
-                  {DROUGHT_FOOD_ITEMS[activeIndex].description}
-                </p>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        <div className="flex justify-center gap-3 md:gap-6 flex-wrap px-4">
-          {DROUGHT_FOOD_ITEMS.map((item, index) => (
-            <button
-              key={index}
-              onClick={() => setActiveIndex(index)}
-              className={cn(
-                'relative w-16 h-16 md:w-24 md:h-24 rounded-2xl overflow-hidden transition-all duration-300',
-                activeIndex === index
-                  ? 'ring-4 ring-background scale-110 shadow-xl'
-                  : 'opacity-60 hover:opacity-100 hover:scale-105',
-              )}
-            >
-              <img
-                src={item.imageSrc}
-                alt={item.name}
-                className="w-full h-full object-cover"
-              />
-            </button>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-})
-
-DroughtFoodSection.displayName = 'DroughtFoodSection'
+DroughtFoodSection.displayName = "DroughtFoodSection";

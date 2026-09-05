@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { SECTION_IDS, type SectionId } from "@/config/sections";
-import type { SectionRefs } from "@/types/navigation";
 
 const BOTTOM_TOLERANCE = 2;
 
-export function useActiveSection(sectionRefs: SectionRefs) {
+export function useActiveSection() {
 	const [activeSection, setActiveSection] = useState<SectionId>("home");
 	const activeSectionRef = useRef<SectionId>("home");
 
@@ -15,7 +14,7 @@ export function useActiveSection(sectionRefs: SectionRefs) {
 			frameId = null;
 
 			const sections = SECTION_IDS.map((id) => {
-				const element = sectionRefs[id].current;
+				const element = document.getElementById(id);
 				if (!element) return null;
 
 				return {
@@ -69,7 +68,7 @@ export function useActiveSection(sectionRefs: SectionRefs) {
 			window.removeEventListener("resize", scheduleUpdate);
 			resizeObserver.disconnect();
 		};
-	}, [sectionRefs]);
+	}, []);
 
 	return activeSection;
 }

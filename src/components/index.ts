@@ -3,6 +3,7 @@ export { SiteFooter } from './layout/SiteFooter'
 
 export { HeroSection } from './sections/HeroSection'
 export { DroughtOverviewSection } from './sections/DroughtOverviewSection'
+export { DroughtCausesSection } from './sections/DroughtCausesSection'
 export { DroughtImpactsSection } from './sections/DroughtImpactsSection'
 export { TemperatureTrendSection } from './sections/TemperatureTrendSection'
 export { DroughtInequalitySection } from './sections/DroughtInequalitySection'

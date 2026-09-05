@@ -1,12 +1,12 @@
 import { forwardRef } from "react";
 import { CartesianGrid, Line, LineChart, ReferenceDot, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { motion } from "motion/react";
+import { SectionEndBorder } from "@/components/editorial/SectionEndBorder";
+import { SourceAttribution } from "@/components/editorial/SourceAttribution";
 import { TEMPERATURE_SERIES } from "@/content/temperature";
 import { SectionTopline } from "@/components/editorial/SectionTopline";
 
-const PEAK_TEMPERATURE = TEMPERATURE_SERIES.reduce((highest, item) =>
-	item.temp > highest.temp ? item : highest,
-);
+const PEAK_TEMPERATURE = TEMPERATURE_SERIES.reduce((highest, item) => (item.temp > highest.temp ? item : highest));
 const LOWEST_TEMPERATURE = Math.min(...TEMPERATURE_SERIES.map((item) => item.temp));
 
 type TemperatureTooltipProps = {
@@ -31,8 +31,7 @@ const TemperatureTooltip = ({ active, payload, label }: TemperatureTooltipProps)
 
 export const TemperatureTrendSection = forwardRef<HTMLElement>((_props, ref) => {
 	return (
-		<section ref={ref} className="relative overflow-clip bg-ink-elevated text-white">
-			<div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-white/12" />
+		<section id="temperature-trend" ref={ref} className="relative overflow-clip bg-ink-elevated text-white">
 			<div className="pointer-events-none absolute inset-0">
 				<div className="absolute right-[-20vw] top-[6%] size-[58vw] rounded-full bg-drought/7 blur-[210px]" />
 				<div className="absolute left-[-26vw] top-[44%] size-[52vw] rounded-full bg-drought/3 blur-[220px]" />
@@ -40,16 +39,7 @@ export const TemperatureTrendSection = forwardRef<HTMLElement>((_props, ref) => 
 				<div className="absolute inset-x-0 top-[66%] h-px bg-white/[0.035]" />
 			</div>
 
-			<header className="relative mx-auto flex min-h-[82svh] flex-col px-4 py-16 sm:px-8">
-				<motion.div
-					initial={{ opacity: 0, y: 16 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true, margin: "-80px" }}
-					transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-				>
-					<SectionTopline label="Thailand · 2554—2563" />
-				</motion.div>
-
+			<header className="relative mx-auto flex flex-col px-4 py-16 sm:px-8">
 				<div className="flex flex-1 items-center py-14 md:py-16 lg:py-10">
 					<div className="grid w-full items-end gap-10 lg:grid-cols-[1.18fr_0.82fr] lg:gap-16 xl:gap-24">
 						<motion.div
@@ -67,11 +57,11 @@ export const TemperatureTrendSection = forwardRef<HTMLElement>((_props, ref) => 
 									°C
 								</span>
 							</div>
-							<div className="mt-6 flex items-center gap-4 sm:mt-8">
-								<span className="text-xs font-black uppercase tracking-[0.2em] text-white/30">
-									Peak year
+							<div className="mt-6 flex items-center gap-2 sm:mt-8">
+								<span className="text-base font-black uppercase tracking-[0.2em] text-white/30">
+									ในปี
 								</span>
-								<span className="h-px w-10 bg-white/14" />
+								<span className="h-px w-4 bg-white/25" />
 								<span className="text-xl font-black tabular-nums text-white/78 sm:text-2xl">
 									พ.ศ. {PEAK_TEMPERATURE.year}
 								</span>
@@ -90,7 +80,8 @@ export const TemperatureTrendSection = forwardRef<HTMLElement>((_props, ref) => 
 								<span className="block text-drought">ในรอบ 10 ปี</span>
 							</h2>
 							<p className="mt-4 max-w-xl text-sm font-medium leading-7 text-white/48 sm:text-base sm:leading-8">
-								พ.ศ. 2559 คือจุดสูงสุดของทศวรรษ ขณะที่ข้อมูลทั้งชุดแกว่งอยู่ระหว่าง {LOWEST_TEMPERATURE}–{PEAK_TEMPERATURE.temp}
+								พ.ศ. 2559 คือจุดสูงสุดของทศวรรษ ขณะที่ข้อมูลทั้งชุดแกว่งอยู่ระหว่าง {LOWEST_TEMPERATURE}
+								–{PEAK_TEMPERATURE.temp}
 								°C
 							</p>
 						</motion.div>
@@ -108,11 +99,9 @@ export const TemperatureTrendSection = forwardRef<HTMLElement>((_props, ref) => 
 					>
 						<div className="mb-8 grid gap-5 sm:grid-cols-[1fr_auto] sm:items-end lg:mb-10">
 							<div>
-								<p className="text-[0.66rem] font-black uppercase tracking-[0.2em] text-drought">
-									The decade
-								</p>
 								<p className="mt-3 max-w-2xl text-lg font-bold leading-8 text-white/68 sm:text-xl">
 									เส้นทางของอุณหภูมิสูงสุดรายปี ไม่ได้เพิ่มขึ้นเป็นเส้นตรง
+									<br />
 									แต่ความร้อนระดับสูงยังคงปรากฏซ้ำตลอดช่วงเวลา
 								</p>
 							</div>
@@ -121,7 +110,10 @@ export const TemperatureTrendSection = forwardRef<HTMLElement>((_props, ref) => 
 
 						<div className="h-97 w-full sm:h-120 lg:h-140">
 							<ResponsiveContainer width="100%" height="100%">
-								<LineChart data={TEMPERATURE_SERIES} margin={{ top: 36, right: 22, left: -14, bottom: 12 }}>
+								<LineChart
+									data={TEMPERATURE_SERIES}
+									margin={{ top: 36, right: 22, left: -14, bottom: 12 }}
+								>
 									<CartesianGrid
 										vertical={false}
 										stroke="rgba(255,255,255,0.075)"
@@ -215,11 +207,11 @@ export const TemperatureTrendSection = forwardRef<HTMLElement>((_props, ref) => 
 					))}
 				</div>
 
-				<div className="mt-6 flex flex-col gap-3 text-sm font-bold uppercase tracking-[0.16em] text-white/24 sm:flex-row sm:items-center sm:justify-between">
-					<span>อุณหภูมิสูงสุดรายปี · ประเทศไทย · พ.ศ. 2554–2563</span>
-					<span className="shrink-0">ที่มา · กรมอุตุนิยมวิทยา</span>
-				</div>
+				<SourceAttribution className="mt-6" href="https://www.tmd.go.th/">
+					กรมอุตุนิยมวิทยา
+				</SourceAttribution>
 			</footer>
+			<SectionEndBorder />
 		</section>
 	);
 });

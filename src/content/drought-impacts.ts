@@ -37,7 +37,7 @@ export const DROUGHT_IMPACTS: DroughtImpact[] = [
   },
   {
     iconSrc: '/images/impacts/migration.png',
-    iconAlt: 'การอพยพ',
+    iconAlt: 'แผนที่เส้นทางการย้ายถิ่น',
     text: 'เกิดการอพยพย้ายถิ่นของประชากร',
   },
   {
@@ -56,3 +56,11 @@ export const DROUGHT_IMPACTS: DroughtImpact[] = [
     text: 'เพิ่มโอกาสการเกิดไฟป่าในช่วงเกิดภัยแล้ง',
   },
 ]
+
+export const DROUGHT_IMPACT_QUOTE_IMAGES = [
+  '/images/impacts/impact-quote-01.jpg',
+  '/images/impacts/impact-quote-02.jpg',
+  '/images/impacts/impact-quote-03.jpg',
+  '/images/impacts/impact-quote-04.jpg',
+  '/images/impacts/impact-quote-05.jpg',
+] as const
